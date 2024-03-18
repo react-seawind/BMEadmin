@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
-import Logo from '../../images/mainlogo.png';
-import favicon from '../../images/loaderimage.png';
 import NewEditor from '../EDITOR/NewEditor';
 
 import { useFormik } from 'formik';

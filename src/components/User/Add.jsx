@@ -198,7 +198,7 @@ const UserAdd = () => {
                   <p>Please enter State</p>
                 </div>
               </div>
-              {/*===========Password===========*/}
+              {/*===========Pincode===========*/}
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
@@ -220,7 +220,7 @@ const UserAdd = () => {
                 </div>
               </div>
               {/*===========Password===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Password <span className="text-danger">*</span>
@@ -239,9 +239,7 @@ const UserAdd = () => {
                   )}
                   <p>Please enter Password</p>
                 </div>
-              </div>
-              {/*===========Confirm Password===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Confirm Password <span className="text-danger">*</span>

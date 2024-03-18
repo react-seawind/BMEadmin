@@ -1,49 +1,60 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
 import Logo from '../../images/mainlogo.png';
-import favicon from '../../images/loaderimage.png';
-import NewEditor from '../EDITOR/NewEditor';
-import { name } from 'file-loader';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+const validateSchema = Yup.object().shape({
+  name: Yup.string()
+    .matches(/^[A-Z a-z]+$/, 'Only alphabets are allowed for this field ')
+    .required('Name is required'),
+  email: Yup.string().email().required('Email is required.'),
+  phone: Yup.string()
+    .matches(/^[0-9]+$/, 'Only Number are allowed for this field ')
+    .min(10, 'User Phone must be at most 10 characters')
+    .max(10, 'User Phone must be at most 10 characters')
+    .required('Number is Required'),
+  pimage: Yup.string().required('Profile image is required.'),
+  city: Yup.string().required('City is required.'),
+  state: Yup.string().required('State is required.'),
+  pincode: Yup.string()
+    .matches(/^[0-9]+$/, 'Only numbres are allowed for this field ')
+    .max(6)
+    .min(6)
+    .required('Pincode is required'),
+  password: Yup.string().required('Password is required.'),
+  cpassword: Yup.string()
+    .required('Confirm Password is required')
+    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+});
 
 const UserEdit = () => {
-  const [authoradd, setAuthoradd] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    profileimage: '',
-    password: '',
-    cpassword: '',
-    modules: [],
-    selectedStatus: '1',
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      phone: '',
+      pimage: '',
+      city: '',
+      state: '',
+      pincode: '',
+      password: '',
+      cpassword: '',
+      Status: '',
+    },
+    validationSchema: validateSchema,
+    onSubmit: (values, actions) => {
+      sessionStorage.setItem('User-Add-Data', JSON.stringify(values));
+      actions.resetForm();
+      toast('Data Add Successfully');
+    },
   });
 
-  useEffect(() => {
-    const getdata = JSON.parse(localStorage.getItem('Author-add-data'));
-    setAuthoradd(getdata);
-  }, []);
+  const navigate = useNavigate();
 
-  const myHandler = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    if (type === 'checkbox') {
-      const updatedModules = checked
-        ? [...authoradd.modules, value]
-        : authoradd.modules.filter((module) => module !== value);
-
-      setAuthoradd((prevAuthoradd) => ({
-        ...prevAuthoradd,
-        modules: updatedModules,
-      }));
-    } else {
-      setAuthoradd((prevAuthoradd) => ({
-        ...prevAuthoradd,
-        [name]: value,
-      }));
-    }
-  };
-  const mySubmit = (e) => {
-    e.preventDefault();
-    localStorage.setItem('Author-add-data', JSON.stringify(authoradd));
+  const handleGoBack = () => {
+    navigate(-1);
   };
   return (
     <div>
@@ -62,7 +73,7 @@ const UserEdit = () => {
                 Admin edit directory
               </p>
             </div>
-            <form onSubmit={mySubmit}>
+            <form onSubmit={formik.handleSubmit}>
               {/*===========Name===========*/}
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
@@ -71,13 +82,16 @@ const UserEdit = () => {
                   </label>
                   <input
                     type="text"
-                    onChange={myHandler}
                     name="name"
-                    value={authoradd.name}
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter Your Name"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-
+                  {formik.touched.name && formik.errors.name && (
+                    <div className="text-red-500">{formik.errors.name}</div>
+                  )}
                   <p>Please enter Name</p>
                 </div>
               </div>
@@ -88,13 +102,17 @@ const UserEdit = () => {
                     Email <span className="text-danger">*</span>
                   </label>
                   <input
-                    type="text"
-                    onChange={myHandler}
+                    type="email"
                     name="email"
-                    value={authoradd.email}
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter Your Email"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
+                  {formik.touched.email && formik.errors.email && (
+                    <div className="text-red-500">{formik.errors.email}</div>
+                  )}
                   <p>Please enter Email</p>
                 </div>
               </div>
@@ -106,12 +124,16 @@ const UserEdit = () => {
                   </label>
                   <input
                     type="text"
-                    onChange={myHandler}
                     name="phone"
-                    value={authoradd.phone}
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter Your Phone"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
+                  {formik.touched.phone && formik.errors.phone && (
+                    <div className="text-red-500">{formik.errors.phone}</div>
+                  )}
                   <p>Please enter Phone</p>
                 </div>
               </div>{' '}
@@ -124,11 +146,15 @@ const UserEdit = () => {
                   </label>
                   <input
                     type="file"
-                    onChange={myHandler}
-                    name="profileimage"
+                    name="pimage"
+                    value={formik.values.pimage}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
-
+                  {formik.touched.pimage && formik.errors.pimage && (
+                    <div className="text-red-500">{formik.errors.pimage}</div>
+                  )}
                   <p>Please select an a png,jpeg,jpg,gif file only.</p>
                 </div>
                 <div>
@@ -136,87 +162,112 @@ const UserEdit = () => {
                     Your Exsisting Img File
                     <span className="text-danger">*</span>
                   </label>
-                  <img src={authoradd.profileimage} alt="" className="w-40" />
+                  <img src={Logo} alt="" className="w-40 rounded border p-2 " />
+                </div>
+              </div>
+              {/*===========city===========*/}
+              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    City <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={formik.values.city}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter City"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />{' '}
+                  {formik.touched.city && formik.errors.city && (
+                    <div className="text-red-500">{formik.errors.city}</div>
+                  )}
+                  <p>Please enter City</p>
+                </div>
+              </div>
+              {/*===========state===========*/}
+              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    State <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="state"
+                    value={formik.values.state}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter State"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />{' '}
+                  {formik.touched.state && formik.errors.state && (
+                    <div className="text-red-500">{formik.errors.state}</div>
+                  )}
+                  <p>Please enter State</p>
+                </div>
+              </div>
+              {/*===========Pincode===========*/}
+              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Pincode <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="pincode"
+                    value={formik.values.pincode}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Pincode"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />{' '}
+                  {formik.touched.pincode && formik.errors.pincode && (
+                    <div className="text-red-500">{formik.errors.pincode}</div>
+                  )}
+                  <p>Please enter Pincode</p>
                 </div>
               </div>
               {/*===========Password===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Password <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    onChange={myHandler}
                     name="password"
-                    value={authoradd.password}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter Your Password"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
+                  />{' '}
+                  {formik.touched.password && formik.errors.password && (
+                    <div className="text-red-500">{formik.errors.password}</div>
+                  )}
                   <p>Please enter Password</p>
                 </div>
-              </div>
-              {/*===========Confirm Password===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Confirm Password <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    onChange={myHandler}
                     name="cpassword"
-                    value={authoradd.cpassword}
+                    value={formik.values.cpassword}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     placeholder="Enter Your Confirm Password"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
+                  />{' '}
+                  {formik.touched.cpassword && formik.errors.cpassword && (
+                    <div className="text-red-500">
+                      {formik.errors.cpassword}
+                    </div>
+                  )}
                   <p>Please enter Confirm Password</p>
-                </div>
-              </div>
-              {/*==========Module Enable=============*/}
-              <div className="gap-5.5 py-3.5 px-5.5">
-                <label className="mb-3 block text-black dark:text-white">
-                  Module Enable <span className="text-danger">*</span>
-                </label>
-                <div className="grid grid-cols-5 ">
-                  <div>
-                    <input
-                      type="checkbox"
-                      className="mx-2"
-                      onChange={myHandler}
-                      name="AddressSettings"
-                      value="AddressSettings"
-                      checked={authoradd.modules.includes('AddressSettings')}
-                    />
-                    AddressSetings
-                    <input
-                      type="checkbox"
-                      className="mx-2"
-                      onChange={myHandler}
-                      name="AddressSettings"
-                      value="AddressSettings2"
-                      checked={authoradd.modules.includes('AddressSettings2')}
-                    />
-                    AddressSetings
-                    <input
-                      type="checkbox"
-                      className="mx-2"
-                      onChange={myHandler}
-                      name="AddressSettings"
-                      value="AddressSettings3"
-                      checked={authoradd.modules.includes('AddressSettings3')}
-                    />
-                    AddressSetings
-                    <input
-                      type="checkbox"
-                      className="mx-2"
-                      onChange={myHandler}
-                      name="AddressSettings"
-                      value="AddressSettings4"
-                      checked={authoradd.modules.includes('AddressSettings4')}
-                    />
-                    AddressSetings
-                  </div>
                 </div>
               </div>
               <div className="flex flex-col gap-2.5 py-3.5 px-5.5">
@@ -227,22 +278,22 @@ const UserEdit = () => {
                   <div>
                     <input
                       type="radio"
-                      onChange={myHandler}
-                      name="selectedStatus"
+                      onChange={formik.handleChange}
+                      name="Status"
                       className="mx-2"
                       value="1"
-                      checked={authoradd.selectedStatus === '1'}
+                      // checked={blogadd.Status === '1'}
                     />
                     Active
                   </div>
                   <div>
                     <input
                       type="radio"
-                      onChange={myHandler}
-                      name="selectedStatus"
+                      onChange={formik.handleChange}
+                      name="Status"
                       className="mx-2"
-                      value="2"
-                      checked={authoradd.selectedStatus === '2'}
+                      value="0"
+                      // checked={blogadd.Status == = '0'}
                     />
                     In Active
                   </div>
@@ -258,7 +309,7 @@ const UserEdit = () => {
                 </button>
                 <button
                   className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                  type="submit"
+                  onClick={handleGoBack}
                 >
                   Cancel
                 </button>

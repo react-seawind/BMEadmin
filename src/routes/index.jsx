@@ -5,9 +5,6 @@ import Sitesetting from '../components/Setting/Sitesetting';
 import SliderListing from '../components/Slider/Listing';
 import SliderAdd from '../components/Slider/Add';
 import SliderEdit from '../components/Slider/Edit';
-import PageListing from '../components/Page/Listing';
-import PageAdd from '../components/Page/add';
-import PageEdit from '../components/Page/Edit';
 import QuotedataListing from '../components/Datamanager/QuoteData';
 import ContactdataListing from '../components/Datamanager/ContactUsData';
 import Profile from '../pages/Profile';
@@ -39,6 +36,9 @@ import UserEvents from '../components/User/Events';
 import UserBooking from '../components/User/Booking';
 import UserKyc from '../components/User/Kyc';
 import AllBookingListing from '../components/AllBooking/Listing';
+import PageListing from '../components/Pages/Listing';
+import PageAdd from '../components/Pages/Add';
+import PageEdit from '../components/Pages/Edit';
 
 const coreRoutes = [
   {
