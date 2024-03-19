@@ -2,6 +2,8 @@ import CardFour from '../../components/CardFour.tsx';
 import CardOne from '../../components/CardOne.tsx';
 import CardThree from '../../components/CardThree.tsx';
 import CardTwo from '../../components/CardTwo.tsx';
+import ChartOne from '../../components/ChartOne.tsx';
+import ChartTwo from '../../components/ChartTwo.tsx';
 
 import React from 'react';
 
@@ -13,6 +15,9 @@ const ECommerce = () => {
         <CardTwo />
         <CardThree />
         <CardFour />
+      </div>
+      <div className="grid grid-cols-1  mt-10">
+        <ChartOne />
       </div>
     </div>
   );
