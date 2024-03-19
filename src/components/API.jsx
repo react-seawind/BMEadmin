@@ -117,3 +117,76 @@ export const AddBlog = async (formData) => {
     throw error;
   }
 };
+
+import event1 from './../images/ne1.jpg';
+import event2 from './../images/ne2.jpg';
+import event3 from './../images/ne3.jpg';
+import event4 from './../images/ne4.jpg';
+
+export const eventdata = [
+  {
+    name: 'Sonu Nigam',
+    image: event1,
+    price: '100',
+  },
+  {
+    name: 'Kirtidan Gadhvi',
+    image: event2,
+    price: '100',
+  },
+  {
+    name: 'Kirtidan Gadhvi',
+    image: event3,
+    price: '100',
+  },
+  {
+    name: 'Kinjal dave',
+    image: event4,
+    price: '100',
+  },
+];
+
+export const Bookingdata = [
+  {
+    name: 'test',
+    email: 'test@gmail.com',
+    Tickettype: 'Gold',
+    noofticket: '10',
+    amount: '100',
+  },
+  {
+    name: 'test',
+    email: 'test@gmail.com',
+    Tickettype: 'Gold',
+    noofticket: '10',
+    amount: '100',
+  },
+  {
+    name: 'test',
+    email: 'test@gmail.com',
+    Tickettype: 'Gold',
+    noofticket: '10',
+    amount: '100',
+  },
+  {
+    name: 'test',
+    email: 'test@gmail.com',
+    Tickettype: 'Gold',
+    noofticket: '10',
+    amount: '100',
+  },
+  {
+    name: 'test',
+    email: 'test@gmail.com',
+    Tickettype: 'Gold',
+    noofticket: '10',
+    amount: '100',
+  },
+  {
+    name: 'test',
+    email: 'test@gmail.com',
+    Tickettype: 'Gold',
+    noofticket: '10',
+    amount: '100',
+  },
+];

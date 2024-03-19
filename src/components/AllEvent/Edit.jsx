@@ -4,8 +4,45 @@ import Logo from '../../images/mainlogo.png';
 import favicon from '../../images/loaderimage.png';
 import NewEditor from '../EDITOR/NewEditor';
 import { name } from 'file-loader';
+import { useFormik } from 'formik';
+
+import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AllEventEdit = () => {
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      type: '',
+      organiser: '',
+      desc: '',
+      actor: '',
+      bimage: '',
+      timage: '',
+      actorimg: '',
+      estime: '',
+      eetime: '',
+      maincategory: '',
+      subcategory: '',
+      cname: '',
+      cemail: '',
+      cphone: '',
+      Status: '',
+      Approve: '',
+    },
+    onSubmit: (values, actions) => {
+      sessionStorage.setItem('event-edit-data', JSON.stringify(values));
+      actions.resetForm();
+      toast('Data Add Successfully');
+    },
+  });
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
   return (
     <div>
       <Breadcrumb pageName="Event Edit" />
@@ -21,25 +58,25 @@ const AllEventEdit = () => {
                 directory
               </p>
             </div>
-            <form>
+            <form onSubmit={formik.handleChange}>
               {/*===========Name===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Name <span className="text-danger">*</span>
+                    Event Name <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
                     name="name"
-                    placeholder="Enter Your Name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-
-                  <p>Please enter Name</p>
+                  {formik.touched.name && formik.errors.name && (
+                    <div className="text-red-500">{formik.errors.name}</div>
+                  )}
                 </div>
-              </div>
-              {/*===========Email===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Email <span className="text-danger">*</span>
@@ -47,76 +84,431 @@ const AllEventEdit = () => {
                   <input
                     type="text"
                     name="email"
-                    placeholder="Enter Your Email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  <p>Please enter Email</p>
+                  {formik.touched.email && formik.errors.email && (
+                    <div className="text-red-500">{formik.errors.email}</div>
+                  )}
                 </div>
-              </div>
-              {/*===========Phone===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Phone <span className="text-danger">*</span>
+                    Event Type <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    name="phone"
-                    placeholder="Enter Your Phone"
+                    name="type"
+                    value={formik.values.type}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  <p>Please enter Phone</p>
-                </div>
-              </div>{' '}
-              {/*===========Profile Image===========*/}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    Profile Image
-                    <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="file"
-                    name="profileimage"
-                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                  />
-
-                  <p>Please select an a png,jpeg,jpg,gif file only.</p>
-                </div>
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    Your Exsisting Img File
-                    <span className="text-danger">*</span>
-                  </label>
-                  <img src={Logo} alt="" className="w-40 rounded border p-2 " />
+                  {formik.touched.type && formik.errors.type && (
+                    <div className="text-red-500">{formik.errors.type}</div>
+                  )}
                 </div>
               </div>
-              <div className="flex flex-col gap-2.5 py-3.5 px-5.5">
-                <label className="mb-3 block text-black dark:text-white">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Organiser Name <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="organiser"
+                    value={formik.values.organiser}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.organiser && formik.errors.organiser && (
+                    <div className="text-red-500">
+                      {formik.errors.organiser}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Description <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="desc"
+                    value={formik.values.desc}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.desc && formik.errors.desc && (
+                    <div className="text-red-500">{formik.errors.desc}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Actor Name <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="actor"
+                    value={formik.values.actor}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.actor && formik.errors.actor && (
+                    <div className="text-red-500">{formik.errors.actor}</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Banner Image <span className="text-danger">*</span>
+                  </label>
+                  <div>
+                    <label className="mb-3 block text-black dark:text-white">
+                      Your Exsisting Img File
+                      <span className="text-danger">*</span>
+                    </label>
+                    <img
+                      src={Logo}
+                      alt=""
+                      className="w-40 rounded border p-2 "
+                    />
+                  </div>
+                  {formik.touched.bimage && formik.errors.bimage && (
+                    <div className="text-red-500">{formik.errors.bimage}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Thumb Image <span className="text-danger">*</span>
+                  </label>
+                  <div>
+                    <label className="mb-3 block text-black dark:text-white">
+                      Your Exsisting Img File
+                      <span className="text-danger">*</span>
+                    </label>
+                    <img
+                      src={Logo}
+                      alt=""
+                      className="w-40 rounded border p-2 "
+                    />
+                  </div>
+                  {formik.touched.timage && formik.errors.timage && (
+                    <div className="text-red-500">{formik.errors.timage}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Actor Image <span className="text-danger">*</span>
+                  </label>
+                  <div>
+                    <label className="mb-3 block text-black dark:text-white">
+                      Your Exsisting Img File
+                      <span className="text-danger">*</span>
+                    </label>
+                    <img
+                      src={Logo}
+                      alt=""
+                      className="w-40 rounded border p-2 "
+                    />
+                  </div>
+                  {formik.touched.actorimg && formik.errors.actorimg && (
+                    <div className="text-red-500">{formik.errors.actorimg}</div>
+                  )}
+                </div>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Event Start Time <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="estime"
+                    value={formik.values.estime}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.estime && formik.errors.estime && (
+                    <div className="text-red-500">{formik.errors.estime}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Event End Time <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="eetime"
+                    value={formik.values.eetime}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.eetime && formik.errors.eetime && (
+                    <div className="text-red-500">{formik.errors.eetime}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Event main category <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="maincategory"
+                    value={formik.values.maincategory}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.maincategory &&
+                    formik.errors.maincategory && (
+                      <div className="text-red-500">
+                        {formik.errors.maincategory}
+                      </div>
+                    )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Event Sub category <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="subcategory"
+                    value={formik.values.subcategory}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.subcategory && formik.errors.subcategory && (
+                    <div className="text-red-500">
+                      {formik.errors.subcategory}
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Contact Person Name <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="cname"
+                    value={formik.values.cname}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.cname && formik.errors.cname && (
+                    <div className="text-red-500">{formik.errors.cname}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Contact person Email <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="cemail"
+                    value={formik.values.cemail}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.cemail && formik.errors.cemail && (
+                    <div className="text-red-500">{formik.errors.cemail}</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Contact Person Number <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="cphone"
+                    value={formik.values.cphone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.cphone && formik.errors.cphone && (
+                    <div className="text-red-500">{formik.errors.cphone}</div>
+                  )}
+                </div>
+              </div>
+
+              <div className="my-5 mx-3">
+                <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-1 gap-4">
+                  <div className="shadow-md">
+                    <div className="bg-themecolor1 py-2 text-white font-bold text-center">
+                      GOLD
+                    </div>
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
+                      <tbody>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Total:</th>
+                          <td class="px-6 py-2">500</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Alloted:</th>
+                          <td class="px-6 py-2">400</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Available:</th>
+                          <td class="px-6 py-2">100</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p className="text-center font-bold border py-3 border-black">
+                      Ticket Price : ₹500
+                    </p>
+                  </div>
+                  <div className="shadow-md">
+                    <div className="bg-themecolor1 py-2 text-white font-bold text-center">
+                      DIMOND
+                    </div>
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
+                      <tbody>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Total:</th>
+                          <td class="px-6 py-2">500</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Alloted:</th>
+                          <td class="px-6 py-2">400</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Available:</th>
+                          <td class="px-6 py-2">100</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p className="text-center font-bold border py-3 border-black">
+                      Ticket Price : ₹1000
+                    </p>
+                  </div>
+                  <div className="shadow-md">
+                    <div className="bg-themecolor1 py-2 text-white font-bold text-center">
+                      SILVER
+                    </div>
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
+                      <tbody>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Total:</th>
+                          <td class="px-6 py-2">500</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Alloted:</th>
+                          <td class="px-6 py-2">400</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Available:</th>
+                          <td class="px-6 py-2">100</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p className="text-center font-bold border py-3 border-black">
+                      Ticket Price : ₹1500
+                    </p>
+                  </div>
+                  <div className="shadow-md">
+                    <div className="bg-themecolor1 py-2 text-white font-bold text-center">
+                      PLATINUM
+                    </div>
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
+                      <tbody>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Total:</th>
+                          <td class="px-6 py-2">500</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Alloted:</th>
+                          <td class="px-6 py-2">400</td>
+                        </tr>
+                        <tr className="border-b">
+                          <th class="px-6 py-2">Available:</th>
+                          <td class="px-6 py-2">100</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <p className="text-center font-bold border py-3 border-black">
+                      Ticket Price : ₹2000
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2.5  px-5.5">
+                <label className="  block text-black dark:text-white">
                   Status <span className="text-danger">*</span>
                 </label>
                 <div className="relative">
                   <div>
                     <input
                       type="radio"
-                      name="selectedStatus"
+                      onChange={formik.handleChange}
+                      name="Approve"
                       className="mx-2"
                       value="1"
+                      // checked={blogadd.Status === '1'}
+                    />
+                    Reject
+                  </div>
+                  <div>
+                    <input
+                      type="radio"
+                      onChange={formik.handleChange}
+                      name="Approve"
+                      className="mx-2"
+                      value="0"
+                      // checked={blogadd.Status == = '0'}
+                    />
+                    Approved
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2.5 py-3.5 px-5.5">
+                <label className=" block text-black dark:text-white">
+                  Status <span className="text-danger">*</span>
+                </label>
+                <div className="relative">
+                  <div>
+                    <input
+                      type="radio"
+                      onChange={formik.handleChange}
+                      name="Status"
+                      className="mx-2"
+                      value="1"
+                      // checked={blogadd.Status === '1'}
                     />
                     Active
                   </div>
                   <div>
                     <input
                       type="radio"
-                      name="selectedStatus"
+                      onChange={formik.handleChange}
+                      name="Status"
                       className="mx-2"
-                      value="2"
+                      value="0"
+                      // checked={blogadd.Status == = '0'}
                     />
                     In Active
                   </div>
                 </div>
                 <p>Please select an a one status by default is inactive.</p>
               </div>
+
               <div className="flex   gap-5.5 py-3.5 px-5.5">
                 <button
                   className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
@@ -126,10 +518,13 @@ const AllEventEdit = () => {
                 </button>
                 <button
                   className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                  type="submit"
+                  onClick={handleGoBack}
                 >
                   Cancel
                 </button>
+                <Link className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white">
+                  View Event
+                </Link>
               </div>
             </form>
           </div>

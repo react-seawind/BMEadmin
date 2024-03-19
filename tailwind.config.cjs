@@ -10,6 +10,9 @@ module.exports = {
         satoshi: ['Satoshi', 'sans-serif'],
       },
       colors: {
+        themecolor1: '#DC3558',
+        themecolor2: '#1a1963',
+        themecolor3: '#30bbff',
         current: 'currentColor',
         transparent: 'transparent',
         white: '#FFFFFF',
@@ -49,6 +52,7 @@ module.exports = {
       screens: {
         '2xsm': '375px',
         xsm: '425px',
+        surface: { min: '1200px', max: '1399px' },
         '3xl': '2000px',
         ...defaultTheme.screens,
       },
