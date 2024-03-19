@@ -16,7 +16,7 @@ const ECommerce = () => {
         <CardThree />
         <CardFour />
       </div>
-      <div className="grid grid-cols-1  mt-10">
+      <div className="grid grid-cols-1 mt-10">
         <ChartOne />
       </div>
     </div>
