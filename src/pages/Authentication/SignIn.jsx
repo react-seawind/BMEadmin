@@ -25,33 +25,35 @@ const SignIn = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setloginbutton(true);
-      // await AdminLogin(values);
+      await AdminLogin(values);
 
-      // const sessiondata = sessionStorage.getItem('logindata');
-      // const parsedSessionData = sessiondata ? JSON.parse(sessiondata) : null;
-      // const token = parsedSessionData.token;
+      const sessiondata = sessionStorage.getItem('logindata');
+      const parsedSessionData = sessiondata ? JSON.parse(sessiondata) : null;
+      const token = parsedSessionData.token;
 
-      // if (token) {
-      //   navigate('/dashboard');
-      //   window.location.reload();
-      // } else {
-      //   navigate('/login');
-      // }
-
-      if (values.Email === Email && values.Password === Password) {
-        sessionStorage.setItem('logindata', JSON.stringify(values));
-        const sessionget = sessionStorage.getItem('logindata');
-        if (sessionget) {
-          navigate('/dashboard');
-          window.location.reload();
-        } else {
-          navigate('/login');
-        }
+      if (token) {
+        navigate('/dashboard');
+        window.location.reload();
       } else {
-        // Show error message
+        navigate('/login');
         toast.error('Invalid email or password');
         setloginbutton(false);
       }
+
+      // if (values.Email === Email && values.Password === Password) {
+      //   sessionStorage.setItem('logindata', JSON.stringify(values));
+      //   const sessionget = sessionStorage.getItem('logindata');
+      //   if (sessionget) {
+      //     navigate('/dashboard');
+      //     window.location.reload();
+      //   } else {
+      //     navigate('/login');
+      //   }
+      // } else {
+      //   // Show error message
+      //   toast.error('Invalid email or password');
+      //   setloginbutton(false);
+      // }
     },
   });
 

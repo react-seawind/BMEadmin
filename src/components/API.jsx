@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-const API_BASE_URL = 'https://seawindsolution.ae/node-app/api/new';
+const API_BASE_URL = 'https://seawindsolution.ae/BME/api';
 
 const sessiondata = sessionStorage.getItem('logindata');
 const parsedSessionData = sessiondata ? JSON.parse(sessiondata) : null;
@@ -14,7 +14,7 @@ const headers = {
   authorization: `Bareer ${TOKEN}`,
 };
 
-// =========================AdminLogin==============
+// =========================AdminLogin==============D
 export const AdminLogin = async (data) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/adminLogin`, data);
@@ -34,7 +34,7 @@ export const AdminLogin = async (data) => {
 };
 
 // ======================PROFILE===========================
-// =========================getAdmindata=========================
+// =========================getAdmindata=========================D
 export const getAdmindataById = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/admin/${Id}`, {
@@ -52,7 +52,7 @@ export const getAdmindataById = async () => {
   }
 };
 
-// ===================Edit Admin data================
+// ===================Edit Admin data================D
 export const UpdateAdminById = async (formData) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/admin`, formData, {
