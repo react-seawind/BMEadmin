@@ -13,6 +13,38 @@ const validateSchema = Yup.object().shape({
 });
 
 const ArtistEdit = () => {
+  // // ================ Get data by Id============
+  // const { Id } = useParams();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (Id) {
+  //         const SliderData = await getCategoryById(Id);
+  //         formik.setValues({
+  //           Id: SliderData.Id || '',
+  //           Title: SliderData.Title || '',
+  //           Slug: SliderData.Slug || '',
+  //           Content: SliderData.Content || '',
+  //           Icon: SliderData.Icon || '',
+  //           Hid_Icon: SliderData.Hid_Icon || '',
+  //           Image: SliderData.Image || '',
+  //           Hid_Image: SliderData.Hid_Image || '',
+  //           Status: SliderData.Status || '0',
+  //         });
+  //         console.log('====================================');
+  //         console.log(SliderData);
+  //         console.log('====================================');
+  //       } else {
+  //         console.log('error');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [Id]);
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -21,17 +53,33 @@ const ArtistEdit = () => {
       Status: '',
     },
     validationSchema: validateSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       sessionStorage.setItem('Artist-Edit-Data', JSON.stringify(values));
-      actions.resetForm();
-      toast('Data Add Successfully');
+      // try {
+      //   const formData = new FormData();
+      //   formData.append('Title', values.Title);
+      //   formData.append('Url', values.Url);
+      //   if (values.Image instanceof File) {
+      //     formData.append('Image', values.Image);
+      //   } else {
+      //     formData.append('Image', values.Image);
+      //   }
+      //   formData.append('Content', values.Content);
+      //   formData.append('Status', values.Status);
+
+      //   await AddSlider(formData);
+      //   actions.resetForm();
+      //   navigate('/slider/listing');
+      // } catch (error) {
+      //   console.error('Error updating slider:', error);
+      // }
     },
   });
 
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/slider/listing');
   };
   return (
     <div>
@@ -86,14 +134,16 @@ const ArtistEdit = () => {
                     type="file"
                     name="icon"
                     value={formik.values.icon}
-                    onChange={formik.handleChange}
+                    onChange={(event) =>
+                      formik.setFieldValue('Image', event.target.files[0])
+                    }
                     onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
                   {formik.touched.icon && formik.errors.icon && (
                     <div className="text-red-500">{formik.errors.icon}</div>
                   )}
-                  <p>Please select an a png,jpeg,jpg,gif file only.</p>
+                  <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
                 </div>
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
@@ -138,7 +188,7 @@ const ArtistEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="1"
-                      // checked={blogadd.Status === '1'}
+                      checked={formik.values.Status == '1'}
                     />
                     Active
                   </div>
@@ -149,7 +199,7 @@ const ArtistEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="0"
-                      // checked={blogadd.Status == = '0'}
+                      checked={formik.values.Status == '0'}
                     />
                     In Active
                   </div>

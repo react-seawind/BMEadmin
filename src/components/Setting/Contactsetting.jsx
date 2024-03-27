@@ -22,7 +22,7 @@ const Contactsetting = () => {
       map: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       sessionStorage.setItem('ContactSettingData', JSON.stringify(values));
       actions.resetForm();
       toast('Data Update Successfully');
@@ -32,7 +32,7 @@ const Contactsetting = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/slider/listing');
   };
   return (
     <div>

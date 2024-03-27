@@ -11,7 +11,7 @@ const Id = parsedSessionData ? parsedSessionData.Id : null;
 const TOKEN = token;
 
 const headers = {
-  authorization: `Bareer ${TOKEN}`,
+  Authorization: `Bareer ${TOKEN}`,
 };
 
 // =========================AdminLogin==============D
@@ -42,6 +42,7 @@ export const getAdmindataById = async () => {
     });
 
     if (response.data.status === true) {
+      // toast(response.data.message);
       return response.data;
     } else {
       throw new Error(response.data.message);
@@ -61,6 +62,7 @@ export const UpdateAdminById = async (formData) => {
     });
 
     if (response.data.status === true) {
+      // toast(response.data.message);
       return response.data;
     } else {
       throw new Error(response.data.message);
@@ -71,10 +73,186 @@ export const UpdateAdminById = async (formData) => {
   }
 };
 
-// =========================SERVICE=========================
+// ---------------------------SLIDER------------------------
+// =========================Get All Slider=========================
+export const getAllSlider = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/slider`, {
+      headers,
+    });
+    return response.data.responsedata;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+};
+
+// ----------------------getsliderbyId----------------
+export const getSliderById = async (Id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/slider/${Id}`, {
+      headers,
+    });
+
+    if (response.data.status === true) {
+      return response.data.responseData;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+};
+// ===================Edit Slider================D
+export const updateSliderById = async (formData) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/slider`, formData, {
+      headers,
+      'Content-Type': 'multipart/form-data',
+    });
+
+    if (response.data.status === true) {
+      toast(response.data.message); // Toast success message
+      return response.data;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.error('Error updating slider:', error);
+    throw error;
+  }
+};
+
+// ------------------------Add Slider---------------------
+export const AddSlider = async (formData) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/slider`, formData, {
+      headers,
+    });
+    if (response.data.status === true) {
+      toast(response.data.message); // Toast success message
+      return response.data; // Return response data
+    } else {
+      throw new Error(response.data.message); // Throw error with API message
+    }
+  } catch (error) {
+    console.error('Error adding slider:', error);
+    toast.error('Error adding slider'); // Toast error message
+    throw error; // Rethrow the error for further handling
+  }
+};
+// ------------------------delete Slider---------------------
+export const deleteSlider = async (Id) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/slider/${Id}`, {
+      headers,
+    });
+    if (response.data.status === true) {
+      toast(response.data.message); // Toast success message
+      return response.data; // Return response data
+    } else {
+      throw new Error(response.data.message); // Throw error with API message
+    }
+  } catch (error) {
+    console.error('Error adding slider:', error);
+    toast.error('Error adding slider'); // Toast error message
+    throw error; // Rethrow the error for further handling
+  }
+};
+
+// ---------------------------Category------------------------
+// =========================Get All Category=========================
+export const getAllCategory = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/category`, {
+      headers,
+    });
+    return response.data.responsedata;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+};
+
+// ----------------------getCategorybyId----------------
+export const getCategoryById = async (Id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/category/${Id}`, {
+      headers,
+    });
+
+    if (response.data.status === true) {
+      return response.data.responseData;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+};
+// ===================Edit Category================D
+export const updateCategoryById = async (formData) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/category`, formData, {
+      headers,
+      'Content-Type': 'multipart/form-data',
+    });
+
+    if (response.data.status === true) {
+      toast(response.data.message); // Toast success message
+      return response.data;
+    } else {
+      throw new Error(response.data.message);
+    }
+  } catch (error) {
+    console.error('Error updating Category:', error);
+    throw error;
+  }
+};
+
+// ------------------------Add Category---------------------
+export const AddCategory = async (formData) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/category`, formData, {
+      headers,
+    });
+    if (response.data.status === true) {
+      toast(response.data.message); // Toast success message
+      return response.data; // Return response data
+    } else {
+      throw new Error(response.data.message); // Throw error with API message
+    }
+  } catch (error) {
+    console.error('Error adding Category:', error);
+    toast.error('Error adding Category'); // Toast error message
+    throw error; // Rethrow the error for further handling
+  }
+};
+// ------------------------delete Category---------------------
+export const deleteCategory = async (Id) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/category/${Id}`, {
+      headers,
+    });
+    if (response.data.status === true) {
+      toast(response.data.message); // Toast success message
+      return response.data; // Return response data
+    } else {
+      throw new Error(response.data.message); // Throw error with API message
+    }
+  } catch (error) {
+    console.error('Error adding Category:', error);
+    toast.error('Error adding Category'); // Toast error message
+    throw error; // Rethrow the error for further handling
+  }
+};
+
+// // =========================SERVICE=========================
 export const getServicedata = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/getSlider`, {
+    const response = await axios.get(`${API_BASE_URL}/getCategory`, {
       headers,
     });
 
@@ -88,7 +266,7 @@ export const getServicedata = async () => {
     throw error;
   }
 };
-// =========================BLOG=========================
+// // =========================BLOG=========================
 export const getBlog = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/getBlog`, {

@@ -18,6 +18,38 @@ const validateSchema = Yup.object().shape({
 });
 
 const PageEdit = () => {
+  // // ================ Get data by Id============
+  // const { Id } = useParams();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (Id) {
+  //         const SliderData = await getCategoryById(Id);
+  //         formik.setValues({
+  //           Id: SliderData.Id || '',
+  //           Title: SliderData.Title || '',
+  //           Slug: SliderData.Slug || '',
+  //           Content: SliderData.Content || '',
+  //           Icon: SliderData.Icon || '',
+  //           Hid_Icon: SliderData.Hid_Icon || '',
+  //           Image: SliderData.Image || '',
+  //           Hid_Image: SliderData.Hid_Image || '',
+  //           Status: SliderData.Status || '0',
+  //         });
+  //         console.log('====================================');
+  //         console.log(SliderData);
+  //         console.log('====================================');
+  //       } else {
+  //         console.log('error');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [Id]);
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -30,7 +62,7 @@ const PageEdit = () => {
       Status: '',
     },
     validationSchema: validateSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       sessionStorage.setItem('Page-Edit-Data', JSON.stringify(values));
       actions.resetForm();
       toast('Page Add Successfully');
@@ -40,7 +72,7 @@ const PageEdit = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/slider/listing');
   };
   return (
     <div>
@@ -135,7 +167,9 @@ const PageEdit = () => {
                     type="file"
                     name="image"
                     value={formik.values.image}
-                    onChange={formik.handleChange}
+                    onChange={(event) =>
+                      formik.setFieldValue('Image', event.target.files[0])
+                    }
                     onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
@@ -143,7 +177,7 @@ const PageEdit = () => {
                     <div className="text-red-500">{formik.errors.image}</div>
                   ) : null}
 
-                  <p>Please select an a png,jpeg,jpg,gif file only.</p>
+                  <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
                 </div>
 
                 <div className="mt-5">
@@ -235,7 +269,7 @@ const PageEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="1"
-                      // checked={blogadd.Status === '1'}
+                      checked={formik.values.Status == '1'}
                     />
                     Active
                   </div>
@@ -246,7 +280,7 @@ const PageEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="0"
-                      // checked={blogadd.Status == = '0'}
+                      checked={formik.values.Status == '0'}
                     />
                     In Active
                   </div>

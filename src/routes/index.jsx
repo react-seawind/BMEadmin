@@ -84,7 +84,7 @@ const coreRoutes = [
     component: SliderAdd,
   },
   {
-    path: '/slider/edit',
+    path: '/slider/edit/:Id',
     component: SliderEdit,
   },
 
@@ -100,7 +100,7 @@ const coreRoutes = [
     component: CityAdd,
   },
   {
-    path: '/city/edit',
+    path: '/city/edit/:Id',
     component: CityEdit,
   },
   // ----------State-------------
@@ -113,7 +113,7 @@ const coreRoutes = [
     component: StateAdd,
   },
   {
-    path: '/state/edit',
+    path: '/state/edit/:Id',
     component: StateEdit,
   },
 
@@ -127,7 +127,7 @@ const coreRoutes = [
     component: PageAdd,
   },
   {
-    path: '/page/edit',
+    path: '/page/edit/:Id',
     component: PageEdit,
   },
   // ================Artist======================
@@ -140,7 +140,7 @@ const coreRoutes = [
     component: ArtistAdd,
   },
   {
-    path: '/artist/edit',
+    path: '/artist/edit/:Id',
     component: ArtistEdit,
   },
   // ================language======================
@@ -153,7 +153,7 @@ const coreRoutes = [
     component: LanguageAdd,
   },
   {
-    path: '/language/edit',
+    path: '/language/edit/:Id',
     component: LanguageEdit,
   },
   // ================Category======================
@@ -166,7 +166,7 @@ const coreRoutes = [
     component: CategoryAdd,
   },
   {
-    path: '/category/edit',
+    path: '/category/edit/:Id',
     component: CategoryEdit,
   },
   // ================AllEvent======================
@@ -175,7 +175,7 @@ const coreRoutes = [
     component: AllEventListing,
   },
   {
-    path: '/allevent/edit',
+    path: '/allevent/edit/:Id',
     component: AllEventEdit,
   },
 
@@ -185,7 +185,7 @@ const coreRoutes = [
     component: UserListing,
   },
   {
-    path: '/user/edit',
+    path: '/user/edit/:Id',
     component: UserEdit,
   },
   {

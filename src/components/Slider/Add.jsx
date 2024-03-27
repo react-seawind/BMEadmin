@@ -4,32 +4,47 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
+import { AddSlider } from '../API';
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().required('Title is required.'),
-  banner: Yup.string().required('Banner image is required.'),
+  Title: Yup.string().required('Title is required.'),
+  Image: Yup.string().required('Banner image is required.'),
 });
 const SliderAdd = () => {
   const formik = useFormik({
     initialValues: {
-      title: '',
-      url: '',
-      content: '',
-      banner: '',
-      video: '',
+      Title: '',
+      Url: '',
+      Content: '',
+      Image: '',
       Status: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values, actions) => {
-      sessionStorage.setItem('SliderAddData', JSON.stringify(values));
-      actions.resetForm();
-      toast('Data Added Successfully');
+    onSubmit: async (values, actions) => {
+      try {
+        const formData = new FormData();
+        formData.append('Title', values.Title);
+        formData.append('Url', values.Url);
+        if (values.Image instanceof File) {
+          formData.append('Image', values.Image);
+        } else {
+          formData.append('Image', values.Image);
+        }
+        formData.append('Content', values.Content);
+        formData.append('Status', values.Status);
+
+        await AddSlider(formData);
+        actions.resetForm();
+        navigate('/slider/listing');
+      } catch (error) {
+        console.error('Error updating slider:', error);
+      }
     },
   });
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/slider/listing');
   };
   return (
     <div>
@@ -50,6 +65,11 @@ const SliderAdd = () => {
             </div>
 
             <form onSubmit={formik.handleSubmit}>
+              <input
+                type="hidden"
+                name="Hid_Image"
+                value={formik.values.Hid_Image}
+              />
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
@@ -57,15 +77,15 @@ const SliderAdd = () => {
                   </label>
                   <input
                     type="text"
-                    value={formik.values.title}
+                    value={formik.values.Title}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="title"
+                    name="Title"
                     placeholder="Enter Your Title"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.title && formik.errors.title ? (
-                    <div className="text-red-500">{formik.errors.title}</div>
+                  {formik.touched.Title && formik.errors.Title ? (
+                    <div className="text-red-500">{formik.errors.Title}</div>
                   ) : null}
 
                   <p>Please enter Title</p>
@@ -78,15 +98,15 @@ const SliderAdd = () => {
                   </label>
                   <input
                     type="text"
-                    value={formik.values.url}
+                    value={formik.values.Url}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="url"
+                    name="Url"
                     placeholder="Enter Your Url"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.url && formik.errors.url ? (
-                    <div className="text-red-500">{formik.errors.url}</div>
+                  {formik.touched.Url && formik.errors.Url ? (
+                    <div className="text-red-500">{formik.errors.Url}</div>
                   ) : null}
                   <p>Please enter Url</p>
                 </div>
@@ -98,15 +118,15 @@ const SliderAdd = () => {
                   </label>
                   <input
                     type="text"
-                    value={formik.values.content}
+                    value={formik.values.Content}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="content"
+                    name="Content"
                     placeholder="Enter Your Content"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.content && formik.errors.content ? (
-                    <div className="text-red-500">{formik.errors.content}</div>
+                  {formik.touched.Content && formik.errors.Content ? (
+                    <div className="text-red-500">{formik.errors.Content}</div>
                   ) : null}
                   <p>Please enter Content</p>
                 </div>
@@ -120,33 +140,20 @@ const SliderAdd = () => {
                   </label>
                   <input
                     type="file"
-                    value={formik.values.banner}
-                    onChange={formik.handleChange}
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        'Image',
+                        event.currentTarget.files[0],
+                      );
+                    }}
                     onBlur={formik.handleBlur}
-                    name="banner"
+                    name="Image"
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
-                  {formik.touched.banner && formik.errors.banner ? (
-                    <div className="text-red-500">{formik.errors.banner}</div>
+                  {formik.touched.Image && formik.errors.Image ? (
+                    <div className="text-red-500">{formik.errors.Image}</div>
                   ) : null}
-                  <p>Please select an a png,jpeg,jpg,gif file only.</p>
-                </div>
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    Video
-                  </label>
-                  <input
-                    type="file"
-                    value={formik.values.video}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    name="video"
-                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                  />
-                  {formik.touched.video && formik.errors.video ? (
-                    <div className="text-red-500">{formik.errors.video}</div>
-                  ) : null}
-                  <p>Please select an a mp4 file only.</p>
+                  <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
                 </div>
               </div>
 
@@ -162,7 +169,7 @@ const SliderAdd = () => {
                       name="Status"
                       className="mx-2"
                       value="1"
-                      // checked={blogadd.Status === '1'}
+                      checked={formik.values.Status == '1'}
                     />
                     Active
                   </div>
@@ -173,7 +180,7 @@ const SliderAdd = () => {
                       name="Status"
                       className="mx-2"
                       value="0"
-                      // checked={blogadd.Status == = '0'}
+                      checked={formik.values.Status == '0'}
                     />
                     In Active
                   </div>

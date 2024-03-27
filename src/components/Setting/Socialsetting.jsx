@@ -25,7 +25,7 @@ const Socialsetting = () => {
       whatsapp: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       sessionStorage.setItem('SocialSettingData', JSON.stringify(values));
       actions.resetForm();
       toast('Data Update Successfully');
@@ -34,7 +34,7 @@ const Socialsetting = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/slider/listing');
   };
   return (
     <div>

@@ -10,13 +10,45 @@ const validateSchema = Yup.object().shape({
 });
 
 const StateEdit = () => {
+  // // ================ Get data by Id============
+  // const { Id } = useParams();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       if (Id) {
+  //         const SliderData = await getCategoryById(Id);
+  //         formik.setValues({
+  //           Id: SliderData.Id || '',
+  //           Title: SliderData.Title || '',
+  //           Slug: SliderData.Slug || '',
+  //           Content: SliderData.Content || '',
+  //           Icon: SliderData.Icon || '',
+  //           Hid_Icon: SliderData.Hid_Icon || '',
+  //           Image: SliderData.Image || '',
+  //           Hid_Image: SliderData.Hid_Image || '',
+  //           Status: SliderData.Status || '0',
+  //         });
+  //         console.log('====================================');
+  //         console.log(SliderData);
+  //         console.log('====================================');
+  //       } else {
+  //         console.log('error');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error fetching data:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [Id]);
   const formik = useFormik({
     initialValues: {
       name: '',
       Status: '',
     },
     validationSchema: validateSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       sessionStorage.setItem('State-Edit-Data', JSON.stringify(values));
       actions.resetForm();
       toast('Data Edit Successfully');
@@ -26,7 +58,7 @@ const StateEdit = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/slider/listing');
   };
   return (
     <div>
@@ -79,7 +111,7 @@ const StateEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="1"
-                      // checked={blogadd.Status === '1'}
+                      checked={formik.values.Status == '1'}
                     />
                     Active
                   </div>
@@ -90,7 +122,7 @@ const StateEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="0"
-                      // checked={blogadd.Status == = '0'}
+                      checked={formik.values.Status == '0'}
                     />
                     In Active
                   </div>

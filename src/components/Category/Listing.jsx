@@ -3,10 +3,10 @@ import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
-import { getServicedata } from '../API';
+import { deleteCategory, getAllCategory } from '../API';
 
 const CategoryListing = () => {
-  const [service, setservice] = useState([]);
+  const [category, setcategory] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
 
@@ -17,8 +17,8 @@ const CategoryListing = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getServicedata();
-        setservice(result);
+        const result = await getAllCategory();
+        setcategory(result);
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -27,6 +27,28 @@ const CategoryListing = () => {
 
     fetchData();
   }, []);
+  // -------------------delete category------------------
+  const handleDelete = async (row) => {
+    try {
+      await deleteCategory(row.Id);
+      setcategory((prevCategory) =>
+        prevCategory.filter((item) => item.Id !== row.Id),
+      );
+      setfilterdata((prevFilterData) =>
+        prevFilterData.filter((item) => item.Id !== row.Id),
+      );
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    }
+  };
+
+  useEffect(() => {
+    const mySearch = category.filter(
+      (item) =>
+        item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
+    );
+    setfilterdata(mySearch);
+  }, [search]);
 
   const columns = [
     {
@@ -39,11 +61,7 @@ const CategoryListing = () => {
       selector: (row) => <h1 className="text-base">{row.Title}</h1>,
       sortable: true,
     },
-    {
-      name: 'SubTitle',
-      selector: (row) => <h1 className="text-base">{row.SubTitle}</h1>,
-      sortable: true,
-    },
+
     {
       name: 'Image',
       selector: (row) => (
@@ -53,43 +71,66 @@ const CategoryListing = () => {
     },
     {
       name: 'Status',
-      selector: (row) => (
-        <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-          Active
-        </span>
-      ),
+      selector: (row) => {
+        const statusText = row.Status == '1' ? 'Active' : 'Inactive';
+        const statusColor =
+          row.Status == '1'
+            ? 'bg-green-600 text-white'
+            : 'bg-red-600 text-white';
+
+        return (
+          <span
+            className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full  ${statusColor}`}
+          >
+            {statusText}
+          </span>
+        );
+      },
+      sortable: true,
+    },
+    {
+      name: 'Ent Date',
+      selector: (row) => <h1 className="text-base">{row.EntDt}</h1>,
       sortable: true,
     },
     {
       name: 'Action',
       cell: (row) => (
         <div>
-          <button
-            className="bg-red-600 text-white p-3 px-5 flex"
-            onClick={() => {
-              setSelectedRow((prevRow) => (prevRow === row ? null : row));
-            }}
-          >
-            Actions
-            <FaChevronDown className=" my-auto mx-2" />
-          </button>
+          <div className="bg-red-600 text-white p-3 pl-5 w-26 flex relative">
+            <button>Actions</button>
+            <button
+              onClick={() => {
+                setSelectedRow((prevRow) => (prevRow === row ? null : row));
+              }}
+            >
+              <FaChevronDown className=" my-auto ml-4 " />
+            </button>
+          </div>
 
           {selectedRow && selectedRow.Id === row.Id && (
-            <div className="action-buttons ml-3">
+            <div className="action-buttons  absolute z-99">
               <button
-                className=" text-black  bg-white border rounded p-2 w-25"
+                className="text-black bg-white border  p-2 w-26"
                 onClick={() => {
                   setSelectedRow(null);
-                  Navigate('/category/edit');
+                  Navigate(`/category/edit/${row.Id}`);
                 }}
               >
                 Edit
               </button>
+
               <br />
               <button
-                className=" text-black  bg-white border rounded p-2 w-25"
+                className=" text-black bg-white border  p-2 w-26"
                 onClick={() => {
-                  alert(`Deleting ${row.Title}`);
+                  if (
+                    window.confirm(
+                      `Are you sure you want to delete ${row.Title}?`,
+                    )
+                  ) {
+                    handleDelete(row); // Call handleDelete function on click of delete button
+                  }
                   setSelectedRow(null);
                 }}
               >
@@ -101,14 +142,6 @@ const CategoryListing = () => {
       ),
     },
   ];
-
-  useEffect(() => {
-    const mySearch = service.filter(
-      (item) =>
-        item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
-    );
-    setfilterdata(mySearch);
-  }, [search]);
 
   return (
     <div>

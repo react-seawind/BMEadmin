@@ -16,17 +16,33 @@ const LanguageAdd = () => {
       Status: '',
     },
     validationSchema: validateSchema,
-    onSubmit: (values, actions) => {
+    onSubmit: async (values, actions) => {
       sessionStorage.setItem('Language-Add-Data', JSON.stringify(values));
-      actions.resetForm();
-      toast('Data Add Successfully');
+      // try {
+      //   const formData = new FormData();
+      //   formData.append('Title', values.Title);
+      //   formData.append('Url', values.Url);
+      //   if (values.Image instanceof File) {
+      //     formData.append('Image', values.Image);
+      //   } else {
+      //     formData.append('Image', values.Image);
+      //   }
+      //   formData.append('Content', values.Content);
+      //   formData.append('Status', values.Status);
+
+      //   await AddSlider(formData);
+      //   actions.resetForm();
+      //   navigate('/slider/listing');
+      // } catch (error) {
+      //   console.error('Error updating slider:', error);
+      // }
     },
   });
 
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/slider/listing');
   };
   return (
     <div>
@@ -80,7 +96,7 @@ const LanguageAdd = () => {
                       name="Status"
                       className="mx-2"
                       value="1"
-                      // checked={blogadd.Status === '1'}
+                      checked={formik.values.Status == '1'}
                     />
                     Active
                   </div>
@@ -91,7 +107,7 @@ const LanguageAdd = () => {
                       name="Status"
                       className="mx-2"
                       value="0"
-                      // checked={blogadd.Status == = '0'}
+                      checked={formik.values.Status == '0'}
                     />
                     In Active
                   </div>
