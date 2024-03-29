@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
-import { deleteSlider, getAllSlider } from '../API';
+import { deleteSlider, getAllSlider } from '../../API/SliderApi';
 
 const SliderListing = () => {
   const [slider, setslider] = useState([]);
@@ -51,14 +51,13 @@ const SliderListing = () => {
   }, [search]);
   const columns = [
     {
-      name: ' # ',
-      selector: (row) => <h1 className="text-base">{row.Id}</h1>,
-      sortable: true,
+      name: '#',
+      selector: 'Id',
+      cell: (row, index) => <div>{index + 1}</div>,
     },
     {
       name: 'Title',
       selector: (row) => <h1 className="text-base">{row.Title}</h1>,
-      sortable: true,
     },
 
     {
@@ -66,7 +65,7 @@ const SliderListing = () => {
       selector: (row) => (
         <img className="p-1 overflow-hidden h-50 w-60 border" src={row.Image} />
       ),
-      sortable: true,
+      //
     },
     {
       name: 'Status',
@@ -85,12 +84,12 @@ const SliderListing = () => {
           </span>
         );
       },
-      sortable: true,
+      //
     },
     {
       name: 'Ent Date',
       selector: (row) => <h1 className="text-base">{row.EntDt}</h1>,
-      sortable: true,
+      //
     },
     {
       name: 'Action',
@@ -185,3 +184,179 @@ const SliderListing = () => {
 };
 
 export default SliderListing;
+
+// import React, { useEffect, useState } from 'react';
+// import Breadcrumb from '../Breadcrumb';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { FaChevronDown } from 'react-icons/fa6';
+// import { deleteSlider, getAllSlider } from '../API';
+// import { AgGridReact } from 'ag-grid-react';
+// import 'ag-grid-community/styles/ag-grid.css';
+// import 'ag-grid-community/styles/ag-theme-alpine.css';
+
+// const SliderListing = () => {
+//   const navigate = useNavigate();
+//   const [slider, setSlider] = useState([]);
+//   const [search, setSearch] = useState('');
+//   const [filterData, setFilterData] = useState([]);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const result = await getAllSlider();
+
+//         setSlider(result);
+//         setFilterData(result);
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   useEffect(() => {
+//     const mySearch = slider.filter(
+//       (item) =>
+//         item.Title && item.Title.toLowerCase().includes(search.toLowerCase()),
+//     );
+//     setFilterData(mySearch);
+//   }, [search, slider]);
+
+//   const ActionRenderer = (params) => {
+//     const { data: row } = params; // Extract row data for clarity
+
+//     const handleDeleteClick = async () => {
+//       try {
+//         await deleteSlider(row.Id);
+
+//         setSlider((prevSlider) =>
+//           prevSlider.filter((item) => item.Id !== row.Id),
+//         );
+//         setFilterData((prevFilterData) =>
+//           prevFilterData.filter((item) => item.Id !== row.Id),
+//         );
+//       } catch (error) {
+//         console.error('Error deleting slider:', error);
+//       }
+//     };
+
+//     const handleEditClick = () => {
+//       navigate(`/slider/edit/${row.Id}`);
+//     };
+
+//     return (
+//       <div className="dropdown">
+//         <button
+//           className="bg-orange-700 text-white py-1 px-2 flex items-center justify-center rounded"
+//           type="button"
+//           id="dropdownMenuButton"
+//         >
+//           Actions <FaChevronDown className="ml-3" />
+//         </button>
+//         <div className="dropdown-content flex">
+//           <button className="dropdown-item" onClick={handleEditClick}>
+//             Edit
+//           </button>
+//           <button
+//             className="dropdown-item text-red-500"
+//             onClick={() => {
+//               if (
+//                 window.confirm(`Are you sure you want to delete ${row.Title}?`)
+//               ) {
+//                 handleDeleteClick(row);
+//               }
+//             }}
+//           >
+//             Delete
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   };
+
+//   const columns = [
+//     { headerName: '#', field: 'Id', sortable: true },
+//     { headerName: 'Title', field: 'Title', sortable: true },
+//     {
+//       headerName: 'Image',
+//       field: 'Image',
+//       cellRenderer: (params) => (
+//         <img
+//           style={{ width: '1000px' }}
+//           className="p-1 overflow-hidden h-full w-46 border"
+//           src={params.data.Image}
+//           alt={params.data.Title}
+//         />
+//         // <h1>{params.Image}</h1>
+//       ),
+//
+//     },
+//     {
+//       headerName: 'Status',
+//       field: 'Status',
+//
+//       cellRenderer: (params) => (
+//         <span
+//           className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full ${
+//             params.value == '1'
+//               ? 'bg-green-600 text-white'
+//               : 'bg-red-600 text-white'
+//           }`}
+//         >
+//           {params.value == '1' ? 'Active' : 'Inactive'}
+//         </span>
+//       ),
+//     },
+//     {
+//       headerName: 'Button',
+//       field: 'button',
+//       cellRenderer: ActionRenderer,
+//     },
+//     { headerName: 'Ent Date', field: 'EntDt', sortable: true },
+//   ];
+
+//   return (
+//     <div>
+//       <Breadcrumb pageName="Slider Listing" />
+//       <div className="grid grid-cols-1 gap-9">
+//         <div className="flex flex-col gap-9">
+//           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+//             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+//               <div className="flex justify-between items-center mb-4">
+//                 <input
+//                   type="text"
+//                   placeholder="Search..."
+//                   className="border rounded py-2 px-3 w-64"
+//                   value={search}
+//                   onChange={(e) => setSearch(e.target.value)}
+//                 />
+//                 <Link
+//                   to="/slider/add"
+//                   className="bg-blue-500 text-white p-3 px-10 text-sm"
+//                 >
+//                   Add
+//                 </Link>
+//               </div>
+//               <div
+//                 className="ag-theme-alpine"
+//                 style={{ height: '500px', width: '100%' }}
+//               >
+//                 <AgGridReact
+//                   rowData={filterData}
+//                   columnDefs={columns}
+//                   pagination={true}
+//                   paginationPageSize={10}
+//                   suppressCellSelection={true}
+//                   rowHeight={100}
+//                 />
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default SliderListing;

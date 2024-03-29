@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { AddCategory } from '../API';
+import { AddCategory } from '../../API/CategoryApi';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Category Name is required.'),

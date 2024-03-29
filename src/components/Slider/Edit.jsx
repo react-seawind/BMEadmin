@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { getSliderById, updateSliderById } from '../API';
+import { getSliderById, updateSliderById } from '../../API/SliderApi';
 
 const validationSchema = Yup.object().shape({
   Title: Yup.string().required('Title is required.'),

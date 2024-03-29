@@ -1,85 +1,98 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
 import Logo from '../../images/mainlogo.png';
 import { BsChevronDown } from 'react-icons/bs';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCityById, updateCityById } from '../../API/CityAPI';
+import { getAllState } from '../../API/StateAPI';
 
 const validateSchema = Yup.object().shape({
-  name: Yup.string().required('City Name is required.'),
-  state: Yup.string().required('state is required.'),
+  Title: Yup.string().required('City Name is required.'),
+  Slug: Yup.string().required('Slug is required.'),
+  StateId: Yup.string().required('State is required.'),
+  Image: Yup.string().required('Image is required.'),
 });
 
 const CityEdit = () => {
-  // // ================ Get data by Id============
-  // const { Id } = useParams();
+  // ------------STATE DATA-------------------
+  const [states, setStates] = useState([]);
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const statesData = await getAllState();
+        setStates(statesData);
+      } catch (error) {
+        console.error('Error fetching states:', error);
+      }
+    };
+    fetchStates();
+  }, []);
+  // ================ Get data by Id============
+  const { Id } = useParams();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (Id) {
-  //         const SliderData = await getCategoryById(Id);
-  //         formik.setValues({
-  //           Id: SliderData.Id || '',
-  //           Title: SliderData.Title || '',
-  //           Slug: SliderData.Slug || '',
-  //           Content: SliderData.Content || '',
-  //           Icon: SliderData.Icon || '',
-  //           Hid_Icon: SliderData.Hid_Icon || '',
-  //           Image: SliderData.Image || '',
-  //           Hid_Image: SliderData.Hid_Image || '',
-  //           Status: SliderData.Status || '0',
-  //         });
-  //         console.log('====================================');
-  //         console.log(SliderData);
-  //         console.log('====================================');
-  //       } else {
-  //         console.log('error');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (Id) {
+          const CityData = await getCityById(Id);
+          formik.setValues({
+            Id: CityData.Id || '',
+            Title: CityData.Title || '',
+            Slug: CityData.Slug || '',
+            StateId: CityData.StateId || '',
+            Image: CityData.Image || '',
+            Hid_Image: CityData.Hid_Image || '',
+            Status: CityData.Status || '0',
+          });
+        } else {
+          console.log('error');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  //   fetchData();
-  // }, [Id]);
+    fetchData();
+  }, [Id]);
   const formik = useFormik({
     initialValues: {
-      name: '',
-      state: '',
-      icon: '',
+      StateId: '',
+      Title: '',
+      Slug: '',
+      Hid_Image: '',
+      Image: null,
       Status: '',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
-      sessionStorage.setItem('City-Edit-Data', JSON.stringify(values));
-      // try {
-      //   const formData = new FormData();
-      //   formData.append('Title', values.Title);
-      //   formData.append('Url', values.Url);
-      //   if (values.Image instanceof File) {
-      //     formData.append('Image', values.Image);
-      //   } else {
-      //     formData.append('Image', values.Image);
-      //   }
-      //   formData.append('Content', values.Content);
-      //   formData.append('Status', values.Status);
+      try {
+        const formData = new FormData();
+        formData.append('Id', values.Id);
+        formData.append('Title', values.Title);
+        formData.append('Slug', values.Slug);
+        formData.append('StateId', values.StateId);
+        if (values.Image instanceof File) {
+          formData.append('Image', values.Image);
+        } else {
+          formData.append('Image', values.Image);
+        }
+        formData.append('Hid_Image', values.Hid_Image);
+        formData.append('Status', values.Status);
 
-      //   await AddSlider(formData);
-      //   actions.resetForm();
-      //   navigate('/slider/listing');
-      // } catch (error) {
-      //   console.error('Error updating slider:', error);
-      // }
+        await updateCityById(formData);
+      } catch (error) {
+        console.error('Error updating city:', error);
+      }
     },
   });
 
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/city/listing');
   };
   return (
     <div>
@@ -97,82 +110,110 @@ const CityEdit = () => {
             </div>
 
             <form onSubmit={formik.handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
+              <input
+                type="hidden"
+                name="Hid_Image"
+                value={formik.values.Hid_Image}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    City Name <span className="text-danger">*</span>
+                    Title <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    value={formik.values.name}
+                    value={formik.values.Title}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="name"
-                    placeholder="Enter Your City Name"
+                    name="Title"
+                    placeholder="Enter City Name"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.name && formik.errors.name ? (
-                    <div className="text-red-500">{formik.errors.name}</div>
+                  {formik.touched.Title && formik.errors.Title ? (
+                    <div className="text-red-500">{formik.errors.Title}</div>
                   ) : null}
-                  <p>Please enter Title</p>
+
+                  <p>Please enter City Name</p>
                 </div>
 
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Slug <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formik.values.Slug}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    name="Slug"
+                    placeholder="Enter Slug"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.Slug && formik.errors.Slug ? (
+                    <div className="text-red-500">{formik.errors.Slug}</div>
+                  ) : null}
+
+                  <p>Please enter Slug</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Select State
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
                     <select
-                      value={formik.values.state}
+                      value={formik.values.StateId}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      name="state"
+                      name="StateId"
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
                     >
-                      <option value="1">State 1</option>
-                      <option value="2">State 2</option>
-                      <option value="3">State 3</option>
+                      {states.map((state) => (
+                        <option key={state.Id} value={state.Id}>
+                          {state.Title}
+                        </option>
+                      ))}
                     </select>
-                    {formik.touched.state && formik.errors.state ? (
-                      <div className="text-red-500">{formik.errors.state}</div>
+                    {formik.touched.StateId && formik.errors.StateId ? (
+                      <div className="text-red-500">
+                        {formik.errors.StateId}
+                      </div>
                     ) : null}
                     <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
                       <BsChevronDown />
                     </span>
                   </div>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Icon Img
-                    <span className="text-danger">*</span>
+                    Image<span className="text-danger">*</span>
                   </label>
                   <input
                     type="file"
-                    value={formik.values.icon}
-                    onChange={(event) =>
-                      formik.setFieldValue('Image', event.target.files[0])
-                    }
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        'Image',
+                        event.currentTarget.files[0],
+                      );
+                    }}
                     onBlur={formik.handleBlur}
-                    name="icon"
+                    name="Image"
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
-                  {formik.touched.icon && formik.errors.icon ? (
-                    <div className="text-red-500">{formik.errors.icon}</div>
+                  {formik.touched.Image && formik.errors.Image ? (
+                    <div className="text-red-500">{formik.errors.Image}</div>
                   ) : null}
                   <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
-                </div>
-                <div>
+
                   <div className="mt-5">
-                    <p>Your Exsisting Img File*</p>
+                    <p>Your Exsisting Img File</p>
                     <div className="grid grid-cols-4 gap-2 relative">
                       <div className="relative">
                         <img
-                          src={Logo}
+                          src={formik.values.Image}
                           alt=""
-                          className="w-full rounded border p-2 "
+                          className="rounded border p-2 h-28 w-28"
                         />
                       </div>
                     </div>

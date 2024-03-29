@@ -4,7 +4,7 @@ import Logo from '../../images/mainlogo.png';
 import { FaEnvelope, FaKey } from 'react-icons/fa6';
 import { useState } from 'react';
 import * as yup from 'yup';
-import { AdminLogin } from '../../components/API';
+import { AdminLogin } from '../../API/AdminApi';
 import { useFormik } from 'formik';
 
 const validationSchema = yup.object().shape({
@@ -15,8 +15,6 @@ const SignIn = () => {
   const [loginbutton, setloginbutton] = useState(false);
   const navigate = useNavigate();
 
-  const Email = 'admin@bme.com';
-  const Password = '123456';
   const formik = useFormik({
     initialValues: {
       Email: '',

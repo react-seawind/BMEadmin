@@ -5,7 +5,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCategoryById, updateCategoryById } from '../API';
+import { getCategoryById, updateCategoryById } from '../../API/CategoryApi';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Category Name is required.'),
@@ -102,11 +102,11 @@ const CategoryEdit = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Sub Admin edit
+                Category edit
               </h3>
               <p>
-                Please fill all detail and edit new Sub Admin edit in your Sub
-                Admin edit directory
+                Please fill all detail and edit new Category edit in your
+                Category edit directory
               </p>
             </div>
             <form onSubmit={formik.handleSubmit}>

@@ -4,7 +4,7 @@ import UserOne from '../images/mainlogo.png'; // Import the default image
 import { FaChevronDown, FaUser } from 'react-icons/fa6';
 import { FcSettings } from 'react-icons/fc';
 import { GrLogout } from 'react-icons/gr';
-import { getAdmindataById } from './API';
+import { getAdmindataById } from './../API/AdminApi';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

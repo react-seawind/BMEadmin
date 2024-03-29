@@ -3,7 +3,8 @@ import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
-import { deleteCategory, getAllCategory } from '../API';
+import { deleteCategory, getAllCategory } from '../../API/CategoryApi';
+import { format } from 'date-fns';
 
 const CategoryListing = () => {
   const [category, setcategory] = useState([]);
@@ -52,14 +53,13 @@ const CategoryListing = () => {
 
   const columns = [
     {
-      name: ' # ',
-      selector: (row) => <h1 className="text-base">{row.Id}</h1>,
-      sortable: true,
+      name: '#',
+      selector: 'Id',
+      cell: (row, index) => <div>{index + 1}</div>,
     },
     {
       name: 'Title',
       selector: (row) => <h1 className="text-base">{row.Title}</h1>,
-      sortable: true,
     },
 
     {
@@ -67,7 +67,6 @@ const CategoryListing = () => {
       selector: (row) => (
         <img className="p-1 overflow-hidden h-50 w-50 border" src={row.Image} />
       ),
-      sortable: true,
     },
     {
       name: 'Status',
@@ -86,12 +85,14 @@ const CategoryListing = () => {
           </span>
         );
       },
-      sortable: true,
     },
     {
-      name: 'Ent Date',
-      selector: (row) => <h1 className="text-base">{row.EntDt}</h1>,
-      sortable: true,
+      name: 'Entry Date',
+      selector: (row) => (
+        <h1 className="text-base">
+          {format(new Date(row.EntDt), 'MM/dd/yyyy hh:mm a')}
+        </h1>
+      ),
     },
     {
       name: 'Action',

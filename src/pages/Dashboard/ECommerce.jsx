@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getAllCategory } from '../../components/API.jsx';
+import { getAllCategory } from '../../API/CategoryApi.jsx';
 import CardFour from '../../components/CardFour.tsx';
 import CardOne from '../../components/CardOne';
 import CardThree from '../../components/CardThree.tsx';
