@@ -11,7 +11,7 @@ const headers = {
   Authorization: `Bearer ${TOKEN}`, // Corrected typo from "Bareer" to "Bearer"
 };
 
-// =========================AdminLogin==============D
+// =========================AdminLogin============
 export const AdminLogin = async (data) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/adminLogin`, data);
@@ -39,7 +39,6 @@ export const getAdmindataById = async () => {
     });
 
     if (response.data.status === true) {
-      // toast(response.data.message);
       return response.data;
     } else {
       toast.error(response.data.message);
