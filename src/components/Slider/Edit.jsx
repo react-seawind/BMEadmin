@@ -11,7 +11,7 @@ const validationSchema = Yup.object().shape({
 });
 const SliderEdit = () => {
   // ================ Get data by Id============
-  const { Id } = useParams(); // Change here
+  const { Id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {

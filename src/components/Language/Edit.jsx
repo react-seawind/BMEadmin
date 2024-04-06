@@ -3,77 +3,60 @@ import Breadcrumb from '../Breadcrumb';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getLanguageById, updateLanguageById } from '../../API/LanguageApi';
 
 const validateSchema = Yup.object().shape({
-  name: Yup.string().required('Title is required.'),
+  Title: Yup.string().required('Title is required.'),
+  Slug: Yup.string().required('Slug is required.'),
 });
 
 const LanguageEdit = () => {
   // ================ Get data by Id============
-  // const { Id } = useParams();
+  const { Id } = useParams();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (Id) {
-  //         const SliderData = await getCategoryById(Id);
-  //         formik.setValues({
-  //           Id: SliderData.Id || '',
-  //           Title: SliderData.Title || '',
-  //           Slug: SliderData.Slug || '',
-  //           Content: SliderData.Content || '',
-  //           Icon: SliderData.Icon || '',
-  //           Hid_Icon: SliderData.Hid_Icon || '',
-  //           Image: SliderData.Image || '',
-  //           Hid_Image: SliderData.Hid_Image || '',
-  //           Status: SliderData.Status || '0',
-  //         });
-  //         console.log('====================================');
-  //         console.log(SliderData);
-  //         console.log('====================================');
-  //       } else {
-  //         console.log('error');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (Id) {
+          const SliderData = await getLanguageById(Id);
+          formik.setValues({
+            Id: SliderData.Id || '',
+            Title: SliderData.Title || '',
+            Slug: SliderData.Slug || '',
+            Status: SliderData.Status || '0',
+          });
+        } else {
+          console.log('error');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  //   fetchData();
-  // }, [Id]);
+    fetchData();
+  }, [Id]);
   const formik = useFormik({
     initialValues: {
-      name: '',
+      Id: Id,
+      Title: '',
+      Slug: '',
+      Status: '',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
-      sessionStorage.setItem('Language-Edit-Data', JSON.stringify(values));
-      // try {
-      //   const formData = new FormData();
-      //   formData.append('Title', values.Title);
-      //   formData.append('Url', values.Url);
-      //   if (values.Image instanceof File) {
-      //     formData.append('Image', values.Image);
-      //   } else {
-      //     formData.append('Image', values.Image);
-      //   }
-      //   formData.append('Content', values.Content);
-      //   formData.append('Status', values.Status);
-
-      //   await AddSlider(formData);
-      //   actions.resetForm();
-      //   navigate('/slider/listing');
-      // } catch (error) {
-      //   console.error('Error updating slider:', error);
-      // }
+      try {
+        await updateLanguageById(values);
+      } catch (error) {
+        console.error('Error adding language:', error);
+      }
     },
   });
 
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/language/listing');
   };
   return (
     <div>
@@ -94,24 +77,42 @@ const LanguageEdit = () => {
             </div>
             <form onSubmit={formik.handleSubmit}>
               {/*===========Name===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Title <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    value={formik.values.name}
+                    name="Title"
+                    value={formik.values.Title}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your Name"
+                    placeholder="Enter Language"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.name && formik.errors.name && (
-                    <div className="text-red-500">{formik.errors.name}</div>
+                  {formik.touched.Title && formik.errors.Title && (
+                    <div className="text-red-500">{formik.errors.Title}</div>
                   )}
                   <p>Please enter Language</p>
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Slug <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="Slug"
+                    value={formik.values.Slug}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Slug"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.Slug && formik.errors.Slug && (
+                    <div className="text-red-500">{formik.errors.Slug}</div>
+                  )}
+                  <p>Please enter Slug</p>
                 </div>
               </div>
 

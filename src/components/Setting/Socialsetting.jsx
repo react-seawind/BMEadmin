@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Breadcrumb from '../Breadcrumb';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import {
+  getSocialSettingById,
+  updateSocialSettingById,
+} from '../../API/SocialSettingApi';
 
 const validationSchema = Yup.object().shape({
   whatsapp: Yup.string()
@@ -13,28 +17,55 @@ const validationSchema = Yup.object().shape({
 });
 
 const Socialsetting = () => {
+  // ================ Get data by Id============
+  const { Id } = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const SocialData = await getSocialSettingById(Id);
+        formik.setValues({
+          Id: SocialData.Id || '',
+          Facebook: SocialData.Facebook || '',
+          Twitter: SocialData.Twitter || '',
+          GooglePlus: SocialData.GooglePlus || '',
+          Instagram: SocialData.Instagram || '',
+          Youtube: SocialData.Youtube || '',
+          Linkedin: SocialData.Linkedin || '',
+          Skype: SocialData.Skype || '',
+          WhatsApp: SocialData.WhatsApp || '',
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [Id]);
   const formik = useFormik({
     initialValues: {
-      facebook: '',
-      twitter: '',
-      google: '',
-      instagram: '',
-      youtube: '',
-      linkedin: '',
-      skype: '',
-      whatsapp: '',
+      Facebook: '',
+      Twitter: '',
+      GooglePlus: '',
+      Instagram: '',
+      Youtube: '',
+      Linkedin: '',
+      Skype: '',
+      WhatsApp: '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
-      sessionStorage.setItem('SocialSettingData', JSON.stringify(values));
-      actions.resetForm();
-      toast('Data Update Successfully');
+      try {
+        await updateSocialSettingById(values);
+      } catch (error) {
+        console.error('Error updating slider:', error);
+      }
     },
   });
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/dashboard');
   };
   return (
     <div>
@@ -62,15 +93,15 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="facebook"
-                    value={formik.values.facebook}
+                    name="Facebook"
+                    value={formik.values.Facebook}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Facebook"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.facebook && formik.errors.facebook ? (
-                    <div className="text-red-500">{formik.errors.facebook}</div>
+                  {formik.touched.Facebook && formik.errors.Facebook ? (
+                    <div className="text-red-500">{formik.errors.Facebook}</div>
                   ) : null}
                   <p>Please enter facebook page url</p>
                 </div>
@@ -82,15 +113,15 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="twitter"
-                    value={formik.values.twitter}
+                    name="Twitter"
+                    value={formik.values.Twitter}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Twitter"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.twitter && formik.errors.twitter ? (
-                    <div className="text-red-500">{formik.errors.twitter}</div>
+                  {formik.touched.Twitter && formik.errors.Twitter ? (
+                    <div className="text-red-500">{formik.errors.Twitter}</div>
                   ) : null}
                   <p>Please enter twitter page url</p>
                 </div>
@@ -102,15 +133,17 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="google"
-                    value={formik.values.google}
+                    name="GooglePlus"
+                    value={formik.values.GooglePlus}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your GooglePlus"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.google && formik.errors.google ? (
-                    <div className="text-red-500">{formik.errors.google}</div>
+                  {formik.touched.GooglePlus && formik.errors.GooglePlus ? (
+                    <div className="text-red-500">
+                      {formik.errors.GooglePlus}
+                    </div>
                   ) : null}
                   <p>Please enter googleplus page url</p>
                 </div>
@@ -122,16 +155,16 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="instagram"
-                    value={formik.values.instagram}
+                    name="Instagram"
+                    value={formik.values.Instagram}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Instagram"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.instagram && formik.errors.instagram ? (
+                  {formik.touched.Instagram && formik.errors.Instagram ? (
                     <div className="text-red-500">
-                      {formik.errors.instagram}
+                      {formik.errors.Instagram}
                     </div>
                   ) : null}
                   <p>Please enter instagram page url</p>
@@ -144,15 +177,15 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="youtube"
-                    value={formik.values.youtube}
+                    name="Youtube"
+                    value={formik.values.Youtube}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Youtube"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.youtube && formik.errors.youtube ? (
-                    <div className="text-red-500">{formik.errors.youtube}</div>
+                  {formik.touched.Youtube && formik.errors.Youtube ? (
+                    <div className="text-red-500">{formik.errors.Youtube}</div>
                   ) : null}
                   <p>Please enter youtube page url</p>
                 </div>
@@ -164,15 +197,15 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="linkedin"
-                    value={formik.values.linkedin}
+                    name="Linkedin"
+                    value={formik.values.Linkedin}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Linkedin"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.linkedin && formik.errors.linkedin ? (
-                    <div className="text-red-500">{formik.errors.linkedin}</div>
+                  {formik.touched.Linkedin && formik.errors.Linkedin ? (
+                    <div className="text-red-500">{formik.errors.Linkedin}</div>
                   ) : null}
                   <p>Please enter linkedin page url</p>
                 </div>
@@ -184,15 +217,15 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="skype"
-                    value={formik.values.skype}
+                    name="Skype"
+                    value={formik.values.Skype}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Skype"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.skype && formik.errors.skype ? (
-                    <div className="text-red-500">{formik.errors.skype}</div>
+                  {formik.touched.Skype && formik.errors.Skype ? (
+                    <div className="text-red-500">{formik.errors.Skype}</div>
                   ) : null}
                   <p>Please enter skype page url</p>
                 </div>
@@ -204,17 +237,17 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="whatsapp"
-                    value={formik.values.whatsapp}
+                    name="Whatsapp"
+                    value={formik.values.Whatsapp}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your WhatsApp"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.whatsapp && formik.errors.whatsapp ? (
-                    <div className="text-red-500">{formik.errors.whatsapp}</div>
+                  {formik.touched.Whatsapp && formik.errors.Whatsapp ? (
+                    <div className="text-red-500">{formik.errors.Whatsapp}</div>
                   ) : null}
-                  <p>Please enter whatsapp number</p>
+                  <p>Please enter Whatsapp number</p>
                 </div>
               </div>
 
@@ -227,7 +260,6 @@ const Socialsetting = () => {
                 </button>
                 <button
                   className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                  type="submit"
                   onClick={handleGoBack}
                   type="button"
                 >

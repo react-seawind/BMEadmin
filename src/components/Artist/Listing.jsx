@@ -4,9 +4,10 @@ import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
 import { getServicedata } from '../API';
+import { deleteArtist, getAllArtist } from '../../API/ArtistApi';
 
 const ArtistListing = () => {
-  const [service, setservice] = useState([]);
+  const [artist, setartist] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
 
@@ -17,8 +18,8 @@ const ArtistListing = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getServicedata();
-        setservice(result);
+        const result = await getAllArtist();
+        setartist(result);
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -28,6 +29,27 @@ const ArtistListing = () => {
     fetchData();
   }, []);
 
+  // -------------------delete artist------------------
+  const handleDelete = async (row) => {
+    try {
+      await deleteArtist(row.Id);
+      setartist((prevCategory) =>
+        prevCategory.filter((item) => item.Id !== row.Id),
+      );
+      setfilterdata((prevFilterData) =>
+        prevFilterData.filter((item) => item.Id !== row.Id),
+      );
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    }
+  };
+  useEffect(() => {
+    const mySearch = artist.filter(
+      (item) =>
+        item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
+    );
+    setfilterdata(mySearch);
+  }, [search]);
   const columns = [
     {
       name: '#',
@@ -38,23 +60,37 @@ const ArtistListing = () => {
       name: 'Title',
       selector: (row) => <h1 className="text-base">{row.Title}</h1>,
     },
-    {
-      name: 'SubTitle',
-      selector: (row) => <h1 className="text-base">{row.SubTitle}</h1>,
-    },
+
     {
       name: 'Image',
       selector: (row) => (
-        <img className="p-1 overflow-hidden h-50 w-50 border" src={row.Image} />
+        <img className="p-1 overflow-hidden h-50 w-60 border" src={row.Image} />
       ),
+      //
     },
     {
       name: 'Status',
-      selector: (row) => (
-        <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-          Active
-        </span>
-      ),
+      selector: (row) => {
+        const statusText = row.Status == '1' ? 'Active' : 'Inactive';
+        const statusColor =
+          row.Status == '1'
+            ? 'bg-green-600 text-white'
+            : 'bg-red-600 text-white';
+
+        return (
+          <span
+            className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full  ${statusColor}`}
+          >
+            {statusText}
+          </span>
+        );
+      },
+      //
+    },
+    {
+      name: 'Ent Date',
+      selector: (row) => <h1 className="text-base">{row.EntDt}</h1>,
+      //
     },
     {
       name: 'Action',
@@ -77,7 +113,7 @@ const ArtistListing = () => {
                 className="text-black bg-white border  p-2 w-26"
                 onClick={() => {
                   setSelectedRow(null);
-                  Navigate('/artist/edit');
+                  Navigate(`/artist/edit/${row.Id}`);
                 }}
               >
                 Edit
@@ -87,7 +123,13 @@ const ArtistListing = () => {
               <button
                 className=" text-black bg-white border  p-2 w-26"
                 onClick={() => {
-                  alert(`Deleting ${row.Title}`);
+                  if (
+                    window.confirm(
+                      `Are you sure you want to delete ${row.Title}?`,
+                    )
+                  ) {
+                    handleDelete(row); // Call handleDelete function on click of delete button
+                  }
                   setSelectedRow(null);
                 }}
               >
@@ -100,17 +142,9 @@ const ArtistListing = () => {
     },
   ];
 
-  useEffect(() => {
-    const mySearch = service.filter(
-      (item) =>
-        item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
-    );
-    setfilterdata(mySearch);
-  }, [search]);
-
   return (
     <div>
-      <Breadcrumb pageName="Author Listing" />
+      <Breadcrumb pageName="Artist Listing" />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

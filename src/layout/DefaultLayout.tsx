@@ -26,6 +26,10 @@ const DefaultLayout = () => {
               <Outlet />
             </div>
           </main>
+
+          <div className="py-6 bg-white w-full text-center mx-auto">
+            <p>Admin @ Book my Event</p>
+          </div>
           {/* <!-- ===== Main Content End ===== --> */}
         </div>
         {/* <!-- ===== Content Area End ===== --> */}

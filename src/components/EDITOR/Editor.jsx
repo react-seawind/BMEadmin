@@ -2,7 +2,7 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 
-const TinyMCEEditor = ({ value, onChange }) => {
+const TinyMCEEditor = ({ values, onChange }) => {
   const handleEditorChange = (content, editor) => {
     onChange(content);
   };
@@ -10,7 +10,7 @@ const TinyMCEEditor = ({ value, onChange }) => {
   return (
     <Editor
       apiKey="z3nojrr83i8cubxt0qaqwsfz1ayc8q333a2b5mwq06s8otj3" // Replace with your TinyMCE API key
-      initialValue={value}
+      initialValue={values}
       init={{
         height: 350,
         menubar: true,

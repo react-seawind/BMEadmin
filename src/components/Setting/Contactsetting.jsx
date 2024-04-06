@@ -3,36 +3,75 @@ import Breadcrumb from '../Breadcrumb';
 
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import {
+  getContactSettingById,
+  updateContactSettingById,
+} from '../../API/ContactSettingApi';
 
 const validationSchema = Yup.object().shape({
-  phone: Yup.string()
+  Phone: Yup.string()
     .matches(/^[0-9]+$/, 'Only Number are allowed for this field ')
     .min(10, 'User Phone must be at most 10 characters')
     .max(10, 'User Phone must be at most 10 characters'),
+  Address: Yup.string().required('Address is required'),
+  Email: Yup.string().email().required('Email is required'),
+  Map: Yup.string().required('Map is required'),
 });
 const Contactsetting = () => {
+  // ================ Get data by Id============
+  const { Id } = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const ContactData = await getContactSettingById(Id);
+        formik.setValues({
+          Id: ContactData.Id || '',
+          Address: ContactData.Address || '',
+          Email: ContactData.Email || '',
+          Phone: ContactData.Phone || '',
+          Map: ContactData.Map || '',
+          Web: ContactData.Web || '',
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [Id]);
   const formik = useFormik({
     initialValues: {
-      address: '',
-      email: '',
-      phone: '',
-      web: '',
-      map: '',
+      Address: '',
+      Email: '',
+      Phone: '',
+      Web: '',
+      Map: '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
-      sessionStorage.setItem('ContactSettingData', JSON.stringify(values));
-      actions.resetForm();
-      toast('Data Update Successfully');
+      try {
+        const formData = new FormData();
+        formData.append('Id', values.Id);
+        formData.append('Address', values.Address);
+        formData.append('Email', values.Email);
+        formData.append('Phone', values.Phone);
+        formData.append('Web', values.Web);
+        formData.append('Map', values.Map);
+
+        await updateContactSettingById(formData);
+      } catch (error) {
+        console.error('Error updating slider:', error);
+      }
     },
   });
 
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/dashboard');
   };
   return (
     <div>
@@ -60,15 +99,15 @@ const Contactsetting = () => {
                   </label>
                   <textarea
                     rows={2}
-                    value={formik.values.address}
+                    value={formik.values.Address}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="address"
+                    name="Address"
                     placeholder="Please enter address"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   ></textarea>
-                  {formik.touched.address && formik.errors.address ? (
-                    <div className="text-red-500">{formik.errors.address}</div>
+                  {formik.touched.Address && formik.errors.Address ? (
+                    <div className="text-red-500">{formik.errors.Address}</div>
                   ) : null}
                   <p>Please enter address</p>
                 </div>
@@ -82,14 +121,14 @@ const Contactsetting = () => {
                   <input
                     type="email"
                     name="email"
-                    value={formik.values.email}
+                    value={formik.values.Email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Email"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.email && formik.errors.email ? (
-                    <div className="text-red-500">{formik.errors.email}</div>
+                  {formik.touched.Email && formik.errors.Email ? (
+                    <div className="text-red-500">{formik.errors.Email}</div>
                   ) : null}
                   <p>Please enter Email</p>
                 </div>
@@ -102,14 +141,14 @@ const Contactsetting = () => {
                   <input
                     type="text"
                     name="phone"
-                    value={formik.values.phone}
+                    value={formik.values.Phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Phone"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.phone && formik.errors.phone ? (
-                    <div className="text-red-500">{formik.errors.phone}</div>
+                  {formik.touched.Phone && formik.errors.Phone ? (
+                    <div className="text-red-500">{formik.errors.Phone}</div>
                   ) : null}
                   <p>
                     Please enter phone if multiple then add , between two
@@ -125,14 +164,14 @@ const Contactsetting = () => {
                   <input
                     type="text"
                     name="web"
-                    value={formik.values.web}
+                    value={formik.values.Web}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Web"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.web && formik.errors.web ? (
-                    <div className="text-red-500">{formik.errors.web}</div>
+                  {formik.touched.Web && formik.errors.Web ? (
+                    <div className="text-red-500">{formik.errors.Web}</div>
                   ) : null}
                   <p>Please enter Web</p>
                 </div>
@@ -144,15 +183,15 @@ const Contactsetting = () => {
                   </label>
                   <textarea
                     rows={2}
-                    value={formik.values.map}
+                    value={formik.values.Map}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     name="map"
                     placeholder="Please enter Map IFRAME Only"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   ></textarea>
-                  {formik.touched.map && formik.errors.map ? (
-                    <div className="text-red-500">{formik.errors.map}</div>
+                  {formik.touched.Map && formik.errors.Map ? (
+                    <div className="text-red-500">{formik.errors.Map}</div>
                   ) : null}
                   <p>Please enter Map IFRAME Only</p>
                 </div>
@@ -166,7 +205,6 @@ const Contactsetting = () => {
                 </button>
                 <button
                   className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                  type="cancel"
                   onClick={handleGoBack}
                   type="button"
                 >

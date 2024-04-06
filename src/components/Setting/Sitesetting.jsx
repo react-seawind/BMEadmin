@@ -1,41 +1,80 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Breadcrumb from '../Breadcrumb';
 import Logo from '../../images/mainlogo.png';
 import * as Yup from 'yup';
 import { IoMdClose } from 'react-icons/io';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  getSiteSettingById,
+  updateSiteSettingById,
+} from '../../API/SiteSettingApi';
 
-const validationSchema = Yup.object().shape({
-  // logo: Yup.mixed().test(
-  //   'fileType',
-  //   'Only JPG and PNG files are allowed',
-  //   (value) => {
-  //     if (!value) return true; // No file selected is considered valid
-  //     return ['image/jpeg', 'image/png'].includes(value.type);
-  //   },
-  // ),
-});
+const validationSchema = Yup.object().shape({});
 
 const Sitesetting = () => {
+  // ================ Get data by Id============
+  const { Id } = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const ContactData = await getSiteSettingById(Id);
+        formik.setValues({
+          Id: ContactData.Id || '',
+          Logo: ContactData.Logo || '',
+          Hid_Logo: ContactData.Hid_Logo || '',
+          Favicon: ContactData.Favicon || '',
+          Hid_Favicon: ContactData.Hid_Favicon || '',
+          SiteUrl: ContactData.SiteUrl || '',
+          copyright: ContactData.copyright || '',
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [Id]);
   const formik = useFormik({
     initialValues: {
-      url: '',
+      Logo: '',
+      Hid_Logo: '',
+      Favicon: '',
+      Hid_Favicon: '',
+      SiteUrl: '',
       copyright: '',
-      logo: '',
-      favicon: '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
-      sessionStorage.setItem('SiteSettingData', JSON.stringify(values));
-      actions.resetForm();
-      toast('Data Update Successfully');
+      try {
+        const formData = new FormData();
+        formData.append('Id', values.Id);
+        if (values.Logo instanceof File) {
+          formData.append('Logo', values.Logo);
+        } else {
+          formData.append('Logo', values.Logo);
+        }
+        formData.append('Hid_Logo', values.Hid_Logo);
+        if (values.Favicon instanceof File) {
+          formData.append('Favicon', values.Favicon);
+        } else {
+          formData.append('Favicon', values.Favicon);
+        }
+        formData.append('Hid_Favicon', values.Hid_Favicon);
+        formData.append('SiteUrl', values.SiteUrl);
+        formData.append('copyright', values.copyright);
+
+        await updateSiteSettingById(formData);
+      } catch (error) {
+        console.error('Error updating slider:', error);
+      }
     },
   });
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/dashboard');
   };
 
   return (
@@ -57,6 +96,16 @@ const Sitesetting = () => {
             </div>
 
             <form onSubmit={formik.handleSubmit}>
+              <input
+                type="hidden"
+                name="Hid_Logo"
+                value={formik.values.Hid_Logo}
+              />
+              <input
+                type="hidden"
+                name="Hid_Favicon"
+                value={formik.values.Hid_Favicon}
+              />
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
@@ -64,15 +113,15 @@ const Sitesetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="url"
-                    value={formik.values.url}
+                    name="SiteUrl"
+                    value={formik.values.SiteUrl}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your Site Url"
+                    placeholder="Enter Your SiteUrl"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.url && formik.errors.url ? (
-                    <div className="text-red-500">{formik.errors.url}</div>
+                  {formik.touched.SiteUrl && formik.errors.SiteUrl ? (
+                    <div className="text-red-500">{formik.errors.SiteUrl}</div>
                   ) : null}
                   <p>Please enter Site Url</p>
                 </div>
@@ -110,16 +159,16 @@ const Sitesetting = () => {
                   </label>
                   <input
                     type="file"
-                    name="logo"
-                    value={formik.values.logo}
+                    name="Logo"
+                    value={formik.values.Logo}
                     onChange={(event) =>
-                      formik.setFieldValue('Image', event.target.files[0])
+                      formik.setFieldValue('Logo', event.target.files[0])
                     }
                     onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
-                  {formik.touched.logo && formik.errors.logo ? (
-                    <div className="text-red-500">{formik.errors.logo}</div>
+                  {formik.touched.Logo && formik.errors.Logo ? (
+                    <div className="text-red-500">{formik.errors.Logo}</div>
                   ) : null}
 
                   <div className="mt-5">
@@ -127,8 +176,8 @@ const Sitesetting = () => {
                     <div className="grid grid-cols-4 gap-2 relative">
                       <div className="relative">
                         <img
-                          src={Logo}
-                          className="w-full rounded border p-2 "
+                          src={formik.values.Logo}
+                          className="w-full rounded border p-2 h-28 w-28"
                         />
                       </div>
                     </div>
@@ -141,24 +190,24 @@ const Sitesetting = () => {
                   </label>
                   <input
                     type="file"
-                    name="favicon"
-                    value={formik.values.favicon}
+                    name="Favicon"
+                    value={formik.values.Favicon}
                     onChange={(event) =>
                       formik.setFieldValue('Image', event.target.files[0])
                     }
                     onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
-                  {formik.touched.favicon && formik.errors.favicon ? (
-                    <div className="text-red-500">{formik.errors.favicon}</div>
+                  {formik.touched.Favicon && formik.errors.Favicon ? (
+                    <div className="text-red-500">{formik.errors.Favicon}</div>
                   ) : null}
                   <div className="mt-5">
                     <p>Your Exsisting Img File*</p>
                     <div className="grid grid-cols-4 gap-2 relative">
                       <div className="relative">
                         <img
-                          className="w-full rounded border p-2 "
-                          src={Logo}
+                          className="w-full rounded border p-2 h-28 w-28"
+                          src={formik.values.Favicon}
                         />
                       </div>
                     </div>

@@ -89,7 +89,7 @@ const AllEventEdit = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/allevent/listing');
   };
   return (
     <div>

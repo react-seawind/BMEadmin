@@ -243,76 +243,76 @@ const UserListing = () => {
 
     {
       name: 'Action',
+
       cell: (row) => (
         <div>
-          <div className="bg-red-600 text-white p-3 pl-5 w-26 flex relative">
-            <button>Actions</button>
+          <div className="relative">
             <button
+              className="bg-red-600 text-white p-3 pl-5 w-26 flex"
               onClick={() => {
                 setSelectedRow((prevRow) => (prevRow === row ? null : row));
               }}
             >
-              <FaChevronDown className=" my-auto ml-4 " />
+              Actions <FaChevronDown className="my-auto ml-4" />
             </button>
+            {selectedRow && selectedRow.Id === row.Id && (
+              <div className="action-buttons absolute z-10 bg-white border border-gray-300 rounded-md rounded-t-none shadow-lg   ">
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate('/user/edit');
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    alert(`Deleting ${row.Title}`);
+                    setSelectedRow(null);
+                  }}
+                >
+                  Delete
+                </button>
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate('/user/events');
+                  }}
+                >
+                  Events
+                </button>
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate('/user/bookings');
+                  }}
+                >
+                  Bookings
+                </button>
+                <button
+                  className="text-black p-2 w-full"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate('/user/kyc');
+                  }}
+                >
+                  KYC
+                </button>
+              </div>
+            )}
           </div>
-
-          {selectedRow && selectedRow.Id === row.Id && (
-            <div className="action-buttons  absolute z-99">
-              <button
-                className="text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  setSelectedRow(null);
-                  Navigate('/user/edit');
-                }}
-              >
-                Edit
-              </button>
-
-              <br />
-              <button
-                className=" text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  alert(`Deleting ${row.Title}`);
-                  setSelectedRow(null);
-                }}
-              >
-                Delete
-              </button>
-
-              <br />
-              <button
-                className="text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  setSelectedRow(null);
-                  Navigate('/user/events');
-                }}
-              >
-                Events
-              </button>
-              <br />
-              <button
-                className="text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  setSelectedRow(null);
-                  Navigate('/user/bookings');
-                }}
-              >
-                Bookings
-              </button>
-              <br />
-              <button
-                className="text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  setSelectedRow(null);
-                  Navigate('/user/kyc');
-                }}
-              >
-                KYC
-              </button>
-            </div>
-          )}
         </div>
       ),
+      allowOverflow: true,
+
+      // cell: (row) => <CustomMaterialMenu size="small" row={row} />,
+      // allowOverflow: true,
+      // button: true,
+      // width: '56px',
     },
   ];
   useEffect(() => {

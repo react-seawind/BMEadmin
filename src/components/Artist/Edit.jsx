@@ -4,82 +4,81 @@ import Logo from '../../images/mainlogo.png';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import NewEditor from '../EDITOR/NewEditor';
+import { getArtistById, updateArtistById } from '../../API/ArtistApi';
 
 const validateSchema = Yup.object().shape({
-  name: Yup.string().required('City Name is required.'),
-  content: Yup.string().required('Content is required.'),
+  Title: Yup.string().required('Name is required.'),
+  Slug: Yup.string().required('Slug is required.'),
+  Image: Yup.string().required('Image is required.'),
+  Content: Yup.string().required('Content is required.'),
 });
 
 const ArtistEdit = () => {
   // ================ Get data by Id============
-  // const { Id } = useParams();
+  const { Id } = useParams();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (Id) {
-  //         const SliderData = await getCategoryById(Id);
-  //         formik.setValues({
-  //           Id: SliderData.Id || '',
-  //           Title: SliderData.Title || '',
-  //           Slug: SliderData.Slug || '',
-  //           Content: SliderData.Content || '',
-  //           Icon: SliderData.Icon || '',
-  //           Hid_Icon: SliderData.Hid_Icon || '',
-  //           Image: SliderData.Image || '',
-  //           Hid_Image: SliderData.Hid_Image || '',
-  //           Status: SliderData.Status || '0',
-  //         });
-  //         console.log('====================================');
-  //         console.log(SliderData);
-  //         console.log('====================================');
-  //       } else {
-  //         console.log('error');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (Id) {
+          const ArtistData = await getArtistById(Id);
+          formik.setValues({
+            Id: ArtistData.Id || '',
+            Title: ArtistData.Title || '',
+            Slug: ArtistData.Slug || '',
+            Content: ArtistData.Content || '',
+            Image: ArtistData.Image || '',
+            Hid_Image: ArtistData.Hid_Image || '',
+            Status: ArtistData.Status || '0',
+          });
+        } else {
+          console.log('error');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  //   fetchData();
-  // }, [Id]);
+    fetchData();
+  }, [Id]);
   const formik = useFormik({
     initialValues: {
-      name: '',
-      icon: '',
-      content: '',
+      Title: '',
+      Slug: '',
+      Image: '',
+      Hid_Image: '',
+      Content: '',
       Status: '',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
-      sessionStorage.setItem('Artist-Edit-Data', JSON.stringify(values));
-      // try {
-      //   const formData = new FormData();
-      //   formData.append('Title', values.Title);
-      //   formData.append('Url', values.Url);
-      //   if (values.Image instanceof File) {
-      //     formData.append('Image', values.Image);
-      //   } else {
-      //     formData.append('Image', values.Image);
-      //   }
-      //   formData.append('Content', values.Content);
-      //   formData.append('Status', values.Status);
+      try {
+        const formData = new FormData();
+        formData.append('Id', values.Id);
+        formData.append('Title', values.Title);
+        formData.append('Slug', values.Slug);
+        if (values.Image instanceof File) {
+          formData.append('Image', values.Image);
+        } else {
+          formData.append('Image', values.Image);
+        }
+        formData.append('Hid_Image', values.Hid_Image);
+        formData.append('Content', values.Content);
+        formData.append('Status', values.Status);
 
-      //   await AddSlider(formData);
-      //   actions.resetForm();
-      //   navigate('/slider/listing');
-      // } catch (error) {
-      //   console.error('Error updating slider:', error);
-      // }
+        await updateArtistById(formData);
+      } catch (error) {
+        console.error('Error updating artist:', error);
+      }
     },
   });
 
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/artist/listing');
   };
   return (
     <div>
@@ -100,6 +99,11 @@ const ArtistEdit = () => {
             </div>
 
             <form onSubmit={formik.handleSubmit}>
+              <input
+                type="hidden"
+                name="Hid_Image"
+                value={formik.values.Hid_Image}
+              />
               {/*===========Name===========*/}
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
@@ -108,18 +112,37 @@ const ArtistEdit = () => {
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    value={formik.values.name}
+                    name="Title"
+                    value={formik.values.Title}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Name"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.name && formik.errors.name && (
-                    <div className="text-red-500">{formik.errors.name}</div>
+                  {formik.touched.Title && formik.errors.Title && (
+                    <div className="text-red-500">{formik.errors.Title}</div>
                   )}
 
                   <p>Please enter Name</p>
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Slug <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="Slug"
+                    value={formik.values.Slug}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Your Name"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.Slug && formik.errors.Slug && (
+                    <div className="text-red-500">{formik.errors.Slug}</div>
+                  )}
+
+                  <p>Please enter Slug</p>
                 </div>
               </div>
 
@@ -132,16 +155,15 @@ const ArtistEdit = () => {
                   </label>
                   <input
                     type="file"
-                    name="icon"
-                    value={formik.values.icon}
+                    name="Image"
                     onChange={(event) =>
                       formik.setFieldValue('Image', event.target.files[0])
                     }
                     onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
-                  {formik.touched.icon && formik.errors.icon && (
-                    <div className="text-red-500">{formik.errors.icon}</div>
+                  {formik.touched.Image && formik.errors.Image && (
+                    <div className="text-red-500">{formik.errors.Image}</div>
                   )}
                   <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
                 </div>
@@ -150,7 +172,11 @@ const ArtistEdit = () => {
                     Your Exsisting Img File
                     <span className="text-danger">*</span>
                   </label>
-                  <img src={Logo} alt="" className="w-40 rounded border p-2 " />
+                  <img
+                    src={formik.values.Image}
+                    alt=""
+                    className="rounded border p-2 h-28 w-28"
+                  />
                 </div>
               </div>
 
@@ -161,21 +187,20 @@ const ArtistEdit = () => {
                     Content <span className="text-danger">*</span>
                   </label>
                   <NewEditor
-                    name="content"
-                    value={formik.values.content}
-                    onChange={(content) => {
-                      formik.setFieldValue('content', content);
-                      formik.setFieldTouched('content', true);
+                    name="Content"
+                    onChange={(Content) => {
+                      formik.setFieldValue('Content', Content);
+                      formik.setFieldTouched('Content', true);
                     }}
+                    values={formik.values.Content}
                     onBlur={formik.handleBlur}
                   />
-                  {formik.touched.content && formik.errors.content && (
-                    <div className="text-red-500">{formik.errors.content}</div>
+                  {formik.touched.Content && formik.errors.Content && (
+                    <div className="text-red-500">{formik.errors.Content}</div>
                   )}
                   <p>Please enter Content</p>
                 </div>
               </div>
-
               <div className="flex flex-col gap-2.5 py-3.5 px-5.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Status <span className="text-danger">*</span>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getAllCategory } from '../../API/CategoryApi.jsx';
-import CardFour from '../../components/CardFour.tsx';
+import CardFour from '../../components/CardFour.jsx';
 import CardOne from '../../components/CardOne';
-import CardThree from '../../components/CardThree.tsx';
-import CardTwo from '../../components/CardTwo.tsx';
+import CardThree from '../../components/CardThree.jsx';
+import CardTwo from '../../components/CardTwo.jsx';
 import ChartOne from '../../components/ChartOne.tsx';
 
 const ECommerce = () => {
@@ -25,9 +25,9 @@ const ECommerce = () => {
     <div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardOne catData={catData} />
-        <CardTwo />
-        <CardThree />
-        <CardFour />
+        <CardTwo catData={catData} />
+        <CardThree catData={catData} />
+        <CardFour catData={catData} />
       </div>
       <div className="grid grid-cols-1 mt-10">
         <ChartOne />

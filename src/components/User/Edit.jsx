@@ -102,7 +102,7 @@ const UserEdit = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/user/listing');
   };
   return (
     <div>
