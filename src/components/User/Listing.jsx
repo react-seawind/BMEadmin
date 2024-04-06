@@ -47,7 +47,7 @@
 //     {
 //       name: 'Image',
 //       selector: (row) => (
-//         <img className="p-1 overflow-hidden h-50 w-50 border" src={row.Image} />
+//         <img className="p-2 overflow-hidden h-40 rounded-md w-40 border my-2 border-slate-200 bg-white " src={row.Image} />
 //       ),
 //
 //     },
@@ -227,7 +227,7 @@ const UserListing = () => {
       name: 'Image',
       selector: (row) => (
         <img
-          className="p-1 overflow-hidden h-20 w-20 lg:h-40 lg:w-40 border"
+          className="p-2 overflow-hidden h-40 rounded-md w-40 border my-2 border-slate-200 bg-white "
           src={row.Image}
         />
       ),
