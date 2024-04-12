@@ -26,6 +26,10 @@ const AllBookingListing = () => {
     };
 
     fetchData();
+
+    // const refreshInterval = setInterval(fetchData, 1000);
+
+    // return () => clearInterval(refreshInterval);
   }, []);
 
   const columns = [

@@ -3,11 +3,11 @@ import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
-import { deleteSlider, getAllSlider } from '../../API/SliderApi';
 import { format } from 'date-fns';
+import { deleteFaq, getAllFaq } from '../../API/FaqApi';
 
-const SliderListing = () => {
-  const [slider, setslider] = useState([]);
+const FaqListing = () => {
+  const [Faq, setFaq] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
 
@@ -18,8 +18,8 @@ const SliderListing = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllSlider();
-        setslider(result);
+        const result = await getAllFaq();
+        setFaq(result);
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -29,11 +29,11 @@ const SliderListing = () => {
     fetchData();
   }, []);
 
-  // -------------------delete slider------------------
+  // -------------------delete state------------------
   const handleDelete = async (row) => {
     try {
-      await deleteSlider(row.Id);
-      setslider((prevCategory) =>
+      await deleteFaq(row.Id);
+      setFaq((prevCategory) =>
         prevCategory.filter((item) => item.Id !== row.Id),
       );
       setfilterdata((prevFilterData) =>
@@ -44,7 +44,7 @@ const SliderListing = () => {
     }
   };
   useEffect(() => {
-    const mySearch = slider.filter(
+    const mySearch = Faq.filter(
       (item) =>
         item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
     );
@@ -53,56 +53,46 @@ const SliderListing = () => {
   const columns = [
     {
       name: '#',
-      selector: 'Id',
-      cell: (row, index) => <div>{index + 1}</div>,
+      selector: (row) => <h1 className="text-base min-h-29 mt-2">{row.Id}</h1>,
     },
     {
       name: 'Title',
-      selector: (row) => <h1 className="text-base">{row.Title}</h1>,
-    },
-
-    {
-      name: 'Image',
       selector: (row) => (
-        <img
-          className="p-2 overflow-hidden h-40 rounded-md w-40 border my-2 border-slate-200 bg-white "
-          src={row.Image}
-        />
+        <h1 className="text-base min-h-29 mt-2">{row.Title}</h1>
       ),
-      //
     },
     {
-      name: 'Status',
+      name: 'Status ',
       selector: (row) => {
         const statusText = row.Status == '1' ? 'Active' : 'Inactive';
         const statusColor =
           row.Status == '1'
-            ? 'bg-green-600 text-white'
+            ? 'bg-green-600 text-white '
             : 'bg-red-600 text-white';
 
         return (
-          <span
-            className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full  ${statusColor}`}
-          >
-            {statusText}
-          </span>
+          <h1 className="min-h-29 mt-2">
+            <span
+              className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full   ${statusColor}`}
+            >
+              {statusText}
+            </span>
+          </h1>
         );
       },
-      //
     },
     {
-      name: 'Ent Date',
+      name: 'Entry Date',
       selector: (row) => (
-        <h1 className="text-base">
+        <h1 className="text-base min-h-29 mt-2">
           {format(new Date(row.EntDt), 'MM/dd/yyyy hh:mm a')}
         </h1>
       ),
-      //
     },
     {
       name: 'Action',
       cell: (row) => (
-        <div>
+        <div className="min-h-29 mt-2">
           <div className="bg-red-600 text-white p-3 pl-5 w-26 flex relative">
             <button>Actions</button>
             <button
@@ -120,7 +110,7 @@ const SliderListing = () => {
                 className="text-black bg-white border  p-2 w-26"
                 onClick={() => {
                   setSelectedRow(null);
-                  Navigate(`/slider/edit/${row.Id}`);
+                  Navigate(`/faq/edit/${row.Id}`);
                 }}
               >
                 Edit
@@ -148,10 +138,9 @@ const SliderListing = () => {
       ),
     },
   ];
-
   return (
     <div>
-      <Breadcrumb pageName="Slider Listing" />
+      <Breadcrumb pageName="Faq Listing" />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -164,7 +153,7 @@ const SliderListing = () => {
                 highlightOnHover
                 actions={
                   <Link
-                    to="/slider/add"
+                    to="/Faq/add"
                     className="bg-blue-500 text-white p-3 px-10 text-sm"
                   >
                     Add
@@ -191,4 +180,4 @@ const SliderListing = () => {
   );
 };
 
-export default SliderListing;
+export default FaqListing;

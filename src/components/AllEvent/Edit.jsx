@@ -40,8 +40,6 @@ const AllEventEdit = () => {
   //       console.error('Error fetching data:', error);
   //     }
   //   };
-
-  //   fetchData();
   // }, [Id]);
   const formik = useFormik({
     initialValues: {

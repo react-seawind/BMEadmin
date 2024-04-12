@@ -39,6 +39,9 @@ import AllBookingListing from '../components/AllBooking/Listing';
 import PageListing from '../components/Pages/Listing';
 import PageAdd from '../components/Pages/Add';
 import PageEdit from '../components/Pages/Edit';
+import FaqListing from '../components/FAQ/Listing';
+import FaqAdd from '../components/FAQ/Add';
+import FaqEdit from '../components/FAQ/Edit';
 
 const coreRoutes = [
   {
@@ -156,6 +159,20 @@ const coreRoutes = [
     path: '/language/edit/:Id',
     component: LanguageEdit,
   },
+
+  // ================Faq======================
+  {
+    path: '/faq/listing',
+    component: FaqListing,
+  },
+  {
+    path: '/faq/add',
+    component: FaqAdd,
+  },
+  {
+    path: '/faq/edit/:Id',
+    component: FaqEdit,
+  },
   // ================Category======================
   {
     path: '/category/listing',
@@ -201,7 +218,7 @@ const coreRoutes = [
     component: UserBooking,
   },
   {
-    path: '/user/kyc',
+    path: '/user/kyc/:Id',
     component: UserKyc,
   },
 

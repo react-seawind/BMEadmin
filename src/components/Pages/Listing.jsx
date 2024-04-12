@@ -5,6 +5,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
 import { getServicedata } from '../API';
 import { deletePages, getAllPages } from '../../API/PageApi';
+import { format } from 'date-fns';
 
 const PageListing = () => {
   const [pages, setpages] = useState([]);
@@ -92,7 +93,11 @@ const PageListing = () => {
     },
     {
       name: 'Ent Date',
-      selector: (row) => <h1 className="text-base">{row.EntDt}</h1>,
+      selector: (row) => (
+        <h1 className="text-base">
+          {format(new Date(row.EntDt), 'MM/dd/yyyy hh:mm a')}
+        </h1>
+      ),
       //
     },
     {

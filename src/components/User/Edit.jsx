@@ -3,99 +3,55 @@ import Breadcrumb from '../Breadcrumb';
 import Logo from '../../images/mainlogo.png';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-const validateSchema = Yup.object().shape({
-  name: Yup.string()
-    .matches(/^[A-Z a-z]+$/, 'Only alphabets are allowed for this field ')
-    .required('Name is required'),
-  email: Yup.string().email().required('Email is required.'),
-  phone: Yup.string()
-    .matches(/^[0-9]+$/, 'Only Number are allowed for this field ')
-    .min(10, 'User Phone must be at most 10 characters')
-    .max(10, 'User Phone must be at most 10 characters')
-    .required('Number is Required'),
-  pimage: Yup.string().required('Profile image is required.'),
-  city: Yup.string().required('City is required.'),
-  state: Yup.string().required('State is required.'),
-  pincode: Yup.string()
-    .matches(/^[0-9]+$/, 'Only numbres are allowed for this field ')
-    .max(6)
-    .min(6)
-    .required('Pincode is required'),
-  password: Yup.string().required('Password is required.'),
-  cpassword: Yup.string()
-    .required('Confirm Password is required')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
-});
+import { useNavigate, useParams } from 'react-router-dom';
+import { getUserById, updateUserById } from '../../API/UserApi';
 
 const UserEdit = () => {
   // ================ Get data by Id============
-  // const { Id } = useParams();
+  const { Id } = useParams();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       if (Id) {
-  //         const SliderData = await getCategoryById(Id);
-  //         formik.setValues({
-  //           Id: SliderData.Id || '',
-  //           Title: SliderData.Title || '',
-  //           Slug: SliderData.Slug || '',
-  //           Content: SliderData.Content || '',
-  //           Icon: SliderData.Icon || '',
-  //           Hid_Icon: SliderData.Hid_Icon || '',
-  //           Image: SliderData.Image || '',
-  //           Hid_Image: SliderData.Hid_Image || '',
-  //           Status: SliderData.Status || '0',
-  //         });
-  //         console.log('====================================');
-  //         console.log(SliderData);
-  //         console.log('====================================');
-  //       } else {
-  //         console.log('error');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (Id) {
+          const UserData = await getUserById(Id);
+          formik.setValues(UserData[0]);
+        } else {
+          console.log('error');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
 
-  //   fetchData();
-  // }, [Id]);
+    fetchData();
+  }, [Id]);
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      phone: '',
-      pimage: '',
-      city: '',
-      state: '',
-      pincode: '',
-      password: '',
-      cpassword: '',
+      Id: Id,
+      Name: '',
+      Email: '',
+      Phone: '',
+      State: '',
+      City: '',
+      Area: '',
+      Pincode: '',
+      Address: '',
+      Image: '',
+      Hid_Image: '',
       Status: '',
     },
-    validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
-      sessionStorage.setItem('User-Add-Data', JSON.stringify(values));
-      // try {
-      //   const formData = new FormData();
-      //   formData.append('Title', values.Title);
-      //   formData.append('Url', values.Url);
-      //   if (values.Image instanceof File) {
-      //     formData.append('Image', values.Image);
-      //   } else {
-      //     formData.append('Image', values.Image);
-      //   }
-      //   formData.append('Content', values.Content);
-      //   formData.append('Status', values.Status);
+      try {
+        const formData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
-      //   await AddSlider(formData);
-      //   actions.resetForm();
-      //   navigate('/slider/listing');
-      // } catch (error) {
-      //   console.error('Error updating slider:', error);
-      // }
+        await updateUserById(formData);
+      } catch (error) {
+        console.error('Error updating user:', error);
+      }
     },
   });
 
@@ -122,204 +78,199 @@ const UserEdit = () => {
               </p>
             </div>
             <form onSubmit={formik.handleSubmit}>
-              {/*===========Name===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+              <input
+                type="hidden"
+                name="Hid_Image"
+                value={formik.values.Hid_Image}
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 p-6.5">
+                {/*== =========Name===========*/}
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Name <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    name="name"
-                    value={formik.values.name}
+                    name="Name"
+                    value={formik.values.Name}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Name"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.name && formik.errors.name && (
+                  {formik.touched.Name && formik.errors.Name && (
                     <div className="text-red-500">{formik.errors.name}</div>
                   )}
                   <p>Please enter Name</p>
                 </div>
-              </div>
-              {/*===========Email===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+                {/*===========Email===========*/}
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Email <span className="text-danger">*</span>
                   </label>
                   <input
                     type="email"
-                    name="email"
-                    value={formik.values.email}
+                    name="Email"
+                    value={formik.values.Email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Email"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.email && formik.errors.email && (
-                    <div className="text-red-500">{formik.errors.email}</div>
+                  {formik.touched.Email && formik.errors.Email && (
+                    <div className="text-red-500">{formik.errors.Email}</div>
                   )}
                   <p>Please enter Email</p>
                 </div>
-              </div>
-              {/*===========Phone===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Phone <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    name="phone"
-                    value={formik.values.phone}
+                    name="Phone"
+                    disabled
+                    readOnly
+                    value={formik.values.Phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your Phone"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.phone && formik.errors.phone && (
-                    <div className="text-red-500">{formik.errors.phone}</div>
+                  {formik.touched.Phone && formik.errors.Phone && (
+                    <div className="text-red-500">{formik.errors.Phone}</div>
                   )}
                   <p>Please enter Phone</p>
                 </div>
-              </div>{' '}
-              {/*===========Profile Image===========*/}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    Profile Image
-                    <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="file"
-                    name="pimage"
-                    value={formik.values.pimage}
-                    onChange={(event) =>
-                      formik.setFieldValue('Image', event.target.files[0])
-                    }
-                    onBlur={formik.handleBlur}
-                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
-                  />
-                  {formik.touched.pimage && formik.errors.pimage && (
-                    <div className="text-red-500">{formik.errors.pimage}</div>
-                  )}
-                  <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
-                </div>
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    Your Exsisting Img File
-                    <span className="text-danger">*</span>
-                  </label>
-                  <img src={Logo} alt="" className="w-40 rounded border p-2 " />
-                </div>
-              </div>
-              {/*===========city===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    City <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={formik.values.city}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    placeholder="Enter City"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />{' '}
-                  {formik.touched.city && formik.errors.city && (
-                    <div className="text-red-500">{formik.errors.city}</div>
-                  )}
-                  <p>Please enter City</p>
-                </div>
-              </div>
-              {/*===========state===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     State <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    name="state"
-                    value={formik.values.state}
+                    name="State"
+                    value={formik.values.State}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter State"
+                    placeholder="Enter Your State"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />{' '}
-                  {formik.touched.state && formik.errors.state && (
-                    <div className="text-red-500">{formik.errors.state}</div>
+                  />
+                  {formik.touched.State && formik.errors.State && (
+                    <div className="text-red-500">{formik.errors.State}</div>
                   )}
                   <p>Please enter State</p>
                 </div>
-              </div>
-              {/*===========Pincode===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    City <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="City"
+                    value={formik.values.City}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Your City"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.City && formik.errors.City && (
+                    <div className="text-red-500">{formik.errors.City}</div>
+                  )}
+                  <p>Please enter City</p>
+                </div>
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
+                    Area <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="Area"
+                    value={formik.values.Area}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Your Area"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.Area && formik.errors.Area && (
+                    <div className="text-red-500">{formik.errors.Area}</div>
+                  )}
+                  <p>Please enter Area</p>
+                </div>
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Pincode <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    name="pincode"
-                    value={formik.values.pincode}
+                    name="Pincode"
+                    value={formik.values.Pincode}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Pincode"
+                    placeholder="Enter Your Pincode"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />{' '}
-                  {formik.touched.pincode && formik.errors.pincode && (
-                    <div className="text-red-500">{formik.errors.pincode}</div>
+                  />
+                  {formik.touched.Pincode && formik.errors.Pincode && (
+                    <div className="text-red-500">{formik.errors.Pincode}</div>
                   )}
                   <p>Please enter Pincode</p>
                 </div>
-              </div>
-              {/*===========Password===========*/}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Password <span className="text-danger">*</span>
+                    Address <span className="text-danger">*</span>
                   </label>
-                  <input
-                    type="text"
-                    name="password"
-                    value={formik.values.password}
+                  <textarea
+                    rows="3"
+                    cols="3"
+                    name="Address"
+                    value={formik.values.Address}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your Password"
+                    placeholder="Enter Your Address"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />{' '}
-                  {formik.touched.password && formik.errors.password && (
-                    <div className="text-red-500">{formik.errors.password}</div>
+                  ></textarea>
+
+                  {formik.touched.Address && formik.errors.Address && (
+                    <div className="text-red-500">{formik.errors.Address}</div>
                   )}
-                  <p>Please enter Password</p>
+                  <p>Please enter Address</p>
                 </div>
 
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Confirm Password <span className="text-danger">*</span>
+                    Image<span className="text-danger">*</span>
                   </label>
                   <input
-                    type="text"
-                    name="cpassword"
-                    value={formik.values.cpassword}
-                    onChange={formik.handleChange}
+                    type="file"
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        'Image',
+                        event.currentTarget.files[0],
+                      );
+                    }}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your Confirm Password"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />{' '}
-                  {formik.touched.cpassword && formik.errors.cpassword && (
-                    <div className="text-red-500">
-                      {formik.errors.cpassword}
+                    name="Image"
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+                  />
+                  {formik.touched.Image && formik.errors.Image ? (
+                    <div className="text-red-500">{formik.errors.Image}</div>
+                  ) : null}
+                  <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
+                </div>
+                <div className="mt-5">
+                  <p>Your Exsisting Img File</p>
+                  <div className="grid grid-cols-4 gap-2 relative">
+                    <div className="relative">
+                      <img
+                        src={formik.values.Image}
+                        alt=""
+                        className="rounded border p-2 h-28 w-28"
+                      />
                     </div>
-                  )}
-                  <p>Please enter Confirm Password</p>
+                  </div>
                 </div>
               </div>
+
               <div className="flex flex-col gap-2.5 py-3.5 px-5.5">
                 <label className="mb-3 block text-black dark:text-white">
                   Status <span className="text-danger">*</span>
@@ -350,6 +301,7 @@ const UserEdit = () => {
                 </div>
                 <p>Please select an a one status by default is inactive.</p>
               </div>
+
               <div className="flex   gap-5.5 py-3.5 px-5.5">
                 <button
                   className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"

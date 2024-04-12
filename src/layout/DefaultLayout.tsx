@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 const DefaultLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const currentYear = new Date().getFullYear();
   return (
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
       {/* <!-- ===== Page Wrapper Start ===== --> */}
@@ -27,8 +27,20 @@ const DefaultLayout = () => {
             </div>
           </main>
 
-          <div className="py-6 bg-white w-full text-center mx-auto">
-            <p>Admin @ Book my Event</p>
+          <div className="py-6 bg-white w-full text-center mx-auto loader-first1 mt-auto">
+            © {currentYear} Book My Event Design and Develop By {'  '}
+            <Link
+              to={'www.seawindsolution.com'}
+              className="text-[#29aae1] ml-2"
+              target="_blank"
+            >
+              Seawind Solution Pvt. Ltd.{' '}
+            </Link>
+            <img
+              src="https://www.seawindsolution.ae/assets/front/images/loaderimage.png"
+              alt=""
+              className="animate-spin"
+            />
           </div>
           {/* <!-- ===== Main Content End ===== --> */}
         </div>
