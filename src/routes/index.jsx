@@ -42,6 +42,7 @@ import PageEdit from '../components/Pages/Edit';
 import FaqListing from '../components/FAQ/Listing';
 import FaqAdd from '../components/FAQ/Add';
 import FaqEdit from '../components/FAQ/Edit';
+import MainForm from '../components/Form';
 
 const coreRoutes = [
   {

@@ -62,7 +62,7 @@ const NewslatterListing = () => {
     {
       name: 'Email',
       selector: (row) => (
-        <h1 classEmail="text-base min-h-29 mt-2">{row.Email}</h1>
+        <h1 className="text-base min-h-29 mt-2">{row.Email}</h1>
       ),
     },
 
