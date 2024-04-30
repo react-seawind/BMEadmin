@@ -101,11 +101,22 @@ const UserListing = () => {
     },
     {
       name: 'Status',
-      selector: (row) => (
-        <span className="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-          Active
-        </span>
-      ),
+      selector: (row) => {
+        const statusText = row.Status == '1' ? 'Active' : 'Inactive';
+        const statusColor =
+          row.Status == '1'
+            ? 'bg-green-600 text-white'
+            : 'bg-red-600 text-white';
+
+        return (
+          <span
+            className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full  ${statusColor}`}
+          >
+            {statusText}
+          </span>
+        );
+      },
+      //
     },
 
     {
