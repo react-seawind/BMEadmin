@@ -144,21 +144,7 @@ const UserListing = () => {
                 >
                   Edit
                 </button>
-                <button
-                  className=" text-black p-2 w-full border-b border-gray-300"
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        `Are you sure you want to delete ${row.Title}?`,
-                      )
-                    ) {
-                      handleDelete(row); // Call handleDelete function on click of delete button
-                    }
-                    setSelectedRow(null);
-                  }}
-                >
-                  Delete
-                </button>
+
                 <button
                   className="text-black p-2 w-full border-b border-gray-300"
                   onClick={() => {
@@ -185,6 +171,21 @@ const UserListing = () => {
                   }}
                 >
                   KYC
+                </button>
+                <button
+                  className=" text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        `Are you sure you want to delete ${row.Title}?`,
+                      )
+                    ) {
+                      handleDelete(row); // Call handleDelete function on click of delete button
+                    }
+                    setSelectedRow(null);
+                  }}
+                >
+                  Delete
                 </button>
               </div>
             )}
