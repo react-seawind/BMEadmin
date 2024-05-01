@@ -20,12 +20,7 @@ const LanguageEdit = () => {
       try {
         if (Id) {
           const SliderData = await getLanguageById(Id);
-          formik.setValues({
-            Id: SliderData.Id || '',
-            Title: SliderData.Title || '',
-            Slug: SliderData.Slug || '',
-            Status: SliderData.Status || '0',
-          });
+          formik.setValues(SliderData);
         } else {
           console.log('error');
         }

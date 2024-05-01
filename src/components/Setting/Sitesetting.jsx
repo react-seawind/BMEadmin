@@ -20,15 +20,7 @@ const Sitesetting = () => {
     const fetchData = async () => {
       try {
         const ContactData = await getSiteSettingById(Id);
-        formik.setValues({
-          Id: ContactData.Id || '',
-          Logo: ContactData.Logo || '',
-          Hid_Logo: ContactData.Hid_Logo || '',
-          Favicon: ContactData.Favicon || '',
-          Hid_Favicon: ContactData.Hid_Favicon || '',
-          SiteUrl: ContactData.SiteUrl || '',
-          copyright: ContactData.copyright || '',
-        });
+        formik.setValues(ContactData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -49,21 +41,9 @@ const Sitesetting = () => {
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
-        formData.append('Id', values.Id);
-        if (values.Logo instanceof File) {
-          formData.append('Logo', values.Logo);
-        } else {
-          formData.append('Logo', values.Logo);
-        }
-        formData.append('Hid_Logo', values.Hid_Logo);
-        if (values.Favicon instanceof File) {
-          formData.append('Favicon', values.Favicon);
-        } else {
-          formData.append('Favicon', values.Favicon);
-        }
-        formData.append('Hid_Favicon', values.Hid_Favicon);
-        formData.append('SiteUrl', values.SiteUrl);
-        formData.append('copyright', values.copyright);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
         await updateSiteSettingById(formData);
       } catch (error) {

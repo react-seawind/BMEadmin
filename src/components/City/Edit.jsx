@@ -38,15 +38,7 @@ const CityEdit = () => {
       try {
         if (Id) {
           const CityData = await getCityById(Id);
-          formik.setValues({
-            Id: CityData.Id || '',
-            Title: CityData.Title || '',
-            Slug: CityData.Slug || '',
-            StateId: CityData.StateId || '',
-            Image: CityData.Image || '',
-            Hid_Image: CityData.Hid_Image || '',
-            Status: CityData.Status || '0',
-          });
+          formik.setValues(CityData);
         } else {
           console.log('error');
         }
@@ -70,17 +62,9 @@ const CityEdit = () => {
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
-        formData.append('Id', values.Id);
-        formData.append('Title', values.Title);
-        formData.append('Slug', values.Slug);
-        formData.append('StateId', values.StateId);
-        if (values.Image instanceof File) {
-          formData.append('Image', values.Image);
-        } else {
-          formData.append('Image', values.Image);
-        }
-        formData.append('Hid_Image', values.Hid_Image);
-        formData.append('Status', values.Status);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
         await updateCityById(formData);
       } catch (error) {

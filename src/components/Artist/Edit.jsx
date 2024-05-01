@@ -24,15 +24,7 @@ const ArtistEdit = () => {
       try {
         if (Id) {
           const ArtistData = await getArtistById(Id);
-          formik.setValues({
-            Id: ArtistData.Id || '',
-            Title: ArtistData.Title || '',
-            Slug: ArtistData.Slug || '',
-            Content: ArtistData.Content || '',
-            Image: ArtistData.Image || '',
-            Hid_Image: ArtistData.Hid_Image || '',
-            Status: ArtistData.Status || '0',
-          });
+          formik.setValues(ArtistData);
         } else {
           console.log('error');
         }
@@ -56,17 +48,9 @@ const ArtistEdit = () => {
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
-        formData.append('Id', values.Id);
-        formData.append('Title', values.Title);
-        formData.append('Slug', values.Slug);
-        if (values.Image instanceof File) {
-          formData.append('Image', values.Image);
-        } else {
-          formData.append('Image', values.Image);
-        }
-        formData.append('Hid_Image', values.Hid_Image);
-        formData.append('Content', values.Content);
-        formData.append('Status', values.Status);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
         await updateArtistById(formData);
       } catch (error) {

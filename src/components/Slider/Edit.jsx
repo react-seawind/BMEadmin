@@ -17,15 +17,7 @@ const SliderEdit = () => {
     const fetchData = async () => {
       try {
         const SliderData = await getSliderById(Id);
-        formik.setValues({
-          Id: SliderData.Id || '',
-          Title: SliderData.Title || '',
-          Url: SliderData.Url || '',
-          Content: SliderData.Content || '',
-          Image: SliderData.Image || '',
-          Hid_Image: SliderData.Hid_Image || '',
-          Status: SliderData.Status || '0',
-        });
+        formik.setValues(SliderData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -50,17 +42,9 @@ const SliderEdit = () => {
 
       try {
         const formData = new FormData();
-        formData.append('Id', values.Id);
-        formData.append('Title', values.Title);
-        formData.append('Url', values.Url);
-        if (values.Image instanceof File) {
-          formData.append('Image', values.Image);
-        } else {
-          formData.append('Image', values.Image);
-        }
-        formData.append('Hid_Image', values.Hid_Image);
-        formData.append('Content', values.Content);
-        formData.append('Status', values.Status);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
         await updateSliderById(formData);
       } catch (error) {

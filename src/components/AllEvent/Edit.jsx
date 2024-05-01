@@ -19,20 +19,7 @@ const AllEventEdit = () => {
   //     try {
   //       if (Id) {
   //         const SliderData = await getCategoryById(Id);
-  //         formik.setValues({
-  //           Id: SliderData.Id || '',
-  //           Title: SliderData.Title || '',
-  //           Slug: SliderData.Slug || '',
-  //           Content: SliderData.Content || '',
-  //           Icon: SliderData.Icon || '',
-  //           Hid_Icon: SliderData.Hid_Icon || '',
-  //           Image: SliderData.Image || '',
-  //           Hid_Image: SliderData.Hid_Image || '',
-  //           Status: SliderData.Status || '0',
-  //         });
-  //         console.log('====================================');
-  //         console.log(SliderData);
-  //         console.log('====================================');
+  //          formik.setValues(SliderData);
   //       } else {
   //         console.log('error');
   //       }

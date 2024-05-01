@@ -20,13 +20,7 @@ const FaqEdit = () => {
       try {
         if (Id) {
           const FaqData = await getFaqById(Id);
-          formik.setValues({
-            Id: FaqData.Id || '',
-            Title: FaqData.Title || '',
-            Slug: FaqData.Slug || '',
-            Content: FaqData.Content || '',
-            Status: FaqData.Status || '0',
-          });
+          formik.setValues(FaqData);
         } else {
           console.log('error');
         }

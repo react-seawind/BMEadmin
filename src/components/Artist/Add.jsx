@@ -27,16 +27,9 @@ const ArtistAdd = () => {
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
-        formData.append('Title', values.Title);
-        formData.append('Slug', values.Slug);
-        if (values.Image instanceof File) {
-          formData.append('Image', values.Image);
-        } else {
-          formData.append('Image', values.Image);
-        }
-        formData.append('Content', values.Content);
-        formData.append('Status', values.Status);
-        await AddArtist(formData);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
         actions.resetForm();
         navigate('/artist/listing');
       } catch (error) {

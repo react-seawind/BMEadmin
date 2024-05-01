@@ -30,18 +30,9 @@ const PageAdd = () => {
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
-        formData.append('Title', values.Title);
-        formData.append('Slug', values.Slug);
-        formData.append('Content', values.Content);
-        formData.append('SeoTitle', values.SeoTitle);
-        formData.append('SeoKeyword', values.SeoKeyword);
-        formData.append('SeoDescription', values.SeoDescription);
-        if (values.Image instanceof File) {
-          formData.append('Image', values.Image);
-        } else {
-          formData.append('Image', values.Image);
-        }
-        formData.append('Status', values.Status);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
         await AddPages(formData);
         actions.resetForm();

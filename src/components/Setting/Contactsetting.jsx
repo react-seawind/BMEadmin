@@ -27,14 +27,7 @@ const Contactsetting = () => {
     const fetchData = async () => {
       try {
         const ContactData = await getContactSettingById(Id);
-        formik.setValues({
-          Id: ContactData.Id || '',
-          Address: ContactData.Address || '',
-          Email: ContactData.Email || '',
-          Phone: ContactData.Phone || '',
-          Map: ContactData.Map || '',
-          Web: ContactData.Web || '',
-        });
+        formik.setValues(ContactData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -54,13 +47,9 @@ const Contactsetting = () => {
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
-        formData.append('Id', values.Id);
-        formData.append('Address', values.Address);
-        formData.append('Email', values.Email);
-        formData.append('Phone', values.Phone);
-        formData.append('Web', values.Web);
-        formData.append('Map', values.Map);
-
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
         await updateContactSettingById(formData);
       } catch (error) {
         console.error('Error updating slider:', error);

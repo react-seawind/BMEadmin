@@ -23,20 +23,7 @@ const CategoryEdit = () => {
       try {
         if (Id) {
           const SliderData = await getCategoryById(Id);
-          formik.setValues({
-            Id: SliderData.Id || '',
-            Title: SliderData.Title || '',
-            Slug: SliderData.Slug || '',
-            Content: SliderData.Content || '',
-            Icon: SliderData.Icon || '',
-            Hid_Icon: SliderData.Hid_Icon || '',
-            Image: SliderData.Image || '',
-            Hid_Image: SliderData.Hid_Image || '',
-            Status: SliderData.Status || '0',
-          });
-          console.log('====================================');
-          console.log(SliderData);
-          console.log('====================================');
+          formik.setValues(SliderData);
         } else {
           console.log('error');
         }
@@ -62,23 +49,9 @@ const CategoryEdit = () => {
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
-        formData.append('Id', Id);
-        formData.append('Title', values.Title);
-        formData.append('Slug', values.Slug);
-        if (values.Image instanceof File) {
-          formData.append('Image', values.Image);
-        } else {
-          formData.append('Image', values.Image);
-        }
-        formData.append('Hid_Image', values.Hid_Image);
-        if (values.Icon instanceof File) {
-          formData.append('Icon', values.Icon);
-        } else {
-          formData.append('Icon', values.Icon);
-        }
-        formData.append('Hid_Icon', values.Hid_Icon);
-        formData.append('Content', values.Content);
-        formData.append('Status', values.Status);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
         await updateCategoryById(formData);
       } catch (error) {

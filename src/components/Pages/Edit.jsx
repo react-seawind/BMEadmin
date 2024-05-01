@@ -26,15 +26,7 @@ const PageEdit = () => {
       try {
         if (Id) {
           const PageData = await getPagesById(Id);
-          formik.setValues({
-            Id: PageData.Id || '',
-            Title: PageData.Title || '',
-            Slug: PageData.Slug || '',
-            Content: PageData.Content || '',
-            Image: PageData.Image || '',
-            Hid_Image: PageData.Hid_Image || '',
-            Status: PageData.Status || '0',
-          });
+          formik.setValues(PageData);
         } else {
           console.log('error');
         }

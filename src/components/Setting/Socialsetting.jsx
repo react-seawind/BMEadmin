@@ -24,17 +24,7 @@ const Socialsetting = () => {
     const fetchData = async () => {
       try {
         const SocialData = await getSocialSettingById(Id);
-        formik.setValues({
-          Id: SocialData.Id || '',
-          Facebook: SocialData.Facebook || '',
-          Twitter: SocialData.Twitter || '',
-          GooglePlus: SocialData.GooglePlus || '',
-          Instagram: SocialData.Instagram || '',
-          Youtube: SocialData.Youtube || '',
-          Linkedin: SocialData.Linkedin || '',
-          Skype: SocialData.Skype || '',
-          WhatsApp: SocialData.WhatsApp || '',
-        });
+        formik.setValues(SocialData);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

@@ -21,14 +21,7 @@ const StateEdit = () => {
       try {
         if (Id) {
           const StateData = await getStateById(Id);
-          formik.setValues({
-            Id: StateData.Id || '',
-            Title: StateData.Title || '',
-            Slug: StateData.Slug || '',
-            Image: StateData.Image || '',
-            Hid_Image: StateData.Hid_Image || '',
-            Status: StateData.Status || '0',
-          });
+          formik.setValues(StateData);
         } else {
           console.log('error');
         }
