@@ -23,13 +23,7 @@ const Profile = () => {
       try {
         const response = await getAdmindataById(adminId);
         setAdminData(response.responsedata[0]);
-        formik.setValues({
-          Name: response.responsedata[0].Name || '',
-          Email: response.responsedata[0].Email || '',
-          Image: response.responsedata[0].Image || '',
-          Hid_Image: response.responsedata[0].Hid_Image || '',
-          Id: response.responsedata[0].Id || '',
-        });
+        formik.setValues(response.responsedata[0]);
       } catch (error) {
         console.log('Error fetching admin data');
       }
@@ -49,13 +43,9 @@ const Profile = () => {
     onSubmit: async (values) => {
       try {
         const formData = new FormData();
-        formData.append('Name', values.Name);
-        formData.append('Email', values.Email);
-        if (values.Image instanceof File) {
-          formData.append('Image', values.Image);
-        }
-        formData.append('Hid_Image', values.Hid_Image);
-        formData.append('Id', values.Id);
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
 
         await UpdateAdminById(formData);
         toast('Profile update successfully...');
