@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
+import logo from '../../images/mainlogo.png';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
@@ -12,17 +13,19 @@ const validationSchema = Yup.object().shape({
 const SliderEdit = () => {
   // ================ Get data by Id============
   const { Id } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const SliderData = await getSliderById(Id);
-        formik.setValues(SliderData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+  const [imagePreview, setImagePreview] = useState();
+  const fetchData = async () => {
+    try {
+      const SliderData = await getSliderById(Id);
+      formik.setValues(SliderData);
+      if (SliderData.Image) {
+        setImagePreview(SliderData.Image); // Update image preview if image exists
       }
-    };
-
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [Id]);
   // --------------------Form----------------------
@@ -31,15 +34,13 @@ const SliderEdit = () => {
       Title: '',
       Url: '',
       Content: '',
-      Image: null,
+      Image: '',
       Hid_Image: '',
       Status: '1',
     },
 
     validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
-      // sessionStorage.setItem('Slider-Edit-Data', JSON.stringify(values));
-
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -47,6 +48,7 @@ const SliderEdit = () => {
         });
 
         await updateSliderById(formData);
+        fetchData();
       } catch (error) {
         console.error('Error updating slider:', error);
       }
@@ -125,7 +127,7 @@ const SliderEdit = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Content <span className="text-danger">*</span>
+                    Content
                   </label>
                   <input
                     type="text"
@@ -168,7 +170,7 @@ const SliderEdit = () => {
                   <div className="grid grid-cols-4 gap-2 relative">
                     <div className="relative">
                       <img
-                        src={formik.values.Image}
+                        src={imagePreview}
                         alt=""
                         className="rounded border p-2 h-28 w-28"
                       />

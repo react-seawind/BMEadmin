@@ -29,9 +29,6 @@ const ECommerce = () => {
         <CardThree catData={catData} />
         <CardFour catData={catData} />
       </div>
-      <div className="grid grid-cols-1 mt-10">
-        <ChartOne />
-      </div>
     </div>
   );
 };

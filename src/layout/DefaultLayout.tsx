@@ -30,9 +30,9 @@ const DefaultLayout = () => {
           <div className="py-6 bg-white w-full text-center mx-auto loader-first1 mt-auto">
             © {currentYear} Book My Event Design and Develop By {'  '}
             <Link
-              to={'www.seawindsolution.com'}
-              className="text-[#29aae1] ml-2"
               target="_blank"
+              to={'https://www.seawindsolution.com/'}
+              className="text-[#29aae1] ml-1"
             >
               Seawind Solution Pvt. Ltd.{' '}
             </Link>

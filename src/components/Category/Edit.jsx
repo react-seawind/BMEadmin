@@ -17,21 +17,27 @@ const validateSchema = Yup.object().shape({
 const CategoryEdit = () => {
   // ================ Get data by Id============
   const { Id } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (Id) {
-          const SliderData = await getCategoryById(Id);
-          formik.setValues(SliderData);
-        } else {
-          console.log('error');
+  const [imagePreview, setImagePreview] = useState();
+  const [IconPreview, setIconPreview] = useState();
+  const fetchData = async () => {
+    try {
+      if (Id) {
+        const SliderData = await getCategoryById(Id);
+        formik.setValues(SliderData);
+        if (SliderData.Image) {
+          setImagePreview(SliderData.Image); // Update image preview if image exists
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+        if (SliderData.Icon) {
+          setIconPreview(SliderData.Icon); // Update image preview if image exists
+        }
+      } else {
+        console.log('error');
       }
-    };
-
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [Id]);
   const formik = useFormik({
@@ -54,6 +60,7 @@ const CategoryEdit = () => {
         });
 
         await updateCategoryById(formData);
+        fetchData();
       } catch (error) {
         console.error('Error updating slider:', error);
       }
@@ -181,7 +188,7 @@ const CategoryEdit = () => {
                     <div className="grid grid-cols-4 gap-2 relative">
                       <div className="relative">
                         <img
-                          src={formik.values.Icon}
+                          src={IconPreview}
                           alt=""
                           className="rounded border p-2 h-28 w-28"
                         />
@@ -215,7 +222,7 @@ const CategoryEdit = () => {
                     <div className="grid grid-cols-4 gap-2 relative">
                       <div className="relative">
                         <img
-                          src={formik.values.Image}
+                          src={imagePreview}
                           alt=""
                           className="rounded border p-2 h-28 w-28"
                         />

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import DropdownUser from '../components/DropdownUser';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { UpdateAdminById, getAdmindataById } from '../API/AdminApi';
 
@@ -16,18 +16,21 @@ const validationSchema = yup.object().shape({
 const Profile = () => {
   const { adminId } = useParams();
   const [adminData, setAdminData] = useState({});
-
+  const [imagePreview, setImagePreview] = useState();
   // ================GetData==============
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getAdmindataById(adminId);
-        setAdminData(response.responsedata[0]);
-        formik.setValues(response.responsedata[0]);
-      } catch (error) {
-        console.log('Error fetching admin data');
+  const fetchData = async () => {
+    try {
+      const response = await getAdmindataById(adminId);
+      setAdminData(response.responsedata[0]);
+      formik.setValues(response.responsedata[0]);
+      if (response.responsedata[0].Image) {
+        setImagePreview(response.responsedata[0].Image); // Update image preview if image exists
       }
-    };
+    } catch (error) {
+      console.log('Error fetching admin data');
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [adminId]);
 
@@ -48,7 +51,7 @@ const Profile = () => {
         });
 
         await UpdateAdminById(formData);
-        toast('Profile update successfully...');
+        fetchData();
       } catch (error) {
         console.error('Error updating admin:', error);
         toast('Error updating admin');
@@ -56,6 +59,10 @@ const Profile = () => {
     },
   });
 
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate('/dashboard');
+  };
   return (
     <div>
       <Breadcrumb pageName="Profile" />
@@ -71,11 +78,7 @@ const Profile = () => {
             <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
               <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
                 <h3 className="font-medium text-black dark:text-white">
-                  <img
-                    src={formik.values.Image}
-                    alt=""
-                    className="w-35 mx-auto"
-                  />
+                  <img src={imagePreview} alt="" className="w-35 mx-auto" />
                 </h3>
               </div>
               <div className="p-7">
@@ -181,7 +184,8 @@ const Profile = () => {
                 <div className="flex justify-end gap-4.5">
                   <button
                     className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                    type="reset"
+                    onClick={handleGoBack}
+                    type="button"
                   >
                     Cancel
                   </button>

@@ -33,20 +33,23 @@ const CityEdit = () => {
   // ================ Get data by Id============
   const { Id } = useParams();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (Id) {
-          const CityData = await getCityById(Id);
-          formik.setValues(CityData);
-        } else {
-          console.log('error');
+  const [imagePreview, setImagePreview] = useState();
+  const fetchData = async () => {
+    try {
+      if (Id) {
+        const CityData = await getCityById(Id);
+        formik.setValues(CityData);
+        if (CityData.Image) {
+          setImagePreview(CityData.Image); // Update image preview if image exists
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } else {
+        console.log('error');
       }
-    };
-
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [Id]);
   const formik = useFormik({
@@ -67,6 +70,7 @@ const CityEdit = () => {
         });
 
         await updateCityById(formData);
+        fetchData();
       } catch (error) {
         console.error('Error updating city:', error);
       }
@@ -195,7 +199,7 @@ const CityEdit = () => {
                     <div className="grid grid-cols-4 gap-2 relative">
                       <div className="relative">
                         <img
-                          src={formik.values.Image}
+                          src={imagePreview}
                           alt=""
                           className="rounded border p-2 h-28 w-28"
                         />

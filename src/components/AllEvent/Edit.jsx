@@ -11,10 +11,10 @@ import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 
 const AllEventEdit = () => {
+  // const [imagePreview, setImagePreview] = useState();
   // ================ Get data by Id============
   // const { Id } = useParams();
 
-  // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
   //       if (Id) {
@@ -27,6 +27,8 @@ const AllEventEdit = () => {
   //       console.error('Error fetching data:', error);
   //     }
   //   };
+  // useEffect(() => {
+  // fetchData();
   // }, [Id]);
   const formik = useFormik({
     initialValues: {

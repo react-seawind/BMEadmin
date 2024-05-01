@@ -9,21 +9,23 @@ import { getUserById, updateUserById } from '../../API/UserApi';
 const UserEdit = () => {
   // ================ Get data by Id============
   const { Id } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (Id) {
-          const UserData = await getUserById(Id);
-          formik.setValues(UserData[0]);
-        } else {
-          console.log('error');
+  const [imagePreview, setImagePreview] = useState();
+  const fetchData = async () => {
+    try {
+      if (Id) {
+        const UserData = await getUserById(Id);
+        formik.setValues(UserData[0]);
+        if (UserData[0].Image) {
+          setImagePreview(UserData[0].Image); // Update image preview if image exists
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } else {
+        console.log('error');
       }
-    };
-
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [Id]);
   const formik = useFormik({
@@ -49,6 +51,7 @@ const UserEdit = () => {
         });
 
         await updateUserById(formData);
+        fetchData();
       } catch (error) {
         console.error('Error updating user:', error);
       }
@@ -261,11 +264,17 @@ const UserEdit = () => {
                   <p>Your Exsisting Img File</p>
                   <div className="grid grid-cols-4 gap-2 relative">
                     <div className="relative">
-                      <img
-                        src={formik.values.Image}
-                        alt=""
-                        className="rounded border p-2 h-28 w-28"
-                      />
+                      {imagePreview ? (
+                        <img
+                          src={imagePreview}
+                          alt=""
+                          className="rounded border p-2 h-28 w-28"
+                        />
+                      ) : (
+                        <p className="p-2 overflow-hidden h-30 rounded-md w-30 border my-2 border-slate-200 bg-white text-xl text-center">
+                          Image <br></br> Not <br></br> Uploaded
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>

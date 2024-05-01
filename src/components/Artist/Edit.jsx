@@ -18,21 +18,23 @@ const validateSchema = Yup.object().shape({
 const ArtistEdit = () => {
   // ================ Get data by Id============
   const { Id } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (Id) {
-          const ArtistData = await getArtistById(Id);
-          formik.setValues(ArtistData);
-        } else {
-          console.log('error');
+  const [imagePreview, setImagePreview] = useState();
+  const fetchData = async () => {
+    try {
+      if (Id) {
+        const ArtistData = await getArtistById(Id);
+        formik.setValues(ArtistData);
+        if (ArtistData.Image) {
+          setImagePreview(ArtistData.Image); // Update image preview if image exists
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } else {
+        console.log('error');
       }
-    };
-
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [Id]);
   const formik = useFormik({
@@ -53,6 +55,7 @@ const ArtistEdit = () => {
         });
 
         await updateArtistById(formData);
+        fetchData();
       } catch (error) {
         console.error('Error updating artist:', error);
       }
@@ -157,7 +160,7 @@ const ArtistEdit = () => {
                     <span className="text-danger">*</span>
                   </label>
                   <img
-                    src={formik.values.Image}
+                    src={imagePreview}
                     alt=""
                     className="rounded border p-2 h-28 w-28"
                   />

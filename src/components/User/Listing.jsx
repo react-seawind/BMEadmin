@@ -100,11 +100,11 @@ const UserListing = () => {
       ),
     },
     {
-      name: 'Status',
+      name: 'KYC Status',
       selector: (row) => {
-        const statusText = row.Status == '1' ? 'Active' : 'Inactive';
+        const statusText = row.KYCStatus == '1' ? 'Active' : 'Inactive';
         const statusColor =
-          row.Status == '1'
+          row.KYCStatus == '1'
             ? 'bg-green-600 text-white'
             : 'bg-red-600 text-white';
 
@@ -116,7 +116,6 @@ const UserListing = () => {
           </span>
         );
       },
-      //
     },
 
     {
@@ -164,7 +163,7 @@ const UserListing = () => {
                   Bookings
                 </button>
                 <button
-                  className="text-black p-2 w-full"
+                  className="text-black p-2 w-full border-b border-gray-300"
                   onClick={() => {
                     setSelectedRow(null);
                     Navigate(`/user/kyc/${row.Id}`);
@@ -173,7 +172,7 @@ const UserListing = () => {
                   KYC
                 </button>
                 <button
-                  className=" text-black p-2 w-full border-b border-gray-300"
+                  className=" text-black p-2 w-full "
                   onClick={() => {
                     if (
                       window.confirm(
