@@ -133,6 +133,15 @@ const EventListing = () => {
                 >
                   Edit
                 </button>
+                <button
+                className="text-black p-2 w-full border-b border-gray-300"
+                onClick={() => {
+                  setSelectedRow(null);
+                  Navigate('/vendor/bookings');
+                }}
+              >
+                Bookings
+              </button>
 
                 <button
                   className=" text-black p-2 w-full "
