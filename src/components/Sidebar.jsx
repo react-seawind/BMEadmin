@@ -343,7 +343,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-700" />
                         </div>
                       </NavLink>
 
@@ -400,7 +400,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-700" />
                         </div>
                       </NavLink>
 
@@ -565,7 +565,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-700" />
                         </div>
                       </NavLink>
 
@@ -621,7 +621,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-700" />
                         </div>
                       </NavLink>
 
@@ -655,7 +655,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* ===============ARTIST============== */}
+              {/* ===============User Manager============== */}
               <SidebarLinkGroup>
                 {(handleClick, open) => {
                   return (
@@ -711,6 +711,62 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                   );
                 }}
               </SidebarLinkGroup>
+              {/* ===============Vendor Manager============== */}
+              <SidebarLinkGroup>
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <NavLink
+                        to="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        <FaRegUser />
+                        Vendor Manager
+                        <div
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
+                            open && 'rotate-180'
+                          }`}
+                        >
+                          <FaChevronDown />
+                        </div>
+                      </NavLink>
+
+                      <div
+                        className={`translate transform overflow-hidden ${
+                          !open && 'hidden'
+                        }`}
+                      >
+                        <ul className="mt-2 mb-1.5 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <NavLink
+                              to="/vendor/listing"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
+                            >
+                              <FaClipboardList />
+                              List
+                            </NavLink>
+                          </li>
+                          <li>
+                            <NavLink
+                              to="/vendor/add"
+                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
+                            >
+                              <IoMdAdd />
+                              Add
+                            </NavLink>
+                          </li>
+                        </ul>
+                      </div>
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
               {/* ===============ARTIST============== */}
               <SidebarLinkGroup>
                 {(handleClick, open) => {
@@ -733,7 +789,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-700" />
                         </div>
                       </NavLink>
 
@@ -789,7 +845,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-700" />
                         </div>
                       </NavLink>
 
@@ -845,7 +901,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-700" />
                         </div>
                       </NavLink>
 

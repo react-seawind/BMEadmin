@@ -6,7 +6,7 @@ import { FaChevronDown } from 'react-icons/fa6';
 import { format } from 'date-fns';
 import { deleteUser, getAllUser } from '../../API/UserApi';
 
-const UserListing = () => {
+const VendorListing = () => {
   const [user, setuser] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
@@ -20,7 +20,7 @@ const UserListing = () => {
       try {
         const result = await getAllUser();
         setuser(result);
-        const filteredData = result.filter((item) => item.Type === 'U');
+        const filteredData = result.filter((item) => item.Type === 'V');
 
         if (filteredData.length > 0) {
           setfilterdata(filteredData);
@@ -71,7 +71,7 @@ const UserListing = () => {
     },
     {
       name: 'Type',
-      selector: (row) => <h1 className="text-base">User</h1>,
+      selector: (row) => <h1 className="text-base">Vendor</h1>,
     },
     {
       name: 'Image',
@@ -99,11 +99,11 @@ const UserListing = () => {
       ),
     },
     {
-      name: 'Status',
+      name: 'KYC Status',
       selector: (row) => {
-        const statusText = row.Status == '1' ? 'Active' : 'Inactive';
+        const statusText = row.KYCStatus == '1' ? 'Active' : 'Inactive';
         const statusColor =
-          row.Status == '1'
+          row.KYCStatus == '1'
             ? 'bg-green-600 text-white'
             : 'bg-red-600 text-white';
 
@@ -137,12 +137,39 @@ const UserListing = () => {
                   className="text-black p-2 w-full border-b border-gray-300"
                   onClick={() => {
                     setSelectedRow(null);
-                    Navigate(`/user/edit/${row.Id}`);
+                    Navigate(`/vendor/edit/${row.Id}`);
                   }}
                 >
                   Edit
                 </button>
 
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate(`/vendor/event/listing/${row.Id}`);
+                  }}
+                >
+                  Events
+                </button>
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate('/vendor/bookings');
+                  }}
+                >
+                  Bookings
+                </button>
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate(`/vendor/kyc/${row.Id}`);
+                  }}
+                >
+                  KYC
+                </button>
                 <button
                   className=" text-black p-2 w-full "
                   onClick={() => {
@@ -169,7 +196,7 @@ const UserListing = () => {
 
   return (
     <div>
-      <Breadcrumb pageName="User Listing" />
+      <Breadcrumb pageName="Vendor Listing" />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -204,4 +231,4 @@ const UserListing = () => {
   );
 };
 
-export default UserListing;
+export default VendorListing;

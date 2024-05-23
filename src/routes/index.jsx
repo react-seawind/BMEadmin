@@ -28,13 +28,10 @@ import CategoryListing from '../components/Category/Listing';
 import CategoryAdd from '../components/Category/Add';
 import CategoryEdit from '../components/Category/Edit';
 import AllEventListing from '../components/AllEvent/Listing';
-import AllEventEdit from '../components/AllEvent/Edit';
 import UserListing from '../components/User/Listing';
 import UserEdit from '../components/User/Edit';
 import UserAdd from '../components/User/Add';
-import UserEvents from '../components/User/Events';
 import UserBooking from '../components/User/Booking';
-import UserKyc from '../components/User/Kyc';
 import AllBookingListing from '../components/AllBooking/Listing';
 import PageListing from '../components/Pages/Listing';
 import PageAdd from '../components/Pages/Add';
@@ -43,6 +40,13 @@ import FaqListing from '../components/FAQ/Listing';
 import FaqAdd from '../components/FAQ/Add';
 import FaqEdit from '../components/FAQ/Edit';
 import MainForm from '../components/Form';
+import VendorListing from '../components/Vendor/Listing';
+import VendorEdit from '../components/Vendor/Edit';
+import VendorAdd from '../components/Vendor/Add';
+import VendorBooking from '../components/Vendor/Booking';
+import VendorKyc from '../components/Vendor/Kyc';
+import EventListing from '../components/Vendor/EventListing';
+import EventEdit from '../components/Vendor/EventEdit';
 
 const coreRoutes = [
   {
@@ -192,10 +196,6 @@ const coreRoutes = [
     path: '/allevent/listing',
     component: AllEventListing,
   },
-  {
-    path: '/allevent/edit/:Id',
-    component: AllEventEdit,
-  },
 
   // ================User======================
   {
@@ -211,16 +211,38 @@ const coreRoutes = [
     component: UserAdd,
   },
   {
-    path: '/user/events',
-    component: UserEvents,
-  },
-  {
     path: '/user/bookings',
     component: UserBooking,
   },
+  // ================Vendor======================
   {
-    path: '/user/kyc/:Id',
-    component: UserKyc,
+    path: '/vendor/listing',
+    component: VendorListing,
+  },
+  {
+    path: '/vendor/edit/:Id',
+    component: VendorEdit,
+  },
+  {
+    path: '/vendor/event/listing/:Id',
+    component: EventListing,
+  },
+  // --------------not used----------
+  {
+    path: '/vendor/add',
+    component: VendorAdd,
+  },
+  {
+    path: '/vendor/event/edit/:UserId/:Id',
+    component: EventEdit,
+  },
+  {
+    path: '/vendor/bookings',
+    component: VendorBooking,
+  },
+  {
+    path: '/vendor/kyc/:Id',
+    component: VendorKyc,
   },
 
   // ================All Bookung======================

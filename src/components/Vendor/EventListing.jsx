@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
-import { getServicedata } from '../API';
-import { GetAllEvent } from '../../API/EventApi';
 import { format } from 'date-fns';
+import { deleteUser, getAllUser } from '../../API/UserApi';
+import { getAllEventByVendorIdId } from '../../API/EventApi';
 
-const AllEventListing = () => {
-  const [service, setservice] = useState([]);
+const EventListing = () => {
+  const [user, setuser] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
 
@@ -16,11 +16,12 @@ const AllEventListing = () => {
 
   // =============action button===============
   const [selectedRow, setSelectedRow] = useState(null);
+  const { Id } = useParams();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await GetAllEvent();
-        setservice(result);
+        const result = await getAllEventByVendorIdId(Id);
+        setuser(result);
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -30,17 +31,39 @@ const AllEventListing = () => {
     fetchData();
   }, []);
 
+  // -------------------delete user------------------
+  const handleDelete = async (row) => {
+    try {
+      await deleteUser(row.Id);
+      setuser((prevCategory) =>
+        prevCategory.filter((item) => item.Id !== row.Id),
+      );
+      setfilterdata((prevFilterData) =>
+        prevFilterData.filter((item) => item.Id !== row.Id),
+      );
+    } catch (error) {
+      console.error('Error deleting category:', error);
+    }
+  };
+  useEffect(() => {
+    const mySearch = user.filter(
+      (item) =>
+        item.EventName &&
+        item.EventName.toLowerCase().match(search.toLowerCase()),
+    );
+    setfilterdata(mySearch);
+  }, [search]);
+
   const columns = [
     {
       name: '#',
       selector: 'Id',
-      cell: (row, index) => <div>{index + 1}</div>,
+      cell: (row, index) => <div>{row.Id}</div>,
     },
     {
       name: 'EventName',
       selector: (row) => <h1 className="text-base">{row.EventName}</h1>,
     },
-
     {
       name: 'Image',
       selector: (row) => (
@@ -87,59 +110,61 @@ const AllEventListing = () => {
 
     {
       name: 'Action',
+
       cell: (row) => (
         <div>
-          <div className="bg-red-600 text-white p-3 pl-5 w-26 flex relative">
-            <button>Actions</button>
+          <div className="relative">
             <button
+              className="bg-red-600 text-white p-3 pl-5 w-26 flex"
               onClick={() => {
                 setSelectedRow((prevRow) => (prevRow === row ? null : row));
               }}
             >
-              <FaChevronDown className=" my-auto ml-4 " />
+              Actions <FaChevronDown className="my-auto ml-4" />
             </button>
+            {selectedRow && selectedRow.Id === row.Id && (
+              <div className="action-buttons absolute z-10 bg-white border border-gray-300 rounded-md rounded-t-none shadow-lg   ">
+                <button
+                  className="text-black p-2 w-full border-b border-gray-300"
+                  onClick={() => {
+                    setSelectedRow(null);
+                    Navigate(`/vendor/event/edit/${row.UserId}/${row.Id}`);
+                  }}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className=" text-black p-2 w-full "
+                  onClick={() => {
+                    if (
+                      window.confirm(
+                        `Are you sure you want to delete ${row.Title}?`,
+                      )
+                    ) {
+                      handleDelete(row); // Call handleDelete function on click of delete button
+                    }
+                    setSelectedRow(null);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            )}
           </div>
-
-          {selectedRow && selectedRow.Id === row.Id && (
-            <div className="action-buttons  absolute z-99">
-              <button
-                className="text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  setSelectedRow(null);
-                  Navigate(`/vendor/event/edit/${row.UserId}/${row.Id}`);
-                }}
-              >
-                Edit
-              </button>
-
-              <br />
-              <button
-                className=" text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  alert(`Deleting ${row.Title}`);
-                  setSelectedRow(null);
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          )}
         </div>
       ),
+      allowOverflow: true,
     },
   ];
-
-  useEffect(() => {
-    const mySearch = service.filter(
-      (item) =>
-        item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
-    );
-    setfilterdata(mySearch);
-  }, [search]);
+  const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate(`/vendor/listing`);
+  };
 
   return (
     <div>
-      <Breadcrumb pageName="All Event Listing" />
+      <Breadcrumb pageName="Event Listing" />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -151,12 +176,13 @@ const AllEventListing = () => {
                 pagination
                 highlightOnHover
                 actions={
-                  <Link
-                    to="/allevent/edit"
-                    className="bg-blue-500 text-white p-3 px-10 text-sm"
+                  <div
+                    onClick={handleGoBack}
+                    type="button"
+                    className="bg-blue-500 cursor-pointer text-white p-3 px-10 text-sm"
                   >
-                    Edit
-                  </Link>
+                    Back
+                  </div>
                 }
                 subHeader
                 subHeaderComponent={
@@ -179,4 +205,4 @@ const AllEventListing = () => {
   );
 };
 
-export default AllEventListing;
+export default EventListing;

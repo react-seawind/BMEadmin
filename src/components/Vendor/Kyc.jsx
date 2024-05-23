@@ -4,11 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getUserById, updateUserById } from '../../API/UserApi';
 import { useFormik } from 'formik';
 
-const UserKyc = () => {
+const VendorKyc = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/user/listing');
+    navigate('/vendor/listing');
   };
 
   // ================ Get data by Id============
@@ -74,9 +74,7 @@ const UserKyc = () => {
               {kycData.Type !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
                   <th class="px-6 py-4 w-1/2 ">Type: </th>
-                  <td class="px-6 py-4 w-1/2 text-base">
-                    {kycData.Type === 'V' ? <>Vendor</> : <>User</>}
-                  </td>
+                  <td class="px-6 py-4 w-1/2 text-base">Vendor</td>
                 </tr>
               ) : (
                 ''
@@ -471,4 +469,4 @@ const UserKyc = () => {
   );
 };
 
-export default UserKyc;
+export default VendorKyc;
