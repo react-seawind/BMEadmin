@@ -16,8 +16,9 @@ const headers = {
 // ----------------------getSiteSettingbyId----------------
 export const getSiteSettingById = async (Id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/SiteSetting/${Id}`, {
+    const response = await axios.get(`${API_BASE_URL}/settings/site`, {
       headers,
+      'Content-Type': 'multipart/form-data',
     });
 
     if (response.data.status === true) {
@@ -33,13 +34,16 @@ export const getSiteSettingById = async (Id) => {
 // ===================Edit SiteSetting================D
 export const updateSiteSettingById = async (formData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/SiteSetting`, formData, {
-      headers,
-      'Content-Type': 'multipart/form-data',
-    });
+    const response = await axios.put(
+      `${API_BASE_URL}/settings/site`,
+      formData,
+      {
+        headers,
+      },
+    );
 
     if (response.data.status === true) {
-      toast(response.data.message); // Toast success message
+      toast.success(response.data.message); // Toast success message
       return response.data;
     } else {
       toast.error(response.data.message);

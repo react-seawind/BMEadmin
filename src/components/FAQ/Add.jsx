@@ -86,7 +86,19 @@ const FaqAdd = () => {
                   <input
                     type="text"
                     value={formik.values.Slug}
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      let newSlug = e.target.value
+                        .toLowerCase()
+                        .trim()
+                        .replace(/\s+/g, '-');
+                      // Replace slashes ("/") with hyphens ("-")
+                      newSlug = newSlug.replace(/\//g, '-');
+                      // Remove percent signs ("%")
+                      newSlug = newSlug.replace(/%/g, '');
+                      // Replace question marks ("?") with hyphens ("-")
+                      newSlug = newSlug.replace(/\?/g, '-');
+                      formik.setFieldValue('Slug', newSlug);
+                    }}
                     onBlur={formik.handleBlur}
                     name="Slug"
                     placeholder="Enter Slug"

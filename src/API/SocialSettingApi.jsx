@@ -16,7 +16,7 @@ const headers = {
 // ----------------------getSocialSettingbyId----------------
 export const getSocialSettingById = async (Id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/SocialSetting/${Id}`, {
+    const response = await axios.get(`${API_BASE_URL}/settings/social`, {
       headers,
     });
 
@@ -31,19 +31,14 @@ export const getSocialSettingById = async (Id) => {
   }
 };
 // ===================Edit SocialSetting================D
-export const updateSocialSettingById = async (formData) => {
+export const updateSocialSettingById = async (data) => {
   try {
-    const response = await axios.put(
-      `${API_BASE_URL}/SocialSetting`,
-      formData,
-      {
-        headers,
-        'Content-Type': 'multipart/form-data',
-      },
-    );
+    const response = await axios.put(`${API_BASE_URL}/settings/social`, data, {
+      headers,
+    });
 
     if (response.data.status === true) {
-      toast(response.data.message); // Toast success message
+      toast.success(response.data.message); // Toast success message
       return response.data;
     } else {
       toast.error(response.data.message);

@@ -10,7 +10,7 @@ import {
 } from '../../API/SocialSettingApi';
 
 const validationSchema = Yup.object().shape({
-  whatsapp: Yup.string()
+  WhatsApp: Yup.string()
     .matches(/^[0-9]+$/, 'Only Number are allowed for this field ')
     .min(10, 'User Phone must be at most 10 characters')
     .max(10, 'User Phone must be at most 10 characters'),
@@ -23,7 +23,7 @@ const Socialsetting = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const SocialData = await getSocialSettingById(Id);
+        const SocialData = await getSocialSettingById();
         formik.setValues(SocialData);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -35,8 +35,8 @@ const Socialsetting = () => {
   const formik = useFormik({
     initialValues: {
       Facebook: '',
+      Pinterest: '',
       Twitter: '',
-      GooglePlus: '',
       Instagram: '',
       Youtube: '',
       Linkedin: '',
@@ -44,7 +44,7 @@ const Socialsetting = () => {
       WhatsApp: '',
     },
     validationSchema: validationSchema,
-    onSubmit: async (values, actions) => {
+    onSubmit: async (values) => {
       try {
         await updateSocialSettingById(values);
       } catch (error) {
@@ -99,6 +99,28 @@ const Socialsetting = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
+                    Pinterest
+                  </label>
+                  <input
+                    type="text"
+                    name="Pinterest"
+                    value={formik.values.Pinterest}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    placeholder="Enter Your Pinterest"
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                  />
+                  {formik.touched.Pinterest && formik.errors.Pinterest ? (
+                    <div className="text-red-500">
+                      {formik.errors.Pinterest}
+                    </div>
+                  ) : null}
+                  <p>Please enter Pinterest page url</p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+                <div>
+                  <label className="mb-3 block text-black dark:text-white">
                     Twitter
                   </label>
                   <input
@@ -113,31 +135,10 @@ const Socialsetting = () => {
                   {formik.touched.Twitter && formik.errors.Twitter ? (
                     <div className="text-red-500">{formik.errors.Twitter}</div>
                   ) : null}
-                  <p>Please enter twitter page url</p>
+                  <p>Please enter Twitter page url</p>
                 </div>
               </div>
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    GooglePlus
-                  </label>
-                  <input
-                    type="text"
-                    name="GooglePlus"
-                    value={formik.values.GooglePlus}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    placeholder="Enter Your GooglePlus"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                  {formik.touched.GooglePlus && formik.errors.GooglePlus ? (
-                    <div className="text-red-500">
-                      {formik.errors.GooglePlus}
-                    </div>
-                  ) : null}
-                  <p>Please enter googleplus page url</p>
-                </div>
-              </div>
+
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
@@ -227,17 +228,17 @@ const Socialsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="Whatsapp"
-                    value={formik.values.Whatsapp}
+                    name="WhatsApp"
+                    value={formik.values.WhatsApp}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     placeholder="Enter Your WhatsApp"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.Whatsapp && formik.errors.Whatsapp ? (
-                    <div className="text-red-500">{formik.errors.Whatsapp}</div>
+                  {formik.touched.WhatsApp && formik.errors.WhatsApp ? (
+                    <div className="text-red-500">{formik.errors.WhatsApp}</div>
                   ) : null}
-                  <p>Please enter Whatsapp number</p>
+                  <p>Please enter WhatsApp number</p>
                 </div>
               </div>
 

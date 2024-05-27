@@ -23,16 +23,15 @@ const Contactsetting = () => {
   // ================ Get data by Id============
   const { Id } = useParams();
 
+  const fetchData = async () => {
+    try {
+      const ContactData = await getContactSettingById();
+      formik.setValues(ContactData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ContactData = await getContactSettingById(Id);
-        formik.setValues(ContactData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
     fetchData();
   }, [Id]);
   const formik = useFormik({
@@ -46,11 +45,8 @@ const Contactsetting = () => {
     validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
       try {
-        const formData = new FormData();
-        Object.entries(values).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-        await updateContactSettingById(formData);
+        await updateContactSettingById(values);
+        fetchData();
       } catch (error) {
         console.error('Error updating slider:', error);
       }
@@ -109,7 +105,7 @@ const Contactsetting = () => {
                   </label>
                   <input
                     type="email"
-                    name="email"
+                    name="Email"
                     value={formik.values.Email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -129,7 +125,7 @@ const Contactsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="phone"
+                    name="Phone"
                     value={formik.values.Phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -152,7 +148,7 @@ const Contactsetting = () => {
                   </label>
                   <input
                     type="text"
-                    name="web"
+                    name="Web"
                     value={formik.values.Web}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
@@ -175,7 +171,7 @@ const Contactsetting = () => {
                     value={formik.values.Map}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    name="map"
+                    name="Map"
                     placeholder="Please enter Map IFRAME Only"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   ></textarea>

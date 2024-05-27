@@ -47,6 +47,9 @@ import VendorBooking from '../components/Vendor/Booking';
 import VendorKyc from '../components/Vendor/Kyc';
 import EventListing from '../components/Vendor/EventListing';
 import EventEdit from '../components/Vendor/EventEdit';
+import OfferListing from '../components/Offer/Listing';
+import OfferAdd from '../components/Offer/Add';
+import OfferEdit from '../components/Offer/Edit';
 
 const coreRoutes = [
   {
@@ -150,6 +153,19 @@ const coreRoutes = [
   {
     path: '/artist/edit/:Id',
     component: ArtistEdit,
+  },
+  // ================Offer======================
+  {
+    path: '/offer/listing',
+    component: OfferListing,
+  },
+  {
+    path: '/offer/add',
+    component: OfferAdd,
+  },
+  {
+    path: '/offer/edit/:Id',
+    component: OfferEdit,
   },
   // ================language======================
   {

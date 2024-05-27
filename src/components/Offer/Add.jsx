@@ -1,103 +1,102 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
-import Logo from '../../images/mainlogo.png';
-import favicon from '../../images/loaderimage.png';
-import NewEditor from '../EDITOR/NewEditor';
-
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { toast } from 'react-toastify';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getPagesById, updatePagesById } from '../../API/PageApi';
+import { useNavigate } from 'react-router-dom';
+import { AddPages } from '../../API/PageApi';
+import NewEditor from '../EDITOR/NewEditor';
+import { AddOffer } from '../../API/OfferApi';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Title is required.'),
   Slug: Yup.string().required('Slug is required.'),
   Content: Yup.string().required('Content is required.'),
-  Image: Yup.string().required('Image is required.'),
+  Image: Yup.mixed().required('Image is required.'),
+  Icon: Yup.mixed().required('Icon is required.'),
 });
 
-const PageEdit = () => {
-  // ================ Get data by Id============
-  const { Id } = useParams();
-  const [imagePreview, setImagePreview] = useState();
+const OfferAdd = () => {
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    Title: '',
+    Slug: '',
+    Content: '',
+    Image: '',
+    Icon: '',
+    Status: '1',
+    faqData: [{ Title: '', Content: '' }],
+  });
 
-  const fetchData = async () => {
-    try {
-      if (Id) {
-        const PageData = await getPagesById(Id);
-        formik.setValues(PageData);
-        if (PageData.Image) {
-          setImagePreview(PageData.Image); // Update image preview if image exists
-        }
-      } else {
-        console.log('error');
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [Id]);
   const formik = useFormik({
-    initialValues: {
-      Title: '',
-      Slug: '',
-      Content: '',
-      Image: '',
-      Hid_Image: '',
-      SeoTitle: '',
-      SeoKeyword: '',
-      SeoDescription: '',
-      Status: '',
-    },
+    initialValues: formData,
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
       try {
-        const formData = new FormData();
+        const formDataToSend = new FormData();
         Object.entries(values).forEach(([key, value]) => {
-          formData.append(key, value);
+          if (key === 'faqData') {
+            formDataToSend.append(key, JSON.stringify(formData[key]));
+          } else {
+            formDataToSend.append(key, value);
+          }
         });
-        await updatePagesById(formData);
-        fetchData();
+
+        await AddOffer(formDataToSend);
+        actions.resetForm();
+        navigate('/offer/listing');
       } catch (error) {
-        console.error('Error adding page:', error);
+        console.error('Error adding Offer:', error);
       }
     },
   });
 
-  const navigate = useNavigate();
+  const addVenue = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      faqData: [...prevState.faqData, { Title: '', Content: '' }],
+    }));
+    formik.setFieldValue('faqData', [
+      ...formik.values.faqData,
+      { Title: '', Content: '' },
+    ]);
+  };
+
+  const handleVenueChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedVenue = [...formData.faqData];
+    updatedVenue[index][name] = value;
+    setFormData({ ...formData, faqData: updatedVenue });
+    formik.setFieldValue('faqData', updatedVenue);
+  };
+
+  const removeVenue = (index) => {
+    const updatedVenues = [...formData.faqData];
+    updatedVenues.splice(index, 1);
+    setFormData({ ...formData, faqData: updatedVenues });
+    formik.setFieldValue('faqData', updatedVenues);
+  };
 
   const handleGoBack = () => {
-    navigate('/page/listing');
+    navigate('/offer/listing');
   };
+
   return (
     <div>
-      <Breadcrumb pageName="Page Edit" />
-
+      <Breadcrumb pageName="Offer Add" />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
-          {/* <!-- Input Fields --> */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                Page Add
+                Offer Add
               </h3>
               <p>
-                Please fill all detail and add new Page in your Page directory
+                Please fill all detail and add new Offer Add in your Sub Admin
+                directory
               </p>
             </div>
-
             <form onSubmit={formik.handleSubmit}>
-              <input
-                type="hidden"
-                name="Hid_Image"
-                value={formik.values.Hid_Image}
-              />
-
-              {/*===========title===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Title <span className="text-danger">*</span>
@@ -108,17 +107,14 @@ const PageEdit = () => {
                     value={formik.values.Title}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your Title"
+                    placeholder="Enter Title"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.Title && formik.errors.Title ? (
+                  {formik.touched.Title && formik.errors.Title && (
                     <div className="text-red-500">{formik.errors.Title}</div>
-                  ) : null}
+                  )}
                   <p>Please enter Title</p>
                 </div>
-              </div>
-              {/*===========Slug===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Slug <span className="text-danger">*</span>
@@ -141,16 +137,17 @@ const PageEdit = () => {
                       formik.setFieldValue('Slug', newSlug);
                     }}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your Slug"
+                    placeholder="Enter Slug"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.Slug && formik.errors.Slug ? (
+
+                  {formik.touched.Slug && formik.errors.Slug && (
                     <div className="text-red-500">{formik.errors.Slug}</div>
-                  ) : null}
+                  )}
                   <p>Please enter Slug</p>
                 </div>
               </div>
-              {/*===========Content===========*/}
+
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
@@ -158,7 +155,7 @@ const PageEdit = () => {
                   </label>
                   <NewEditor
                     name="Content"
-                    values={formik.values.Content}
+                    value={formik.values.Content}
                     onChange={(Content) => {
                       formik.setFieldValue('Content', Content);
                       formik.setFieldTouched('Content', true);
@@ -172,108 +169,103 @@ const PageEdit = () => {
                 </div>
               </div>
 
-              {/*===========Banner Img===========*/}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Banner Img
-                    <span className="text-danger">*</span>
+                    Image<span className="text-danger">*</span>
                   </label>
                   <input
                     type="file"
-                    name="Image"
-                    onChange={(event) =>
-                      formik.setFieldValue('Image', event.target.files[0])
-                    }
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        'Image',
+                        event.currentTarget.files[0],
+                      );
+                    }}
                     onBlur={formik.handleBlur}
+                    name="Image"
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
                   {formik.touched.Image && formik.errors.Image ? (
                     <div className="text-red-500">{formik.errors.Image}</div>
                   ) : null}
-
-                  <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
                 </div>
-
-                <div className="mt-5">
-                  <p>Your Exsisting Img File*</p>
-                  <div className="grid grid-cols-4 gap-2 relative">
-                    <div className="relative">
-                      <img
-                        src={imagePreview}
-                        alt=""
-                        className="rounded border p-2 h-28 w-28"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/*===========SeoTitle===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    SeoTitle <span className="text-danger">*</span>
+                    Icon<span className="text-danger">*</span>
                   </label>
                   <input
-                    type="text"
-                    name="SeoTitle"
-                    value={formik.values.SeoTitle}
-                    onChange={formik.handleChange}
+                    type="file"
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        'Icon',
+                        event.currentTarget.files[0],
+                      );
+                    }}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your SeoTitle"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                    name="Icon"
+                    className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
-                  {formik.touched.SeoTitle && formik.errors.SeoTitle ? (
-                    <div className="text-red-500">{formik.errors.SeoTitle}</div>
+                  {formik.touched.Icon && formik.errors.Icon ? (
+                    <div className="text-red-500">{formik.errors.Icon}</div>
                   ) : null}
-                  <p>Please enter SeoTitle</p>
                 </div>
               </div>
-              {/*===========SeoKeyword===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    SeoKeyword <span className="text-danger">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="SeoKeyword"
-                    value={formik.values.SeoKeyword}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    placeholder="Enter Your SeoKeyword"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  />
-                  {formik.touched.SeoKeyword && formik.errors.SeoKeyword ? (
-                    <div className="text-red-500">
-                      {formik.errors.SeoKeyword}
+
+              <div className="gap-5.5 py-3.5 px-5.5">
+                <h1 className="mt-2 text-gray-700 dark:text-gray-300">
+                  Add FAQ for this Offer
+                </h1>
+                <div className="mt-1.5 border-[1.5px] border-gray-500">
+                  {formik.values.faqData.map((val, index) => (
+                    <div
+                      key={index}
+                      className="p-2 rounded-3 lg:flex border-b border-gray-500"
+                    >
+                      <div className="lg:w-2/5 w-auto mx-2">
+                        <label className="my-auto whitespace-nowrap text-gray-700 dark:text-gray-200">
+                          Question
+                        </label>
+                        <input
+                          type="text"
+                          name="Title"
+                          onChange={(e) => handleVenueChange(index, e)}
+                          value={val.Title}
+                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                          placeholder="Title"
+                        />
+                      </div>
+                      <div className="lg:w-2/5 w-auto mx-2">
+                        <label className="my-auto whitespace-nowrap text-gray-700 dark:text-gray-200">
+                          Content
+                        </label>
+                        <input
+                          type="text"
+                          name="Content"
+                          onChange={(e) => handleVenueChange(index, e)}
+                          value={val.Content}
+                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                          placeholder="Content"
+                        />
+                      </div>
+                      <div className="lg:w-1/5 w-auto mx-2">
+                        <button
+                          className="w-full bg-themecolor2 py-2 mt-5 text-white rounded-full font-semibold"
+                          type="button"
+                          onClick={() => removeVenue(index)}
+                        >
+                          Remove
+                        </button>
+                      </div>
                     </div>
-                  ) : null}
-                  <p>Please enter SeoKeyword</p>
-                </div>
-              </div>
-              {/*===========SeoDescription===========*/}
-              <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
-                <div>
-                  <label className="mb-3 block text-black dark:text-white">
-                    SeoDescription <span className="text-danger">*</span>
-                  </label>
-                  <textarea
-                    rows={2}
-                    name="SeoDescription"
-                    value={formik.values.SeoDescription}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    placeholder="Please enter SeoDescription"
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                  ></textarea>
-                  {formik.touched.SeoDescription &&
-                  formik.errors.SeoDescription ? (
-                    <div className="text-red-500">
-                      {formik.errors.SeoDescription}
-                    </div>
-                  ) : null}
-                  <p>Please enter SeoDescription</p>
+                  ))}
+                  <button
+                    type="button"
+                    className="text-white bg-red-700 p-2 px-5 my-3 block m-auto rounded-md"
+                    onClick={addVenue}
+                  >
+                    Add FAQ
+                  </button>
                 </div>
               </div>
 
@@ -289,7 +281,7 @@ const PageEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="1"
-                      checked={formik.values.Status == '1'}
+                      checked={formik.values.Status === '1'}
                     />
                     Active
                   </div>
@@ -300,15 +292,15 @@ const PageEdit = () => {
                       name="Status"
                       className="mx-2"
                       value="0"
-                      checked={formik.values.Status == '0'}
+                      checked={formik.values.Status === '0'}
                     />
-                    In Active
+                    Inactive
                   </div>
                 </div>
-                <p>Please select an a one status by default is inactive.</p>
+                <p>Please select a status. Default is inactive.</p>
               </div>
 
-              <div className="flex   gap-5.5 py-3.5 px-5.5">
+              <div className="flex gap-5.5 py-3.5 px-5.5">
                 <button
                   className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
                   type="submit"
@@ -331,4 +323,4 @@ const PageEdit = () => {
   );
 };
 
-export default PageEdit;
+export default OfferAdd;

@@ -236,7 +236,7 @@ const VendorEvents = () => {
             Address Information
           </h1>
           {EventData.Addresses?.map((address, index) => (
-            <div key={index} className="container mx-auto  p-4 bg-white">
+            <div key={index} className="container mx-auto  p-4 bg-white border">
               <div className="flex items-center foldsmall:flex-col foldsmall:justify-center">
                 <p className="m-0 border border-themecolor1 py-1.5 rounded-3xl">
                   <span className="bg-themecolor1  text-white px-3.5 py-2 rounded-full mr-2">

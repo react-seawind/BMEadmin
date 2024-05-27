@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
 import Logo from '../../images/mainlogo.png';
 import * as Yup from 'yup';
@@ -10,22 +10,26 @@ import {
   updateSiteSettingById,
 } from '../../API/SiteSettingApi';
 
-const validationSchema = Yup.object().shape({});
-
 const Sitesetting = () => {
   // ================ Get data by Id============
   const { Id } = useParams();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ContactData = await getSiteSettingById(Id);
-        formik.setValues(ContactData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+  const [Logo, setLogo] = useState(null);
+  const [Favicon, setFavicon] = useState(null);
+  const fetchData = async () => {
+    try {
+      const ContactData = await getSiteSettingById();
+      formik.setValues(ContactData);
+      if (ContactData.Logo) {
+        setLogo(ContactData.Logo);
       }
-    };
-
+      if (ContactData.Favicon) {
+        setFavicon(ContactData.Favicon);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+  useEffect(() => {
     fetchData();
   }, [Id]);
   const formik = useFormik({
@@ -37,7 +41,6 @@ const Sitesetting = () => {
       SiteUrl: '',
       copyright: '',
     },
-    validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
       try {
         const formData = new FormData();
@@ -46,6 +49,7 @@ const Sitesetting = () => {
         });
 
         await updateSiteSettingById(formData);
+        fetchData();
       } catch (error) {
         console.error('Error updating slider:', error);
       }
@@ -140,10 +144,12 @@ const Sitesetting = () => {
                   <input
                     type="file"
                     name="Logo"
-                    value={formik.values.Logo}
-                    onChange={(event) =>
-                      formik.setFieldValue('Logo', event.target.files[0])
-                    }
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        'Logo',
+                        event.currentTarget.files[0],
+                      );
+                    }}
                     onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
@@ -156,7 +162,7 @@ const Sitesetting = () => {
                     <div className="grid grid-cols-4 gap-2 relative">
                       <div className="relative">
                         <img
-                          src={formik.values.Logo}
+                          src={Logo}
                           className="w-full rounded border p-2 h-28 w-28"
                         />
                       </div>
@@ -171,10 +177,12 @@ const Sitesetting = () => {
                   <input
                     type="file"
                     name="Favicon"
-                    value={formik.values.Favicon}
-                    onChange={(event) =>
-                      formik.setFieldValue('Image', event.target.files[0])
-                    }
+                    onChange={(event) => {
+                      formik.setFieldValue(
+                        'Favicon',
+                        event.currentTarget.files[0],
+                      );
+                    }}
                     onBlur={formik.handleBlur}
                     className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent font-medium outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                   />
@@ -187,7 +195,7 @@ const Sitesetting = () => {
                       <div className="relative">
                         <img
                           className="w-full rounded border p-2 h-28 w-28"
-                          src={formik.values.Favicon}
+                          src={Favicon}
                         />
                       </div>
                     </div>
