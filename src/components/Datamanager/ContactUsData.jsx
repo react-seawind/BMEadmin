@@ -8,6 +8,7 @@ import { Export } from 'react-data-table-component-extensions/dist/ui';
 import { CSVLink } from 'react-csv';
 import { deleteContact, getAllContact } from '../../API/DataManagerApi';
 import { format } from 'date-fns';
+import ClipLoader from 'react-spinners/BounceLoader';
 
 const ContactdataListing = () => {
   const [contact, setcontact] = useState([]);
@@ -15,7 +16,7 @@ const ContactdataListing = () => {
   const [filterdata, setfilterdata] = useState([]);
 
   const Navigate = useNavigate();
-
+  const [loading, setLoading] = useState(true); // Loading state
   // =============action button===============
   const [selectedRow, setSelectedRow] = useState(null);
   useEffect(() => {
@@ -26,6 +27,8 @@ const ContactdataListing = () => {
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
 
@@ -147,35 +150,41 @@ const ContactdataListing = () => {
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-              <DataTable
-                className="text-2xl"
-                columns={columns}
-                data={filterdata}
-                pagination
-                highlightOnHover
-                actions={
-                  <CSVLink
-                    data={filterdata}
-                    headers={csvHeaders}
-                    filename={'contact_data_data.csv'}
-                    className="bg-blue-500 text-white px-5 py-3"
-                  >
-                    Export CSV
-                  </CSVLink>
-                }
-                subHeader
-                subHeaderComponent={
-                  <input
-                    type="text"
-                    placeholder="search"
-                    className="text-start me-auto -mt-25  border-2 py-3 px-2 md:px-5"
-                    value={search}
-                    onChange={(e) => {
-                      setsearch(e.target.value);
-                    }}
-                  />
-                }
-              />
+              {loading ? (
+                <div className="flex justify-center items-center py-60">
+                  <ClipLoader color={'#c82f32'} loading={loading} size={40} />
+                </div>
+              ) : (
+                <DataTable
+                  className="text-2xl"
+                  columns={columns}
+                  data={filterdata}
+                  pagination
+                  highlightOnHover
+                  actions={
+                    <CSVLink
+                      data={filterdata}
+                      headers={csvHeaders}
+                      filename={'contact_data_data.csv'}
+                      className="bg-blue-500 text-white px-5 py-3"
+                    >
+                      Export CSV
+                    </CSVLink>
+                  }
+                  subHeader
+                  subHeaderComponent={
+                    <input
+                      type="text"
+                      placeholder="search"
+                      className="text-start me-auto -mt-25  border-2 py-3 px-2 md:px-5"
+                      value={search}
+                      onChange={(e) => {
+                        setsearch(e.target.value);
+                      }}
+                    />
+                  }
+                />
+              )}
             </div>
           </div>
         </div>

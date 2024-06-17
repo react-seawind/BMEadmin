@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { AddCategory } from '../../API/CategoryApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Category Name is required.'),
@@ -15,6 +16,7 @@ const validateSchema = Yup.object().shape({
 });
 
 const CategoryAdd = () => {
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Title: '',
@@ -26,6 +28,7 @@ const CategoryAdd = () => {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -37,6 +40,8 @@ const CategoryAdd = () => {
         navigate('/category/listing');
       } catch (error) {
         console.error('Error adding Category:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -44,13 +49,13 @@ const CategoryAdd = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/slider/listing');
+    navigate('/category/listing');
   };
 
   return (
     <div>
       <Breadcrumb pageName="Category Add" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

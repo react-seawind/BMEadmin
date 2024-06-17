@@ -8,6 +8,7 @@ import {
   getSocialSettingById,
   updateSocialSettingById,
 } from '../../API/SocialSettingApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validationSchema = Yup.object().shape({
   WhatsApp: Yup.string()
@@ -32,6 +33,7 @@ const Socialsetting = () => {
 
     fetchData();
   }, [Id]);
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Facebook: '',
@@ -45,10 +47,13 @@ const Socialsetting = () => {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
+      setIsFormLoading(true);
       try {
         await updateSocialSettingById(values);
       } catch (error) {
         console.error('Error updating slider:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -60,7 +65,7 @@ const Socialsetting = () => {
   return (
     <div>
       <Breadcrumb pageName="Social Settings Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

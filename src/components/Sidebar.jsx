@@ -29,6 +29,7 @@ import {
   FaQuestionCircle,
   FaRegUser,
   FaSitemap,
+  FaTicketAlt,
   FaUserCircle,
 } from 'react-icons/fa';
 import { BsChatQuoteFill } from 'react-icons/bs';
@@ -82,7 +83,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-40 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
@@ -142,7 +143,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
                       <div
@@ -344,7 +345,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -401,7 +402,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -566,7 +567,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -622,7 +623,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -678,7 +679,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -790,7 +791,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -846,7 +847,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -902,7 +903,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -958,7 +959,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -1014,7 +1015,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-700" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -1076,7 +1077,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                               to="/allbooking/listing"
                               className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
                             >
-                              <FaClipboardList />
+                              <FaTicketAlt />
                               List
                             </NavLink>
                           </li>
@@ -1191,8 +1192,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                                           : setSidebarExpanded(true);
                                       }}
                                     >
-                                      <FaNewspaper />
-                                      Newslatter
+                                      <IoIosContact />
+                                      News Letter Data
                                       <span
                                         className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                                           open && 'rotate-180'
@@ -1210,7 +1211,64 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                                       <ul className="mt-2 mb-1.5 flex flex-col gap-2.5 ">
                                         <li>
                                           <NavLink
-                                            to="/newslatter/listing"
+                                            to="/newsletter/listing"
+                                            className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
+                                          >
+                                            <FaClipboardList />
+                                            Listing
+                                          </NavLink>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    {/* <!-- Dropdown Menu End --> */}
+                                  </React.Fragment>
+                                );
+                              }}
+                            </SidebarLinkGroup>
+                          </li>
+                        </ul>
+                      </div>
+                      <div
+                        className={`translate transform overflow-hidden ${
+                          !open && 'hidden'
+                        }`}
+                      >
+                        <ul className="mt-1 mb-1.5 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <SidebarLinkGroup>
+                              {(handleClick, open) => {
+                                return (
+                                  <React.Fragment>
+                                    <NavLink
+                                      to="#"
+                                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        sidebarExpanded
+                                          ? handleClick()
+                                          : setSidebarExpanded(true);
+                                      }}
+                                    >
+                                      <FaNewspaper />
+                                      Booking
+                                      <span
+                                        className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
+                                          open && 'rotate-180'
+                                        }`}
+                                      >
+                                        <FaChevronDown />
+                                      </span>
+                                    </NavLink>
+                                    {/* <!-- Dropdown Menu Start --> */}
+                                    <div
+                                      className={`translate transform overflow-hidden ${
+                                        !open && 'hidden'
+                                      }`}
+                                    >
+                                      <ul className="mt-2 mb-1.5 flex flex-col gap-2.5 ">
+                                        <li>
+                                          <NavLink
+                                            to="/booking/listing"
                                             className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
                                           >
                                             <FaClipboardList />

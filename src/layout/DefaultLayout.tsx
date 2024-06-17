@@ -27,7 +27,7 @@ const DefaultLayout = () => {
             </div>
           </main>
 
-          <div className="py-6 bg-white w-full text-center mx-auto loader-first1 mt-auto">
+          <div className="py-6 bg-white dark:bg-boxdark w-full text-center mx-auto loader-first1 mt-auto">
             © {currentYear} Book My Event Design and Develop By {'  '}
             <Link
               target="_blank"

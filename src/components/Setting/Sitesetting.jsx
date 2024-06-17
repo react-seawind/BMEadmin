@@ -9,6 +9,7 @@ import {
   getSiteSettingById,
   updateSiteSettingById,
 } from '../../API/SiteSettingApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const Sitesetting = () => {
   // ================ Get data by Id============
@@ -32,6 +33,7 @@ const Sitesetting = () => {
   useEffect(() => {
     fetchData();
   }, [Id]);
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Logo: '',
@@ -42,6 +44,7 @@ const Sitesetting = () => {
       copyright: '',
     },
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -52,6 +55,8 @@ const Sitesetting = () => {
         fetchData();
       } catch (error) {
         console.error('Error updating slider:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -64,7 +69,7 @@ const Sitesetting = () => {
   return (
     <div>
       <Breadcrumb pageName="Site Setting Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

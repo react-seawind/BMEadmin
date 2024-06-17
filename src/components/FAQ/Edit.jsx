@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getFaqById, updateFaqById } from '../../API/FaqApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Faq Name is required.'),
@@ -32,6 +33,7 @@ const FaqEdit = () => {
     fetchData();
   }, [Id]);
   // -----------------FORM---------------
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Title: '',
@@ -41,10 +43,13 @@ const FaqEdit = () => {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         await updateFaqById(values);
       } catch (error) {
         console.error('Error Adding Faq:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -57,7 +62,7 @@ const FaqEdit = () => {
   return (
     <div>
       <Breadcrumb pageName="Faq Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

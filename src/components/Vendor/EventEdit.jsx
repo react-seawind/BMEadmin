@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getUserById, updateUserById } from '../../API/UserApi';
 import { useFormik } from 'formik';
 import { EditEvent, getEventByEventId } from '../../API/EventApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const VendorEvents = () => {
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ const VendorEvents = () => {
     fetchData();
   }, [Id]);
 
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Id: Id,
@@ -39,10 +41,13 @@ const VendorEvents = () => {
       Status: 0,
     },
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         await EditEvent(values);
       } catch (error) {
         console.error('Error updating user:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -51,6 +56,7 @@ const VendorEvents = () => {
   };
   return (
     <div>
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
           <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
@@ -60,7 +66,7 @@ const VendorEvents = () => {
             <tbody>
               {/*===================EventName=================*/}
               {EventData.EventName !== '' ? (
-                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                <tr class="bg-white dark:bg-boxdark-2 border-b dark:text-white dark:border-zinc-600">
                   <th class="px-6 py-4 w-1/2 ">EventName:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.EventName}
@@ -242,7 +248,7 @@ const VendorEvents = () => {
                   <span className="bg-themecolor1  text-white px-3.5 py-2 rounded-full mr-2">
                     {index + 1}
                   </span>
-                  <span className="pr-3">Address {index + 1}</span>
+                  <span className="pr-3">Address</span>
                 </p>
               </div>
 
@@ -303,22 +309,33 @@ const VendorEvents = () => {
                   ) : (
                     ''
                   )}
-                  {/*===================Location=================*/}
-                  {address.Location !== '' ? (
+                  {/*===================Address=================*/}
+                  {address.Address !== '' ? (
                     <tr class="bg-white border-b dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600">
-                      <th class="py-3 w-1/2 ">Location:</th>
-                      <td
-                        class="py-3 w-1/2 text-base text-end"
-                        dangerouslySetInnerHTML={{
-                          __html: address.Location ? address.Location : '',
-                        }}
-                      />
+                      <th class="py-3 w-1/2 ">Address:</th>
+                      <td class="py-3 w-1/2 text-base text-end">
+                        {address.Address}
+                      </td>
                     </tr>
                   ) : (
                     ''
                   )}
                 </tbody>
               </table>
+              {/*===================Location=================*/}
+              {address.Location !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600 flex flex-col">
+                  <th class="py-3 pb-1 text-start">Location:</th>
+                  <td
+                    class="py-3 text-base text-end map-container"
+                    dangerouslySetInnerHTML={{
+                      __html: address.Location ? address.Location : '',
+                    }}
+                  />
+                </tr>
+              ) : (
+                ''
+              )}
               <table class="w-full text-sm mt-3 text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
                 <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
                   Ticket Information

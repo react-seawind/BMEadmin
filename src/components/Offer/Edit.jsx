@@ -10,6 +10,7 @@ import {
   updateOfferById,
 } from '../../API/OfferApi';
 import NewEditor from '../EDITOR/NewEditor';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Title is required.'),
@@ -23,6 +24,7 @@ const OfferEdit = () => {
   const { Id } = useParams();
   const [imagePreview, setImagePreview] = useState();
   const [IconPreview, setIconPreview] = useState();
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const [formData, setFormData] = useState({
     Id: '',
     Title: '',
@@ -92,6 +94,7 @@ const OfferEdit = () => {
     initialValues: formData,
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formDataToSend = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -106,6 +109,8 @@ const OfferEdit = () => {
         fetchData();
       } catch (error) {
         console.error('Error adding Offer:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -139,7 +144,7 @@ const OfferEdit = () => {
   return (
     <div>
       <Breadcrumb pageName="Offer Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

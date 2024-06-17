@@ -1,157 +1,144 @@
-import React from 'react';
-import { Bookingdata } from '../API';
+import React, { useEffect, useState } from 'react';
+import DataTable from 'react-data-table-component';
+import Breadcrumb from '../Breadcrumb';
+import ClipLoader from 'react-spinners/BounceLoader';
+import { useNavigate, useParams } from 'react-router-dom';
+import { GetAllBookedOrderByUserId } from '../../API/OrderApi';
 
-const UserBooking = () => {
+const UserIdBooking = () => {
+  const [service, setservice] = useState([]);
+  const [search, setsearch] = useState('');
+  const [loading, setLoading] = useState(true); // Loading state
+  const [filterdata, setfilterdata] = useState([]);
+
+  const Navigate = useNavigate();
+
+  const { Id } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await GetAllBookedOrderByUserId(Id);
+        setservice(result);
+        setfilterdata(result);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const columns = [
+    {
+      name: '#',
+      selector: 'Id',
+      cell: (row, index) => <div>{index + 1}</div>,
+    },
+    {
+      name: 'EventName',
+      selector: (row) => <h1 className="text-base">{row.EventName}</h1>,
+    },
+    {
+      name: 'TypeOfEvent',
+      selector: (row) => <h1 className="text-base">{row.TypeOfEvent}</h1>,
+    },
+    {
+      name: 'PaymentMethod',
+      selector: (row) => <h1 className="text-base">{row.PaymentMethod}</h1>,
+    },
+
+    {
+      name: 'PaymentStatus',
+      selector: (row) => {
+        const statusText = row.PaymentStatus == '1' ? 'Success' : 'Failed';
+        const statusColor =
+          row.PaymentStatus == '1'
+            ? 'bg-green-600 text-white'
+            : 'bg-red-600 text-white';
+
+        return (
+          <span
+            className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full  ${statusColor}`}
+          >
+            {statusText}
+          </span>
+        );
+      },
+    },
+    {
+      name: 'Action',
+      cell: (row) => (
+        <div>
+          <button
+            onClick={() => {
+              Navigate(`/allbooking/view/${row.Id}`);
+            }}
+            className="bg-red-600 text-white px-4 py-1"
+          >
+            View
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+  useEffect(() => {
+    const mySearch = service.filter(
+      (item) =>
+        item.EventName &&
+        item.EventName.toLowerCase().match(search.toLowerCase()),
+    );
+    setfilterdata(mySearch);
+  }, [search, service]);
+
   return (
     <div>
-      <div className="container mx-auto my-10 ">
-        <div className="text-center text-3xl">Booking Detail</div>
-
-        <div className="mt-5 mx-3">
-          <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-1 gap-4">
-            <div className="shadow-md">
-              <div className="bg-themecolor1 py-2 text-white font-bold text-center">
-                GOLD
-              </div>
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
-                <tbody>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Total:</th>
-                    <td class="px-6 py-2">500</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Alloted:</th>
-                    <td class="px-6 py-2">400</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Available:</th>
-                    <td class="px-6 py-2">100</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="text-center font-bold border py-3 border-black">
-                Ticket Price : ₹500
-              </p>
-            </div>
-            <div className="shadow-md">
-              <div className="bg-themecolor1 py-2 text-white font-bold text-center">
-                DIMOND
-              </div>
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
-                <tbody>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Total:</th>
-                    <td class="px-6 py-2">500</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Alloted:</th>
-                    <td class="px-6 py-2">400</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Available:</th>
-                    <td class="px-6 py-2">100</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="text-center font-bold border py-3 border-black">
-                Ticket Price : ₹1000
-              </p>
-            </div>
-            <div className="shadow-md">
-              <div className="bg-themecolor1 py-2 text-white font-bold text-center">
-                SILVER
-              </div>
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
-                <tbody>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Total:</th>
-                    <td class="px-6 py-2">500</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Alloted:</th>
-                    <td class="px-6 py-2">400</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Available:</th>
-                    <td class="px-6 py-2">100</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="text-center font-bold border py-3 border-black">
-                Ticket Price : ₹1500
-              </p>
-            </div>
-            <div className="shadow-md">
-              <div className="bg-themecolor1 py-2 text-white font-bold text-center">
-                PLATINUM
-              </div>
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
-                <tbody>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Total:</th>
-                    <td class="px-6 py-2">500</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Alloted:</th>
-                    <td class="px-6 py-2">400</td>
-                  </tr>
-                  <tr className="border-b">
-                    <th class="px-6 py-2">Available:</th>
-                    <td class="px-6 py-2">100</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p className="text-center font-bold border py-3 border-black">
-                Ticket Price : ₹2000
-              </p>
+      <Breadcrumb pageName="All Booking Listing" />
+      <div className="grid grid-cols-1 gap-9 ">
+        <div className="flex flex-col gap-9 ">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              {loading ? (
+                <div className="flex justify-center items-center py-60">
+                  <ClipLoader color={'#c82f32'} loading={loading} size={40} />
+                </div>
+              ) : (
+                <>
+                  {filterdata.length === 0 ? (
+                    <div className="mx-3 my-3 py-16 bg-slate-300 font-bold text-2xl text-bodydark2 text-center">
+                      No Booking Found
+                    </div>
+                  ) : (
+                    <DataTable
+                      className="text-2xl"
+                      columns={columns}
+                      data={filterdata}
+                      pagination
+                      highlightOnHover
+                      subHeader
+                      subHeaderComponent={
+                        <input
+                          type="text"
+                          placeholder="search"
+                          className="text-start me-auto border-2 py-3 px-5"
+                          value={search}
+                          onChange={(e) => {
+                            setsearch(e.target.value);
+                          }}
+                        />
+                      }
+                    />
+                  )}
+                </>
+              )}
             </div>
           </div>
-        </div>
-
-        <div class="relative overflow-x-auto shadow-lg   mt-8 mx-3">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse border border-slate-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr className="border-b">
-                <th scope="col" class="px-6 py-3">
-                  Name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Email
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Ticket Type
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  No of Ticket
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {Bookingdata.map((val) => {
-                return (
-                  <tr className="border-b">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {val.name}
-                    </th>
-                    <td class="px-6 py-4"> {val.email}</td>
-                    <td class="px-6 py-4"> {val.Tickettype}</td>
-                    <td class="px-6 py-4"> {val.noofticket}</td>
-                    <td class="px-6 py-4"> {val.amount}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
   );
 };
 
-export default UserBooking;
+export default UserIdBooking;

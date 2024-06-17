@@ -6,14 +6,14 @@ import { FaChevronDown } from 'react-icons/fa6';
 import { getServicedata } from '../API';
 import { GetAllEvent } from '../../API/EventApi';
 import { format } from 'date-fns';
-
+import ClipLoader from 'react-spinners/BounceLoader';
 const AllEventListing = () => {
   const [service, setservice] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
 
   const Navigate = useNavigate();
-
+  const [loading, setLoading] = useState(true); // Loading state
   // =============action button===============
   const [selectedRow, setSelectedRow] = useState(null);
   useEffect(() => {
@@ -24,6 +24,8 @@ const AllEventListing = () => {
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
 
@@ -84,49 +86,6 @@ const AllEventListing = () => {
         );
       },
     },
-
-    {
-      name: 'Action',
-      cell: (row) => (
-        <div>
-          <div className="bg-red-600 text-white p-3 pl-5 w-26 flex relative">
-            <button>Actions</button>
-            <button
-              onClick={() => {
-                setSelectedRow((prevRow) => (prevRow === row ? null : row));
-              }}
-            >
-              <FaChevronDown className=" my-auto ml-4 " />
-            </button>
-          </div>
-
-          {selectedRow && selectedRow.Id === row.Id && (
-            <div className="action-buttons  absolute z-99">
-              <button
-                className="text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  setSelectedRow(null);
-                  Navigate(`/vendor/event/edit/${row.UserId}/${row.Id}`);
-                }}
-              >
-                Edit
-              </button>
-
-              <br />
-              <button
-                className=" text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  alert(`Deleting ${row.Title}`);
-                  setSelectedRow(null);
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          )}
-        </div>
-      ),
-    },
   ];
 
   useEffect(() => {
@@ -144,33 +103,31 @@ const AllEventListing = () => {
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-              <DataTable
-                className="text-2xl"
-                columns={columns}
-                data={filterdata}
-                pagination
-                highlightOnHover
-                actions={
-                  <Link
-                    to="/allevent/edit"
-                    className="bg-blue-500 text-white p-3 px-10 text-sm"
-                  >
-                    Edit
-                  </Link>
-                }
-                subHeader
-                subHeaderComponent={
-                  <input
-                    type="text"
-                    placeholder="search"
-                    className="text-start me-auto -mt-25 border-2 py-3 px-5"
-                    value={search}
-                    onChange={(e) => {
-                      setsearch(e.target.value);
-                    }}
-                  />
-                }
-              />
+              {loading ? (
+                <div className="flex justify-center items-center py-60">
+                  <ClipLoader color={'#c82f32'} loading={loading} size={40} />
+                </div>
+              ) : (
+                <DataTable
+                  className="text-2xl"
+                  columns={columns}
+                  data={filterdata}
+                  pagination
+                  highlightOnHover
+                  subHeader
+                  subHeaderComponent={
+                    <input
+                      type="text"
+                      placeholder="search"
+                      className="text-start me-auto border-2 py-3 px-5"
+                      value={search}
+                      onChange={(e) => {
+                        setsearch(e.target.value);
+                      }}
+                    />
+                  }
+                />
+              )}
             </div>
           </div>
         </div>

@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { AddState } from '../../API/StateAPI';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('State Name is required.'),
@@ -12,15 +13,17 @@ const validateSchema = Yup.object().shape({
   Image: Yup.string().required('Image is required.'),
 });
 const StateAdd = () => {
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Title: '',
       Slug: '',
       Image: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -32,6 +35,8 @@ const StateAdd = () => {
         navigate('/state/listing');
       } catch (error) {
         console.error('Error Adding State:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -44,7 +49,7 @@ const StateAdd = () => {
   return (
     <div>
       <Breadcrumb pageName="State Add  " />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

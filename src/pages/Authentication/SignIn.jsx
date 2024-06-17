@@ -6,15 +6,18 @@ import { useState } from 'react';
 import * as yup from 'yup';
 import { AdminLogin } from '../../API/AdminApi';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validationSchema = yup.object().shape({
   Email: yup.string().required('Email is required'),
   Password: yup.string().required('Password is required'),
 });
+
 const SignIn = () => {
   const [loginbutton, setloginbutton] = useState(false);
   const navigate = useNavigate();
-
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Email: '',
@@ -23,44 +26,35 @@ const SignIn = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       setloginbutton(true);
-      await AdminLogin(values);
+      setIsFormLoading(true);
+      try {
+        await AdminLogin(values);
+        const sessiondata = sessionStorage.getItem('logindata');
+        const parsedSessionData = sessiondata ? JSON.parse(sessiondata) : null;
+        const token = parsedSessionData?.token;
 
-      const sessiondata = sessionStorage.getItem('logindata');
-      const parsedSessionData = sessiondata ? JSON.parse(sessiondata) : null;
-      const token = parsedSessionData.token;
-
-      if (token) {
-        navigate('/dashboard');
-        window.location.reload();
-      } else {
-        navigate('/login');
+        if (token) {
+          navigate('/dashboard');
+          window.location.reload();
+        } else {
+          throw new Error('Invalid email or password');
+        }
+      } catch (error) {
         toast.error('Invalid email or password');
         setloginbutton(false);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
-
-      // if (values.Email === Email && values.Password === Password) {
-      //   sessionStorage.setItem('logindata', JSON.stringify(values));
-      //   const sessionget = sessionStorage.getItem('logindata');
-      //   if (sessionget) {
-      //     navigate('/dashboard');
-      //     window.location.reload();
-      //   } else {
-      //     navigate('/login');
-      //   }
-      // } else {
-      //   // Show error message
-      //   toast.error('Invalid email or password');
-      //   setloginbutton(false);
-      // }
     },
   });
 
   return (
     <div>
-      <div className="rounded-sm border my-[9%] border-stroke  container mx-auto  bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center ">
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
+      <div className="rounded-sm border my-[9%] border-stroke container mx-auto bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
-            <div className="py-17.5   text-center">
+            <div className="py-17.5 text-center">
               <Link className="mb-5.5 inline-block" to="/dashboard">
                 <img
                   className="hidden dark:block w-[50%] mx-auto"
@@ -73,17 +67,14 @@ const SignIn = () => {
                   alt="Logo"
                 />
               </Link>
-
               <p className="2xl:px-20 py-10 text-5xl">Book My Event</p>
             </div>
           </div>
-
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <h2 className="mb-9 text-2xl font-bold text-black dark:text-white text-center sm:text-title-xl2">
                 Sign In
               </h2>
-
               <form onSubmit={formik.handleSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
@@ -97,11 +88,9 @@ const SignIn = () => {
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
-
                     <span className="absolute right-4 top-4 fill-current">
                       <FaEnvelope />
                     </span>
-
                     {formik.touched.Email && formik.errors.Email && (
                       <small className="text-red-500">
                         {formik.errors.Email}
@@ -109,7 +98,6 @@ const SignIn = () => {
                     )}
                   </div>
                 </div>
-
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Password
@@ -122,7 +110,6 @@ const SignIn = () => {
                       placeholder="Enter Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
-
                     <span className="absolute right-4 top-4">
                       <FaKey />
                     </span>
@@ -133,11 +120,10 @@ const SignIn = () => {
                     )}
                   </div>
                 </div>
-
                 <div className="mb-5">
                   <input
                     type="submit"
-                    value={loginbutton ? 'Loding...' : 'Sign In'}
+                    value={loginbutton ? 'Loading...' : 'Sign In'}
                     className="w-full cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
                   />
                 </div>

@@ -9,6 +9,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getPagesById, updatePagesById } from '../../API/PageApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Title is required.'),
@@ -40,6 +41,7 @@ const PageEdit = () => {
   useEffect(() => {
     fetchData();
   }, [Id]);
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Title: '',
@@ -54,6 +56,7 @@ const PageEdit = () => {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -63,6 +66,8 @@ const PageEdit = () => {
         fetchData();
       } catch (error) {
         console.error('Error adding page:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -75,7 +80,7 @@ const PageEdit = () => {
   return (
     <div>
       <Breadcrumb pageName="Page Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

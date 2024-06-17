@@ -5,7 +5,7 @@ import Sitesetting from '../components/Setting/Sitesetting';
 import SliderListing from '../components/Slider/Listing';
 import SliderAdd from '../components/Slider/Add';
 import SliderEdit from '../components/Slider/Edit';
-import QuotedataListing from '../components/Datamanager/QuoteData';
+import QuotedataListing from '../components/Datamanager/AllBooking';
 import ContactdataListing from '../components/Datamanager/ContactUsData';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
@@ -31,7 +31,6 @@ import AllEventListing from '../components/AllEvent/Listing';
 import UserListing from '../components/User/Listing';
 import UserEdit from '../components/User/Edit';
 import UserAdd from '../components/User/Add';
-import UserBooking from '../components/User/Booking';
 import AllBookingListing from '../components/AllBooking/Listing';
 import PageListing from '../components/Pages/Listing';
 import PageAdd from '../components/Pages/Add';
@@ -39,7 +38,6 @@ import PageEdit from '../components/Pages/Edit';
 import FaqListing from '../components/FAQ/Listing';
 import FaqAdd from '../components/FAQ/Add';
 import FaqEdit from '../components/FAQ/Edit';
-import MainForm from '../components/Form';
 import VendorListing from '../components/Vendor/Listing';
 import VendorEdit from '../components/Vendor/Edit';
 import VendorAdd from '../components/Vendor/Add';
@@ -50,6 +48,10 @@ import EventEdit from '../components/Vendor/EventEdit';
 import OfferListing from '../components/Offer/Listing';
 import OfferAdd from '../components/Offer/Add';
 import OfferEdit from '../components/Offer/Edit';
+import AllBookingView from '../components/AllBooking/BookingView';
+import VendorIdBooking from '../components/Vendor/VendorIdBooking';
+import UserIdBooking from '../components/User/Booking';
+import AllBooking from '../components/Datamanager/AllBooking';
 
 const coreRoutes = [
   {
@@ -227,8 +229,8 @@ const coreRoutes = [
     component: UserAdd,
   },
   {
-    path: '/user/bookings',
-    component: UserBooking,
+    path: '/user/booking/:Id',
+    component: UserIdBooking,
   },
   // ================Vendor======================
   {
@@ -240,10 +242,13 @@ const coreRoutes = [
     component: VendorEdit,
   },
   {
+    path: '/vendor/booking/:Id',
+    component: VendorIdBooking,
+  },
+  {
     path: '/vendor/event/listing/:Id',
     component: EventListing,
   },
-  // --------------not used----------
   {
     path: '/vendor/add',
     component: VendorAdd,
@@ -253,7 +258,7 @@ const coreRoutes = [
     component: EventEdit,
   },
   {
-    path: '/vendor/bookings',
+    path: '/vendor/event/bookings/:Id',
     component: VendorBooking,
   },
   {
@@ -266,10 +271,14 @@ const coreRoutes = [
     path: '/allbooking/listing',
     component: AllBookingListing,
   },
+  {
+    path: '/allbooking/view/:Id',
+    component: AllBookingView,
+  },
 
   // ================Data Manager======================
   {
-    path: '/newslatter/listing',
+    path: '/newsletter/listing',
     component: NewslatterListing,
   },
   {
@@ -277,8 +286,8 @@ const coreRoutes = [
     component: ContactdataListing,
   },
   {
-    path: '/quotedata/listing',
-    component: QuotedataListing,
+    path: '/booking/listing',
+    component: AllBooking,
   },
 ];
 

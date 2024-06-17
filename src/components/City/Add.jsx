@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { AddCity } from '../../API/CityAPI';
 import { getAllState } from '../../API/StateAPI';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('City Name is required.'),
@@ -31,6 +32,7 @@ const CityAdd = () => {
     fetchStates();
   }, []);
 
+  const [isFormLoading, setIsFormLoading] = useState(false);
   // -----------------FORM---------------
   const formik = useFormik({
     initialValues: {
@@ -38,10 +40,11 @@ const CityAdd = () => {
       Title: '',
       Slug: '',
       Image: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -53,6 +56,8 @@ const CityAdd = () => {
         navigate('/city/listing');
       } catch (error) {
         console.error('Error Adding City:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -65,7 +70,7 @@ const CityAdd = () => {
   return (
     <div>
       <Breadcrumb pageName="City Add " />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

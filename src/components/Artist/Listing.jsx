@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
-import { getServicedata } from '../API';
+import ClipLoader from 'react-spinners/BounceLoader';
 import { deleteArtist, getAllArtist } from '../../API/ArtistApi';
 import { format } from 'date-fns';
 
@@ -13,7 +13,7 @@ const ArtistListing = () => {
   const [filterdata, setfilterdata] = useState([]);
 
   const Navigate = useNavigate();
-
+  const [loading, setLoading] = useState(true); // Loading state
   // =============action button===============
   const [selectedRow, setSelectedRow] = useState(null);
   useEffect(() => {
@@ -24,6 +24,8 @@ const ArtistListing = () => {
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
 
@@ -157,33 +159,39 @@ const ArtistListing = () => {
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-              <DataTable
-                className="text-2xl"
-                columns={columns}
-                data={filterdata}
-                pagination
-                highlightOnHover
-                actions={
-                  <Link
-                    to="/artist/add"
-                    className="bg-blue-500 text-white p-3 px-10 text-sm"
-                  >
-                    Add
-                  </Link>
-                }
-                subHeader
-                subHeaderComponent={
-                  <input
-                    type="text"
-                    placeholder="search"
-                    className="text-start me-auto -mt-25 border-2 py-3 px-5"
-                    value={search}
-                    onChange={(e) => {
-                      setsearch(e.target.value);
-                    }}
-                  />
-                }
-              />
+              {loading ? (
+                <div className="flex justify-center items-center py-60">
+                  <ClipLoader color={'#c82f32'} loading={loading} size={40} />
+                </div>
+              ) : (
+                <DataTable
+                  className="text-2xl"
+                  columns={columns}
+                  data={filterdata}
+                  pagination
+                  highlightOnHover
+                  actions={
+                    <Link
+                      to="/artist/add"
+                      className="bg-blue-500 text-white p-3 px-10 text-sm"
+                    >
+                      Add
+                    </Link>
+                  }
+                  subHeader
+                  subHeaderComponent={
+                    <input
+                      type="text"
+                      placeholder="search"
+                      className="text-start me-auto -mt-25 border-2 py-3 px-5"
+                      value={search}
+                      onChange={(e) => {
+                        setsearch(e.target.value);
+                      }}
+                    />
+                  }
+                />
+              )}
             </div>
           </div>
         </div>

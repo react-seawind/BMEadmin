@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
-import { useNavigate } from 'react-router-dom';
-import { GetAllBookedOrder } from '../../API/OrderApi';
 import ClipLoader from 'react-spinners/BounceLoader';
-const AllBookingListing = () => {
+import { useNavigate, useParams } from 'react-router-dom';
+import { GetAllBookedOrderByVendorId } from '../../API/OrderApi';
+
+const VendorIdBooking = () => {
   const [service, setservice] = useState([]);
   const [search, setsearch] = useState('');
+  const [loading, setLoading] = useState(true); // Loading state
   const [filterdata, setfilterdata] = useState([]);
 
   const Navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // Loading state
-  // =============action button===============
-  const [selectedRow, setSelectedRow] = useState(null);
+
+  const { Id } = useParams();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await GetAllBookedOrder();
+        const result = await GetAllBookedOrderByVendorId(Id);
         setservice(result);
         setfilterdata(result);
       } catch (error) {
@@ -90,8 +91,11 @@ const AllBookingListing = () => {
         item.EventName.toLowerCase().match(search.toLowerCase()),
     );
     setfilterdata(mySearch);
-  }, [search]);
+  }, [search, service]);
 
+  const handleGoBack = () => {
+    Navigate('/vendor/listing');
+  };
   return (
     <div>
       <Breadcrumb pageName="All Booking Listing" />
@@ -104,25 +108,42 @@ const AllBookingListing = () => {
                   <ClipLoader color={'#c82f32'} loading={loading} size={40} />
                 </div>
               ) : (
-                <DataTable
-                  className="text-2xl"
-                  columns={columns}
-                  data={filterdata}
-                  pagination
-                  highlightOnHover
-                  subHeader
-                  subHeaderComponent={
-                    <input
-                      type="text"
-                      placeholder="search"
-                      className="text-start me-auto border-2 py-3 px-5"
-                      value={search}
-                      onChange={(e) => {
-                        setsearch(e.target.value);
-                      }}
+                <>
+                  {filterdata.length === 0 ? (
+                    <div className="mx-3 my-3 py-16 bg-slate-300 font-bold text-2xl text-bodydark2 text-center">
+                      No Booking Found
+                    </div>
+                  ) : (
+                    <DataTable
+                      className="text-2xl"
+                      columns={columns}
+                      data={filterdata}
+                      pagination
+                      highlightOnHover
+                      subHeader
+                      actions={
+                        <div
+                          onClick={handleGoBack}
+                          type="button"
+                          className="bg-blue-500 cursor-pointer text-white p-3 px-10 text-sm"
+                        >
+                          Back
+                        </div>
+                      }
+                      subHeaderComponent={
+                        <input
+                          type="text"
+                          placeholder="search"
+                          className="text-start me-auto -mt-25 border-2 py-3 px-5"
+                          value={search}
+                          onChange={(e) => {
+                            setsearch(e.target.value);
+                          }}
+                        />
+                      }
                     />
-                  }
-                />
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -132,4 +153,4 @@ const AllBookingListing = () => {
   );
 };
 
-export default AllBookingListing;
+export default VendorIdBooking;

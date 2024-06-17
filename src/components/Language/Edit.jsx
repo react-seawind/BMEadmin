@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getLanguageById, updateLanguageById } from '../../API/LanguageApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Title is required.'),
@@ -31,6 +32,7 @@ const LanguageEdit = () => {
 
     fetchData();
   }, [Id]);
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Id: Id,
@@ -40,10 +42,13 @@ const LanguageEdit = () => {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         await updateLanguageById(values);
       } catch (error) {
         console.error('Error adding language:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -56,7 +61,7 @@ const LanguageEdit = () => {
   return (
     <div>
       <Breadcrumb pageName="Language Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

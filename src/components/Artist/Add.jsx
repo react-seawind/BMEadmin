@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { AddArtist } from '../../API/ArtistApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Name is required.'),
@@ -15,6 +16,7 @@ const validateSchema = Yup.object().shape({
 });
 
 const ArtistAdd = () => {
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Title: '',
@@ -25,15 +27,19 @@ const ArtistAdd = () => {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
           formData.append(key, value);
         });
+        await AddArtist(formData);
         actions.resetForm();
         navigate('/artist/listing');
       } catch (error) {
         console.error('Error adding artist:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -46,7 +52,7 @@ const ArtistAdd = () => {
   return (
     <div>
       <Breadcrumb pageName="Artist Add" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

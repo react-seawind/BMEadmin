@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCityById, updateCityById } from '../../API/CityAPI';
 import { getAllState } from '../../API/StateAPI';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('City Name is required.'),
@@ -52,6 +53,7 @@ const CityEdit = () => {
   useEffect(() => {
     fetchData();
   }, [Id]);
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       StateId: '',
@@ -63,6 +65,7 @@ const CityEdit = () => {
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -73,6 +76,8 @@ const CityEdit = () => {
         fetchData();
       } catch (error) {
         console.error('Error updating city:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -85,7 +90,7 @@ const CityEdit = () => {
   return (
     <div>
       <Breadcrumb pageName="City Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}

@@ -3,6 +3,7 @@ import { FaDownload, FaEye } from 'react-icons/fa6';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserById, updateUserById } from '../../API/UserApi';
 import { useFormik } from 'formik';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const VendorKyc = () => {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ const VendorKyc = () => {
     fetchData();
   }, [Id]);
 
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Id: Id,
@@ -40,6 +42,7 @@ const VendorKyc = () => {
       KYCStatus: '',
     },
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -49,11 +52,14 @@ const VendorKyc = () => {
         await updateUserById(formData);
       } catch (error) {
         console.error('Error updating user:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
   return (
     <div>
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div>
         <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
           Basic Information

@@ -5,7 +5,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { FaChevronDown } from 'react-icons/fa6';
 import { getServicedata } from '../API';
 import { CSVLink } from 'react-csv';
-import jsPDF from 'jspdf';
+import ClipLoader from 'react-spinners/BounceLoader';
 import 'jspdf-autotable';
 import { deleteNewsletter, getAllNewsletter } from '../../API/DataManagerApi';
 import { format } from 'date-fns';
@@ -16,7 +16,7 @@ const NewslatterListing = () => {
   const [filterdata, setfilterdata] = useState([]);
 
   const Navigate = useNavigate();
-
+  const [loading, setLoading] = useState(true); // Loading state
   // =============action button===============
   const [selectedRow, setSelectedRow] = useState(null);
   useEffect(() => {
@@ -27,6 +27,8 @@ const NewslatterListing = () => {
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
     };
 
@@ -78,36 +80,23 @@ const NewslatterListing = () => {
       name: 'Action',
       cell: (row) => (
         <div className="min-h-29 mt-2">
-          <div className="bg-red-600 text-white p-3 pl-5 w-26 flex relative">
-            <button>Actions</button>
+          <div className="">
             <button
+              className="bg-red-600 text-white p-3 justify-center w-26 flex relative"
               onClick={() => {
-                setSelectedRow((prevRow) => (prevRow === row ? null : row));
+                if (
+                  window.confirm(
+                    `Are you sure you want to delete ${row.Email}?`,
+                  )
+                ) {
+                  handleDelete(row);
+                }
+                setSelectedRow(null);
               }}
             >
-              <FaChevronDown className=" my-auto ml-4 " />
+              Delete
             </button>
           </div>
-
-          {selectedRow && selectedRow.Id === row.Id && (
-            <div className="action-buttons  absolute z-99">
-              <button
-                className=" text-black bg-white border  p-2 w-26"
-                onClick={() => {
-                  if (
-                    window.confirm(
-                      `Are you sure you want to delete ${row.Email}?`,
-                    )
-                  ) {
-                    handleDelete(row); // Call handleDelete function on click of delete button
-                  }
-                  setSelectedRow(null);
-                }}
-              >
-                Delete
-              </button>
-            </div>
-          )}
         </div>
       ),
     },
@@ -117,62 +106,51 @@ const NewslatterListing = () => {
     { label: 'Id', key: 'Id' },
     { label: 'Email', key: 'Email' },
     { label: 'EntDt', key: 'EntDt' },
-    // Add more headers for other columns if needed
   ];
-  // ===============PDF===================
-  // const exportToPDF = () => {
-  //   const doc = new jsPDF();
-  //   doc.autoTable({
-  //     head: [columns.map((col) => col.name)],
-  //     body: service,
-  //   });
-  //   doc.save('quote_data.pdf');
-  // };
-
   return (
     <div>
-      <Breadcrumb pageName="Newslatter Listing" />
+      <Breadcrumb pageName="Newsletter Listing" />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-              <DataTable
-                className="text-2xl"
-                columns={columns}
-                data={filterdata}
-                pagination
-                highlightOnHover
-                actions={
-                  <div>
-                    <CSVLink
-                      data={filterdata}
-                      headers={csvHeaders}
-                      filename={'newslatter_data.csv'}
-                      className="bg-blue-500 text-white px-5 py-3"
-                    >
-                      Export CSV
-                    </CSVLink>
-                    {/*<button
-                      className="bg-green-500 text-white px-5 py-3"
-                      onClick={exportToPDF}
-                    >
-                      Export PDF
-                    </button>*/}
-                  </div>
-                }
-                subHeader
-                subHeaderComponent={
-                  <input
-                    type="text"
-                    placeholder="search"
-                    className="text-start me-auto -mt-25  border-2 py-3 px-2 md:px-5"
-                    value={search}
-                    onChange={(e) => {
-                      setsearch(e.target.value);
-                    }}
-                  />
-                }
-              />
+              {loading ? (
+                <div className="flex justify-center items-center py-60">
+                  <ClipLoader color={'#c82f32'} loading={loading} size={40} />
+                </div>
+              ) : (
+                <DataTable
+                  className="text-2xl"
+                  columns={columns}
+                  data={filterdata}
+                  pagination
+                  highlightOnHover
+                  actions={
+                    <div>
+                      <CSVLink
+                        data={filterdata}
+                        headers={csvHeaders}
+                        filename={'newslatter_data.csv'}
+                        className="bg-blue-500 text-white px-5 py-3"
+                      >
+                        Export CSV
+                      </CSVLink>
+                    </div>
+                  }
+                  subHeader
+                  subHeaderComponent={
+                    <input
+                      type="text"
+                      placeholder="search"
+                      className="text-start me-auto -mt-25  border-2 py-3 px-2 md:px-5"
+                      value={search}
+                      onChange={(e) => {
+                        setsearch(e.target.value);
+                      }}
+                    />
+                  }
+                />
+              )}
             </div>
           </div>
         </div>

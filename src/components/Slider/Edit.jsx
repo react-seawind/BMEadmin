@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { getSliderById, updateSliderById } from '../../API/SliderApi';
+import FormLoader from '../../common/Loader/FormLoader';
 
 const validationSchema = Yup.object().shape({
   Title: Yup.string().required('Title is required.'),
@@ -29,6 +30,7 @@ const SliderEdit = () => {
     fetchData();
   }, [Id]);
   // --------------------Form----------------------
+  const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
       Title: '',
@@ -41,6 +43,7 @@ const SliderEdit = () => {
 
     validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
+      setIsFormLoading(true);
       try {
         const formData = new FormData();
         Object.entries(values).forEach(([key, value]) => {
@@ -51,6 +54,8 @@ const SliderEdit = () => {
         fetchData();
       } catch (error) {
         console.error('Error updating slider:', error);
+      } finally {
+        setIsFormLoading(false); // Set loading state to false when submission ends
       }
     },
   });
@@ -62,7 +67,7 @@ const SliderEdit = () => {
   return (
     <div>
       <Breadcrumb pageName="Slider Edit" />
-
+      {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
           {/* <!-- Input Fields --> */}
