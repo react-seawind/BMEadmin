@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaDownload, FaEye } from 'react-icons/fa6';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserById, updateUserById } from '../../API/UserApi';
 import { useFormik } from 'formik';
 import { EditEvent, getEventByEventId } from '../../API/EventApi';
 import FormLoader from '../../common/Loader/FormLoader';

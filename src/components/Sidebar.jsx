@@ -90,7 +90,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center lg:justify-center   gap-2 px-6 py-2.5 lg:py-4.5">
         <NavLink to="/dashboard">
-          <img src={Logo} alt="Logo" className="w-15 lg:w-30 lg:mx-auto" />
+          <img
+            src={Logo}
+            alt="Logo"
+            className="w-15 lg:w-30 lg:mx-auto p-2 bg-white"
+          />
         </NavLink>
         <button
           ref={trigger}
@@ -698,15 +702,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                               List
                             </NavLink>
                           </li>
-                          <li>
-                            <NavLink
-                              to="/user/add"
-                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
-                            >
-                              <IoMdAdd />
-                              Add
-                            </NavLink>
-                          </li>
                         </ul>
                       </div>
                     </React.Fragment>
@@ -752,15 +747,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             >
                               <FaClipboardList />
                               List
-                            </NavLink>
-                          </li>
-                          <li>
-                            <NavLink
-                              to="/vendor/add"
-                              className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
-                            >
-                              <IoMdAdd />
-                              Add
                             </NavLink>
                           </li>
                         </ul>

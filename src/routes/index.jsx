@@ -15,7 +15,6 @@ import ArtistListing from '../components/Artist/Listing';
 import ArtistAdd from '../components/Artist/Add';
 import ArtistEdit from '../components/Artist/Edit';
 import CityListing from '../components/City/Listing';
-import NewslatterListing from '../components/Datamanager/Newslatter';
 import StateListing from '../components/State/Listing';
 import StateAdd from '../components/State/Add';
 import StateEdit from '../components/State/Edit';
@@ -30,7 +29,6 @@ import CategoryEdit from '../components/Category/Edit';
 import AllEventListing from '../components/AllEvent/Listing';
 import UserListing from '../components/User/Listing';
 import UserEdit from '../components/User/Edit';
-import UserAdd from '../components/User/Add';
 import AllBookingListing from '../components/AllBooking/Listing';
 import PageListing from '../components/Pages/Listing';
 import PageAdd from '../components/Pages/Add';
@@ -40,7 +38,6 @@ import FaqAdd from '../components/FAQ/Add';
 import FaqEdit from '../components/FAQ/Edit';
 import VendorListing from '../components/Vendor/Listing';
 import VendorEdit from '../components/Vendor/Edit';
-import VendorAdd from '../components/Vendor/Add';
 import VendorBooking from '../components/Vendor/Booking';
 import VendorKyc from '../components/Vendor/Kyc';
 import EventListing from '../components/Vendor/EventListing';
@@ -52,6 +49,7 @@ import AllBookingView from '../components/AllBooking/BookingView';
 import VendorIdBooking from '../components/Vendor/VendorIdBooking';
 import UserIdBooking from '../components/User/Booking';
 import AllBooking from '../components/Datamanager/AllBooking';
+import NewsletterListing from '../components/Datamanager/Newslatter';
 
 const coreRoutes = [
   {
@@ -225,10 +223,6 @@ const coreRoutes = [
     component: UserEdit,
   },
   {
-    path: '/user/add',
-    component: UserAdd,
-  },
-  {
     path: '/user/booking/:Id',
     component: UserIdBooking,
   },
@@ -248,10 +242,6 @@ const coreRoutes = [
   {
     path: '/vendor/event/listing/:Id',
     component: EventListing,
-  },
-  {
-    path: '/vendor/add',
-    component: VendorAdd,
   },
   {
     path: '/vendor/event/edit/:UserId/:Id',
@@ -279,7 +269,7 @@ const coreRoutes = [
   // ================Data Manager======================
   {
     path: '/newsletter/listing',
-    component: NewslatterListing,
+    component: NewsletterListing,
   },
   {
     path: '/contactusdata/listing',

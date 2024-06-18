@@ -23,7 +23,7 @@ const FaqAdd = () => {
       Title: '',
       Slug: '',
       Content: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {

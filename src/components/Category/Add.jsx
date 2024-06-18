@@ -24,7 +24,7 @@ const CategoryAdd = () => {
       Content: '',
       Icon: '',
       Image: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {

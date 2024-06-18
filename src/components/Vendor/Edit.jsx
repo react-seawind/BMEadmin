@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
-import Logo from '../../images/mainlogo.png';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserById, updateUserById } from '../../API/UserApi';
 import FormLoader from '../../common/Loader/FormLoader';

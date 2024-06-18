@@ -18,7 +18,7 @@ const LanguageAdd = () => {
     initialValues: {
       Title: '',
       Slug: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {

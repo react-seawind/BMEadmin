@@ -26,7 +26,7 @@ const PageAdd = () => {
       SeoTitle: '',
       SeoKeyword: '',
       SeoDescription: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {

@@ -23,7 +23,7 @@ const ArtistAdd = () => {
       Slug: '',
       Image: '',
       Content: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validateSchema,
     onSubmit: async (values, actions) => {

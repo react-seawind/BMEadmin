@@ -179,7 +179,7 @@ const AllBookingView = () => {
                         Payment Status
                       </label>
                       <div
-                        className={`text-center dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${statusColor}`}
+                        className={`text-center py-2 dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${statusColor}`}
                       >
                         {statusText}
                       </div>

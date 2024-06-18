@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa6';
 import { format } from 'date-fns';
-import { deleteUser, getAllUser } from '../../API/UserApi';
-import { getAllEventByVendorIdId } from '../../API/EventApi';
 import ClipLoader from 'react-spinners/BounceLoader';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import { InputText } from 'primereact/inputtext';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+import { Button } from 'primereact/button';
+import { getAllEventByVendorIdId } from '../../API/EventApi';
+import { IoTicket } from 'react-icons/io5';
 
 const EventListing = () => {
-  const [user, setuser] = useState([]);
+  const [category, setcategory] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
 
   const Navigate = useNavigate();
   const [loading, setLoading] = useState(true); // Loading state
-  // =============action button===============
-  const [selectedRow, setSelectedRow] = useState(null);
   const { Id } = useParams();
+  // =============action button===============
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getAllEventByVendorIdId(Id);
-        setuser(result);
+        setcategory(result);
         setfilterdata(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -34,22 +37,8 @@ const EventListing = () => {
     fetchData();
   }, []);
 
-  // -------------------delete user------------------
-  const handleDelete = async (row) => {
-    try {
-      await deleteUser(row.Id);
-      setuser((prevCategory) =>
-        prevCategory.filter((item) => item.Id !== row.Id),
-      );
-      setfilterdata((prevFilterData) =>
-        prevFilterData.filter((item) => item.Id !== row.Id),
-      );
-    } catch (error) {
-      console.error('Error deleting category:', error);
-    }
-  };
   useEffect(() => {
-    const mySearch = user.filter(
+    const mySearch = category.filter(
       (item) =>
         item.EventName &&
         item.EventName.toLowerCase().match(search.toLowerCase()),
@@ -57,126 +46,45 @@ const EventListing = () => {
     setfilterdata(mySearch);
   }, [search]);
 
-  const columns = [
-    {
-      name: '#',
-      selector: 'Id',
-      cell: (row, index) => <div>{row.Id}</div>,
-    },
-    {
-      name: 'EventName',
-      selector: (row) => <h1 className="text-base">{row.EventName}</h1>,
-    },
-    {
-      name: 'Image',
-      selector: (row) => (
-        <>
-          {row.Image !== '' ? (
-            <img
-              className="p-2 overflow-hidden h-40 rounded-md w-30 border my-2 border-slate-200 bg-white "
-              src={row.Thumb}
-            />
-          ) : (
-            <p className="p-2 overflow-hidden h-30 rounded-md w-30 border my-2 border-slate-200 bg-white text-xl text-center">
-              Image <br></br> Not <br></br> Uploaded
-            </p>
-          )}
-        </>
-      ),
-    },
-    {
-      name: 'Entry Date',
-      selector: (row) => (
-        <h1 className="text-base">
-          {format(new Date(row.EntDt), 'MM/dd/yyyy hh:mm a')}
-        </h1>
-      ),
-    },
-    {
-      name: 'Status',
-      selector: (row) => {
-        const statusText = row.Status == '1' ? 'Active' : 'Inactive';
-        const statusColor =
-          row.Status == '1'
-            ? 'bg-green-600 text-white'
-            : 'bg-red-600 text-white';
+  const imageBodyTemplate = (rowData) => {
+    return (
+      <img
+        src={rowData.Thumb}
+        alt={rowData.Thumb}
+        className="mx-auto overflow-hidden h-40 rounded-md w-30 border my-0.5 border-slate-200 bg-white"
+      />
+    );
+  };
 
-        return (
-          <span
-            className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full  ${statusColor}`}
-          >
-            {statusText}
-          </span>
-        );
-      },
-    },
+  const actionTemplate = (rowData) => {
+    return (
+      <div>
+        <Button
+          icon={<FaPencilAlt />}
+          className="border border-blue-600 text-blue-600 mr-2 rounded-full py-2.5"
+          onClick={() => {
+            Navigate(`/vendor/event/edit/${rowData.UserId}/${rowData.Id}`);
+          }}
+        />
+        <Button
+          icon={<IoTicket />}
+          className="border border-green-600 text-green-600 mr-2 rounded-full py-2.5"
+          onClick={() => {
+            Navigate(`/vendor/event/bookings/${rowData.Id}`);
+          }}
+        />
+      </div>
+    );
+  };
 
-    {
-      name: 'Action',
-
-      cell: (row) => (
-        <div>
-          <div className="relative">
-            <button
-              className="bg-red-600 text-white p-3 pl-5 w-26 flex"
-              onClick={() => {
-                setSelectedRow((prevRow) => (prevRow === row ? null : row));
-              }}
-            >
-              Actions <FaChevronDown className="my-auto ml-4" />
-            </button>
-            {selectedRow && selectedRow.Id === row.Id && (
-              <div className="action-buttons absolute z-10 bg-white border border-gray-300 rounded-md rounded-t-none shadow-lg   ">
-                <button
-                  className="text-black p-2 w-full border-b border-gray-300"
-                  onClick={() => {
-                    setSelectedRow(null);
-                    Navigate(`/vendor/event/edit/${row.UserId}/${row.Id}`);
-                  }}
-                >
-                  Edit
-                </button>
-                <button
-                  className="text-black p-2 w-full border-b border-gray-300"
-                  onClick={() => {
-                    setSelectedRow(null);
-                    Navigate(`/vendor/event/bookings/${row.Id}`);
-                  }}
-                >
-                  Bookings
-                </button>
-
-                <button
-                  className=" text-black p-2 w-full "
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        `Are you sure you want to delete ${row.Title}?`,
-                      )
-                    ) {
-                      handleDelete(row); // Call handleDelete function on click of delete button
-                    }
-                    setSelectedRow(null);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      ),
-      allowOverflow: true,
-    },
-  ];
-  const navigate = useNavigate();
   const handleGoBack = () => {
-    navigate(`/vendor/listing`);
+    Navigate(`/vendor/listing`);
   };
 
   return (
     <div>
       <Breadcrumb pageName="Event Listing" />
+
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -187,33 +95,84 @@ const EventListing = () => {
                 </div>
               ) : (
                 <DataTable
-                  className="text-2xl"
-                  columns={columns}
-                  data={filterdata}
-                  pagination
-                  highlightOnHover
-                  actions={
-                    <div
-                      onClick={handleGoBack}
-                      type="button"
-                      className="bg-blue-500 cursor-pointer text-white p-3 px-10 text-sm"
-                    >
-                      Back
+                  value={filterdata}
+                  tableStyle={{
+                    minWidth: '50rem',
+                    border: '1px solid #e0e0e0',
+                  }}
+                  paginator
+                  rows={10}
+                  rowsPerPageOptions={[5, 10, 25]}
+                  emptyMessage="No Data found"
+                  globalFilter={search}
+                  header={
+                    <div className="flex justify-between pb-5 p-ai-center">
+                      <span className="p-input-icon-left">
+                        <i className="pi pi-search" />
+                        <InputText
+                          type="text"
+                          className="text-start me-auto text-sm border-2 py-2 mt-2 pl-2 md:pr-20 pr-5"
+                          onInput={(e) => setsearch(e.target.value)}
+                          placeholder="Search"
+                        />
+                      </span>
+                      <div
+                        onClick={handleGoBack}
+                        className="bg-blue-500 text-white p-3 px-10 text-sm cursor-pointer"
+                      >
+                        Back
+                      </div>
                     </div>
                   }
-                  subHeader
-                  subHeaderComponent={
-                    <input
-                      type="text"
-                      placeholder="search"
-                      className="text-start me-auto -mt-25 border-2 py-3 px-5"
-                      value={search}
-                      onChange={(e) => {
-                        setsearch(e.target.value);
-                      }}
-                    />
-                  }
-                />
+                >
+                  <Column
+                    field="Id"
+                    header="#"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="EventName"
+                    header="EventName"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="image"
+                    header="Image"
+                    className="border border-stroke"
+                    body={imageBodyTemplate}
+                  ></Column>
+                  <Column
+                    field="Status"
+                    header="Status"
+                    className="border border-stroke"
+                    body={(rowData) => (
+                      <span
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+                          rowData.Status === 1
+                            ? 'bg-green-600 text-white'
+                            : 'bg-red-600 text-white'
+                        }`}
+                      >
+                        {rowData.Status === 1 ? 'Active' : 'Inactive'}
+                      </span>
+                    )}
+                  />
+                  <Column
+                    field="EntDt"
+                    header="Entry Date"
+                    className="border border-stroke"
+                    body={(rowData) =>
+                      format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                    }
+                  />
+                  <Column
+                    header="Action"
+                    className="border border-stroke"
+                    body={actionTemplate}
+                  />
+                </DataTable>
               )}
             </div>
           </div>

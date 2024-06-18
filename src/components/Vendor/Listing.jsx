@@ -1,26 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa6';
 import { format } from 'date-fns';
-import { deleteUser, getAllUser } from '../../API/UserApi';
 import ClipLoader from 'react-spinners/BounceLoader';
+import { FaPencilAlt, FaTrash, FaCog } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import { InputText } from 'primereact/inputtext';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+import { Button } from 'primereact/button';
+import { deleteUser, getAllUser } from '../../API/UserApi';
+import { MdEmojiEvents, MdVerified } from 'react-icons/md';
+import { IoTicket } from 'react-icons/io5';
+
 const VendorListing = () => {
   const [user, setuser] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
+  const [visibleDropdown, setVisibleDropdown] = useState(null);
 
   const Navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // Loading state
-  // =============action button===============
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getAllUser();
-        setuser(result);
         const filteredData = result.filter((item) => item.Type === 'V');
+        setuser(filteredData);
 
         if (filteredData.length > 0) {
           setfilterdata(filteredData);
@@ -28,178 +35,135 @@ const VendorListing = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  // -------------------delete user------------------
   const handleDelete = async (row) => {
     try {
       await deleteUser(row.Id);
-      setuser((prevCategory) =>
-        prevCategory.filter((item) => item.Id !== row.Id),
-      );
+      setuser((prevuser) => prevuser.filter((item) => item.Id !== row.Id));
       setfilterdata((prevFilterData) =>
         prevFilterData.filter((item) => item.Id !== row.Id),
       );
     } catch (error) {
-      console.error('Error deleting category:', error);
+      console.error('Error deleting user:', error);
     }
   };
+
   useEffect(() => {
     const mySearch = user.filter(
       (item) =>
-        item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
+        item.Name && item.Name.toLowerCase().match(search.toLowerCase()),
     );
     setfilterdata(mySearch);
   }, [search]);
 
-  const columns = [
-    {
-      name: '#',
-      selector: 'Id',
-      cell: (row, index) => <div>{row.Id}</div>,
-    },
-    {
-      name: 'Name',
-      selector: (row) => <h1 className="text-base">{row.Name}</h1>,
-    },
-    {
-      name: 'Phone',
-      selector: (row) => <h1 className="text-base">{row.Phone}</h1>,
-    },
-    {
-      name: 'Type',
-      selector: (row) => <h1 className="text-base">Vendor</h1>,
-    },
-    {
-      name: 'Image',
-      selector: (row) => (
-        <>
-          {row.Image !== '' ? (
-            <img
-              className="p-2 overflow-hidden h-30 rounded-md w-30 border my-2 border-slate-200 bg-white "
-              src={row.Image}
-            />
-          ) : (
-            <p className="p-2 overflow-hidden h-30 rounded-md w-30 border my-2 border-slate-200 bg-white text-xl text-center">
-              Image <br></br> Not <br></br> Uploaded
-            </p>
-          )}
-        </>
-      ),
-    },
-    {
-      name: 'Entry Date',
-      selector: (row) => (
-        <h1 className="text-base">
-          {format(new Date(row.EntDt), 'MM/dd/yyyy hh:mm a')}
-        </h1>
-      ),
-    },
-    {
-      name: 'KYC Status',
-      selector: (row) => {
-        const statusText = row.KYCStatus == '1' ? 'Active' : 'Inactive';
-        const statusColor =
-          row.KYCStatus == '1'
-            ? 'bg-green-600 text-white'
-            : 'bg-red-600 text-white';
+  const imageBodyTemplate = (rowData) => {
+    return (
+      <>
+        {rowData.Image !== '' ? (
+          <img
+            className="p-0.5 overflow-hidden mx-auto h-30 rounded-md w-30 border my-1 border-slate-200 bg-white"
+            src={rowData.Image}
+            alt="Uploaded"
+          />
+        ) : (
+          <p className="p-0.5 overflow-hidden mx-auto h-30 rounded-md w-30 border my-1 border-slate-200 bg-white text-xl text-center">
+            Image <br /> Not <br /> Uploaded
+          </p>
+        )}
+      </>
+    );
+  };
 
-        return (
-          <span
-            className={`text-xs font-medium me-2 px-2.5 py-0.5 rounded-full  ${statusColor}`}
-          >
-            {statusText}
-          </span>
-        );
-      },
-    },
+  const actionTemplate = (rowData) => {
+    const isVisible = visibleDropdown === rowData.Id;
 
-    {
-      name: 'Action',
-
-      cell: (row) => (
-        <div>
-          <div className="relative">
-            <button
-              className="bg-red-600 text-white p-3 pl-5 w-26 flex"
+    return (
+      <div className="relative">
+        <Button
+          icon={<FaCog />}
+          className="border my-1 border-gray-600 text-white bg-blue-500 rounded-full py-2.5"
+          onClick={() => {
+            setVisibleDropdown(isVisible ? null : rowData.Id);
+          }}
+        />
+        {isVisible && (
+          <div className="absolute z-10 mt-2  bg-white dark:bg-boxdark border border-gray-300 rounded shadow-lg">
+            <Button
+              label="Edit"
+              icon={<FaPencilAlt className="mr-2" />}
+              className="w-29 text-left p-2 border-b rounded-none"
               onClick={() => {
-                setSelectedRow((prevRow) => (prevRow === row ? null : row));
+                Navigate(`/vendor/edit/${rowData.Id}`);
               }}
-            >
-              Actions <FaChevronDown className="my-auto ml-4" />
-            </button>
-            {selectedRow && selectedRow.Id === row.Id && (
-              <div className="action-buttons absolute z-10 bg-white border border-gray-300 rounded-md rounded-t-none shadow-lg   ">
-                <button
-                  className="text-black p-2 w-full border-b border-gray-300"
-                  onClick={() => {
-                    setSelectedRow(null);
-                    Navigate(`/vendor/edit/${row.Id}`);
-                  }}
-                >
-                  Edit
-                </button>
-
-                <button
-                  className="text-black p-2 w-full border-b border-gray-300"
-                  onClick={() => {
-                    setSelectedRow(null);
-                    Navigate(`/vendor/event/listing/${row.Id}`);
-                  }}
-                >
-                  Events
-                </button>
-
-                <button
-                  className="text-black p-2 w-full border-b border-gray-300"
-                  onClick={() => {
-                    setSelectedRow(null);
-                    Navigate(`/vendor/kyc/${row.Id}`);
-                  }}
-                >
-                  KYC
-                </button>
-                <button
-                  className="text-black p-2 w-full border-b border-gray-300"
-                  onClick={() => {
-                    setSelectedRow(null);
-                    Navigate(`/vendor/booking/${row.Id}`);
-                  }}
-                >
-                  Booking
-                </button>
-                <button
-                  className=" text-black p-2 w-full "
-                  onClick={() => {
-                    if (
-                      window.confirm(
-                        `Are you sure you want to delete ${row.Title}?`,
-                      )
-                    ) {
-                      handleDelete(row); // Call handleDelete function on click of delete button
-                    }
-                    setSelectedRow(null);
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
+            />
+            <Button
+              label="Events"
+              icon={<MdEmojiEvents className="mr-2" />}
+              title="Events"
+              className="w-29 text-left p-2 border-b rounded-none"
+              onClick={() => {
+                Navigate(`/vendor/event/listing/${rowData.Id}`);
+              }}
+            />
+            <Button
+              label="KYC"
+              icon={<MdVerified className="mr-2" />}
+              title="KYC"
+              className="w-29 text-left p-2 border-b rounded-none"
+              onClick={() => {
+                Navigate(`/vendor/kyc/${rowData.Id}`);
+              }}
+            />
+            <Button
+              label="Booking"
+              icon={<IoTicket className="mr-2" />}
+              title="Booking"
+              className="w-29 text-left p-2 border-b rounded-none"
+              onClick={() => {
+                Navigate(`/vendor/booking/${rowData.Id}`);
+              }}
+            />
+            <Button
+              label="Delete"
+              icon={<FaTrash className="mr-2" />}
+              className="w-29 text-left text-red-600 p-2"
+              onClick={() => {
+                Swal.fire({
+                  title: 'Are you sure?',
+                  text: `You won't be able to revert this! Are you sure you want to delete ${rowData.Title}?`,
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, delete it!',
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    handleDelete(rowData);
+                    Swal.fire(
+                      'Deleted!',
+                      `${rowData.Title} has been deleted.`,
+                      'success',
+                    );
+                  }
+                });
+              }}
+            />
           </div>
-        </div>
-      ),
-      allowOverflow: true,
-    },
-  ];
+        )}
+      </div>
+    );
+  };
 
   return (
     <div>
       <Breadcrumb pageName="Vendor Listing" />
+
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -210,27 +174,78 @@ const VendorListing = () => {
                 </div>
               ) : (
                 <DataTable
-                  className="text-2xl"
-                  columns={columns}
-                  data={filterdata}
-                  pagination
-                  highlightOnHover
-                  actions={
-                    <div className="bg-blue-500 text-white p-3 px-10 text-sm hidden"></div>
+                  value={filterdata}
+                  tableStyle={{
+                    minWidth: '50rem',
+                    border: '1px solid #e0e0e0',
+                  }}
+                  paginator
+                  rows={10}
+                  rowsPerPageOptions={[5, 10, 25]}
+                  emptyMessage="No Data found"
+                  globalFilter={search}
+                  header={
+                    <div className="flex justify-between pb-5 p-ai-center">
+                      <span className="p-input-icon-left">
+                        <i className="pi pi-search" />
+                        <InputText
+                          type="text"
+                          className="text-start me-auto text-sm border-2 py-2 mt-2 pl-2 md:pr-20 pr-5"
+                          onInput={(e) => setsearch(e.target.value)}
+                          placeholder="Search"
+                        />
+                      </span>
+                    </div>
                   }
-                  subHeader
-                  subHeaderComponent={
-                    <input
-                      type="text"
-                      placeholder="search"
-                      className="text-start me-auto -mt-25 border-2 py-3 px-5"
-                      value={search}
-                      onChange={(e) => {
-                        setsearch(e.target.value);
-                      }}
-                    />
-                  }
-                />
+                >
+                  <Column
+                    field="Id"
+                    header="#"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="Name"
+                    header="Name"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="image"
+                    header="Image"
+                    className="border border-stroke"
+                    body={imageBodyTemplate}
+                  ></Column>
+                  <Column
+                    field="Status"
+                    header="Status"
+                    className="border border-stroke"
+                    body={(rowData) => (
+                      <span
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+                          rowData.Status === 1
+                            ? 'bg-green-600 text-white'
+                            : 'bg-red-600 text-white'
+                        }`}
+                      >
+                        {rowData.Status === 1 ? 'Active' : 'Inactive'}
+                      </span>
+                    )}
+                  />
+                  <Column
+                    field="EntDt"
+                    header="Entry Date"
+                    className="border border-stroke"
+                    body={(rowData) =>
+                      format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                    }
+                  />
+                  <Column
+                    header="Action"
+                    className="border border-stroke"
+                    body={actionTemplate}
+                  />
+                </DataTable>
               )}
             </div>
           </div>

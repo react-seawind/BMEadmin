@@ -1,155 +1,182 @@
-import React, { useEffect, useState } from 'react';
-import DataTable from 'react-data-table-component';
-import Breadcrumb from '../Breadcrumb';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa6';
-import { getServicedata } from '../API';
-import { CSVLink } from 'react-csv';
-import ClipLoader from 'react-spinners/BounceLoader';
-import 'jspdf-autotable';
 import { deleteNewsletter, getAllNewsletter } from '../../API/DataManagerApi';
 import { format } from 'date-fns';
+import { FaTrash } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import ClipLoader from 'react-spinners/BounceLoader';
+import { InputText } from 'primereact/inputtext';
+import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+import { Button } from 'primereact/button';
+import Breadcrumb from '../Breadcrumb';
+import { CSVLink } from 'react-csv';
 
-const NewslatterListing = () => {
+const NewsletterListing = () => {
   const [contact, setcontact] = useState([]);
   const [search, setsearch] = useState('');
-  const [filterdata, setfilterdata] = useState([]);
+  const [filterData, setfilterData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [csvData, setCsvData] = useState([]);
+  const navigate = useNavigate();
+  const dt = useRef(null);
 
-  const Navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // Loading state
   // =============action button===============
-  const [selectedRow, setSelectedRow] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await getAllNewsletter();
         setcontact(result);
-        setfilterdata(result);
+        setfilterData(result);
+        setCsvData(
+          result.map((item) => ({
+            Id: item.Id,
+            Email: item.Email,
+            EntDt: item.EntDt,
+          })),
+        );
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
+  // -----------------------filter--------------------
+  useEffect(() => {
+    const mySearch = contact.filter((item) =>
+      item.Email && item.Email
+        ? item.Email.toLowerCase().includes(search.toLowerCase())
+        : false,
+    );
+    setfilterData(mySearch);
+  }, [search, contact]);
+
   // -------------------delete contact------------------
   const handleDelete = async (row) => {
     try {
       await deleteNewsletter(row.Id);
-      setcontact((prevCategory) =>
-        prevCategory.filter((item) => item.Id !== row.Id),
+      setcontact((prevcontact) =>
+        prevcontact.filter((item) => item.Id !== row.Id),
       );
-      setfilterdata((prevFilterData) =>
+      setfilterData((prevFilterData) =>
         prevFilterData.filter((item) => item.Id !== row.Id),
       );
     } catch (error) {
-      console.error('Error deleting category:', error);
+      console.error('Error deleting contact:', error);
     }
   };
-  useEffect(() => {
-    const mySearch = contact.filter(
-      (item) =>
-        item.Title && item.Title.toLowerCase().match(search.toLowerCase()),
+
+  const actionTemplate = (rowData) => {
+    return (
+      <div>
+        <Button
+          icon={<FaTrash />}
+          className="border border-red-600 text-red-600 rounded-full py-2.5"
+          onClick={() => {
+            Swal.fire({
+              title: 'Are you sure?',
+              text: `You won't be able to revert this! Are you sure you want to delete ${rowData.StudentName}?`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!',
+            }).then((result) => {
+              if (result.isConfirmed) {
+                handleDelete(rowData);
+                Swal.fire(
+                  'Deleted!',
+                  `${rowData.Email} has been deleted.`,
+                  'success',
+                );
+              }
+            });
+          }}
+        />
+      </div>
     );
-    setfilterdata(mySearch);
-  }, [search]);
-  const columns = [
-    {
-      name: '#',
-      selector: (row) => <h1 className="text-base min-h-29 mt-2">{row.Id}</h1>,
-    },
-    {
-      name: 'Email',
-      selector: (row) => (
-        <h1 className="text-base min-h-29 mt-2">{row.Email}</h1>
-      ),
-    },
+  };
 
-    {
-      name: 'Entry Date',
-      selector: (row) => (
-        <h1 className="text-base min-h-29 mt-2">
-          {format(new Date(row.EntDt), 'MM/dd/yyyy hh:mm a')}
-        </h1>
-      ),
-    },
-    {
-      name: 'Action',
-      cell: (row) => (
-        <div className="min-h-29 mt-2">
-          <div className="">
-            <button
-              className="bg-red-600 text-white p-3 justify-center w-26 flex relative"
-              onClick={() => {
-                if (
-                  window.confirm(
-                    `Are you sure you want to delete ${row.Email}?`,
-                  )
-                ) {
-                  handleDelete(row);
-                }
-                setSelectedRow(null);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      ),
-    },
-  ];
-
-  const csvHeaders = [
-    { label: 'Id', key: 'Id' },
-    { label: 'Email', key: 'Email' },
-    { label: 'EntDt', key: 'EntDt' },
-  ];
   return (
     <div>
-      <Breadcrumb pageName="Newsletter Listing" />
+      <Breadcrumb pageName="Newsletter Data Report" />
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark card">
               {loading ? (
                 <div className="flex justify-center items-center py-60">
-                  <ClipLoader color={'#c82f32'} loading={loading} size={40} />
+                  <ClipLoader color={'#c82f32'} loading={loading} size={45} />
                 </div>
               ) : (
                 <DataTable
-                  className="text-2xl"
-                  columns={columns}
-                  data={filterdata}
-                  pagination
-                  highlightOnHover
-                  actions={
-                    <div>
+                  ref={dt}
+                  value={filterData}
+                  tableStyle={{
+                    minWidth: '50rem',
+                    border: '1px solid #e0e0e0',
+                  }}
+                  paginator
+                  rows={10}
+                  rowsPerPageOptions={[5, 10, 25]}
+                  emptyMessage="No Data found"
+                  globalFilter={search}
+                  header={
+                    <div className="flex justify-between pb-5 p-ai-center">
+                      <span className="p-input-icon-left">
+                        <i className="pi pi-search" />
+                        <InputText
+                          type="text"
+                          className="text-start me-auto text-sm border-2 py-2 mt-2 pl-2 md:pr-20 pr-5"
+                          onInput={(e) => setsearch(e.target.value)}
+                          placeholder="Search"
+                        />
+                      </span>
                       <CSVLink
-                        data={filterdata}
-                        headers={csvHeaders}
-                        filename={'newslatter_data.csv'}
-                        className="bg-blue-500 text-white px-5 py-3"
+                        data={csvData}
+                        headers={[
+                          { label: 'Id', key: 'Id' },
+                          { label: 'Email', key: 'Email' },
+                          { label: 'EntDt', key: 'EntDt' },
+                        ]}
+                        filename={'Newsletter-data.csv'}
+                        className="bg-blue-500 text-white p-3 px-10 text-sm"
                       >
-                        Export CSV
+                        Export
                       </CSVLink>
                     </div>
                   }
-                  subHeader
-                  subHeaderComponent={
-                    <input
-                      type="text"
-                      placeholder="search"
-                      className="text-start me-auto -mt-25  border-2 py-3 px-2 md:px-5"
-                      value={search}
-                      onChange={(e) => {
-                        setsearch(e.target.value);
-                      }}
-                    />
-                  }
-                />
+                >
+                  <Column
+                    field="Id"
+                    header="#"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="Email"
+                    header="Email"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="EntDt"
+                    header="Entry Date"
+                    className="border border-stroke"
+                    body={(rowData) =>
+                      format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                    }
+                  />
+                  <Column
+                    header="Action"
+                    className="border border-stroke"
+                    body={actionTemplate}
+                  />
+                </DataTable>
               )}
             </div>
           </div>
@@ -159,4 +186,4 @@ const NewslatterListing = () => {
   );
 };
 
-export default NewslatterListing;
+export default NewsletterListing;
