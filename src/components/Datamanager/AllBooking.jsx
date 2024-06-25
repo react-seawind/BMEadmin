@@ -39,7 +39,6 @@ const AllBooking = () => {
             EventSlug: item.EventSlug,
             EventEmail: item.EventEmail,
             EventOrganizer: item.EventOrganizer,
-            TypeOfEvent: item.TypeOfEvent,
             EventStartDateTime: item.EventStartDateTime,
             EventEndDateTime: item.EventEndDateTime,
             EventArtistId: item.EventArtistId,
@@ -152,7 +151,6 @@ const AllBooking = () => {
                           { label: 'EventSlug', key: 'EventSlug' },
                           { label: 'EventEmail', key: 'EventEmail' },
                           { label: 'EventOrganizer', key: 'EventOrganizer' },
-                          { label: 'TypeOfEvent', key: 'TypeOfEvent' },
                           {
                             label: 'EventStartDateTime',
                             key: 'EventStartDateTime',
@@ -218,12 +216,7 @@ const AllBooking = () => {
                     sortable
                     className="border border-stroke"
                   />
-                  <Column
-                    field="TypeOfEvent"
-                    header="Type Of Event"
-                    sortable
-                    className="border border-stroke"
-                  />
+
                   <Column
                     field="PaymentMethod"
                     header="Payment Method"

@@ -22,6 +22,30 @@ export const getAllUser = async () => {
     throw error;
   }
 };
+// =========================getAllUserByCountrySlug=========================
+// https://bme.seawindsolution.ae/api/user/by/all
+export const getAllUserByCountrySlug = async (Slug) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/user/by/U/${Slug}`, {
+      headers,
+    });
+    return response.data.responsedata;
+  } catch (error) {
+    throw error;
+  }
+};
+// =========================getAllVendorByCountrySlug=========================
+// https://bme.seawindsolution.ae/api/user/by/all
+export const getAllVendorByCountrySlug = async (Slug) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/user/by/V/${Slug}`, {
+      headers,
+    });
+    return response.data.responsedata;
+  } catch (error) {
+    throw error;
+  }
+};
 
 // ----------------------getUserbyId----------------
 export const getUserById = async (Id) => {

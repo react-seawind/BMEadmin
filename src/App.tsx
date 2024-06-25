@@ -62,7 +62,7 @@ function App() {
           </Route>
         </Routes>
       ) : (
-        <Route path="/login" element={<SignIn />} />
+        <Route path="*" element={<SignIn />} />
       )}
     </>
   );

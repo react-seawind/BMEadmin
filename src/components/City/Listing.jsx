@@ -163,6 +163,12 @@ const CityListing = () => {
                     className="border border-stroke"
                   />
                   <Column
+                    field="CountryTitle"
+                    header="Country Name"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
                     field="image"
                     header="Image"
                     className="border border-stroke"

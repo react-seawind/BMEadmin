@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useFormik } from 'formik';
-import { EditEvent, getEventByEventId } from '../../API/EventApi';
-import FormLoader from '../../common/Loader/FormLoader';
+import { getEventByEventId } from '../../API/EventApi';
 
-const VendorEvents = () => {
+const AllEventView = () => {
   const navigate = useNavigate();
 
   // ================ Get data by Id============
@@ -12,13 +10,14 @@ const VendorEvents = () => {
   const { UserId } = useParams();
   const [EventData, setEventData] = useState([]);
 
+  console.log(UserId);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (Id) {
           const UserData = await getEventByEventId(UserId, Id);
           setEventData(UserData);
-          formik.setValues(UserData);
         } else {
           console.log('error');
         }
@@ -30,31 +29,11 @@ const VendorEvents = () => {
     fetchData();
   }, [Id]);
 
-  const [isFormLoading, setIsFormLoading] = useState(false);
-  const formik = useFormik({
-    initialValues: {
-      Id: Id,
-      UserId: UserId,
-      Reason: '',
-      Status: 0,
-    },
-    onSubmit: async (values, actions) => {
-      setIsFormLoading(true);
-      try {
-        await EditEvent(values);
-      } catch (error) {
-        console.error('Error updating user:', error);
-      } finally {
-        setIsFormLoading(false); // Set loading state to false when submission ends
-      }
-    },
-  });
   const handleGoBack = () => {
-    navigate(`/vendor/event/listing/${UserId}`);
+    navigate(`/allevent/listing`);
   };
   return (
     <div>
-      {isFormLoading && <FormLoader loading={isFormLoading} />}
       {EventData.Status === 0 ? (
         <h1 className="bg-blue-100 text-blue-800  px-5 py-2 rounded-lg border border-black font-medium lg:mx-0 mb-2">
           Your Event is Under Review
@@ -74,10 +53,6 @@ const VendorEvents = () => {
       ) : EventData.Status === 4 ? (
         <h1 className="bg-red-100 text-red-800 px-5 py-2 rounded-lg border border-black  font-medium lg:mx-0 mb-2">
           Your Event is Reject Reason Is : {EventData.Reason}
-        </h1>
-      ) : EventData.Status === 5 ? (
-        <h1 className="bg-red-100 text-red-800 px-5 py-2 rounded-lg border border-black  font-medium lg:mx-0 mb-2">
-          Your Event is Cancel
         </h1>
       ) : (
         <h1 className="bg-blue-100 text-blue-800  px-5 py-2 rounded-lg border border-black font-medium lg:mx-0 mb-2">
@@ -420,94 +395,9 @@ const VendorEvents = () => {
           Action
         </h1>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-white dark:bg-boxdark-2 py-4">
-          <form className="grid grid-cols-1 " onSubmit={formik.handleSubmit}>
+          <form className="grid grid-cols-1 ">
             <div className="col-span-2">
-              <div className="flex flex-col px-5.5 pb-3">
-                <label className="  block text-black dark:text-white">
-                  Event Status <span className="text-danger">*</span>
-                </label>
-                <div className="relative">
-                  <div>
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      name="Status"
-                      className="mx-2 ml-0"
-                      value="0"
-                      checked={formik.values.Status == '0'}
-                    />
-                    Pending
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      name="Status"
-                      className="mx-2 "
-                      value="1"
-                      checked={formik.values.Status == '1'}
-                    />
-                    Approved
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      name="Status"
-                      className="mx-2 "
-                      value="2"
-                      checked={formik.values.Status == '2'}
-                    />
-                    InActive
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      name="Status"
-                      className="mx-2 "
-                      value="3"
-                      checked={formik.values.Status == '3'}
-                    />
-                    Expired
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      name="Status"
-                      className="mx-2"
-                      value="4"
-                      checked={formik.values.Status == '4'}
-                    />
-                    Reject
-                    <input
-                      type="radio"
-                      onChange={formik.handleChange}
-                      name="Status"
-                      className="mx-2"
-                      value="5"
-                      checked={formik.values.Status == '5'}
-                    />
-                    Canceled
-                  </div>
-                  {formik.values.Status == '4' ? (
-                    <>
-                      <input
-                        type="text"
-                        name="Reason"
-                        value={formik.values.Reason}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        placeholder="Enter Reason of Event Rejection"
-                        className="w-full rounded-lg border-[1.5px] mt-2 border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                      />
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  <p className="pt-2">Please select event status</p>
-                </div>
-              </div>
               <div className="flex px-5.5 items-center  gap-5.5 py-3.5   col-span-1">
-                <button
-                  className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                  type="submit"
-                >
-                  Submit
-                </button>
                 <button
                   className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
                   onClick={handleGoBack}
@@ -524,4 +414,4 @@ const VendorEvents = () => {
   );
 };
 
-export default VendorEvents;
+export default AllEventView;

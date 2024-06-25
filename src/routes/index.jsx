@@ -5,7 +5,6 @@ import Sitesetting from '../components/Setting/Sitesetting';
 import SliderListing from '../components/Slider/Listing';
 import SliderAdd from '../components/Slider/Add';
 import SliderEdit from '../components/Slider/Edit';
-import QuotedataListing from '../components/Datamanager/AllBooking';
 import ContactdataListing from '../components/Datamanager/ContactUsData';
 import Profile from '../pages/Profile';
 import Settings from '../pages/Settings';
@@ -15,9 +14,6 @@ import ArtistListing from '../components/Artist/Listing';
 import ArtistAdd from '../components/Artist/Add';
 import ArtistEdit from '../components/Artist/Edit';
 import CityListing from '../components/City/Listing';
-import StateListing from '../components/State/Listing';
-import StateAdd from '../components/State/Add';
-import StateEdit from '../components/State/Edit';
 import CityAdd from '../components/City/Add';
 import CityEdit from '../components/City/Edit';
 import LanguageListing from '../components/Language/Listing';
@@ -50,6 +46,10 @@ import VendorIdBooking from '../components/Vendor/VendorIdBooking';
 import UserIdBooking from '../components/User/Booking';
 import AllBooking from '../components/Datamanager/AllBooking';
 import NewsletterListing from '../components/Datamanager/Newslatter';
+import CountryEdit from '../components/Country/Edit';
+import CountryAdd from '../components/Country/Add';
+import CountryListing from '../components/Country/Listing';
+import AllEventView from '../components/AllEvent/AllEventView';
 
 const coreRoutes = [
   {
@@ -116,16 +116,16 @@ const coreRoutes = [
   },
   // ----------State-------------
   {
-    path: '/state/listing',
-    component: StateListing,
+    path: '/country/listing',
+    component: CountryListing,
   },
   {
-    path: '/state/add',
-    component: StateAdd,
+    path: '/country/add',
+    component: CountryAdd,
   },
   {
-    path: '/state/edit/:Id',
-    component: StateEdit,
+    path: '/country/edit/:Id',
+    component: CountryEdit,
   },
 
   // ================Page======================
@@ -211,6 +211,10 @@ const coreRoutes = [
   {
     path: '/allevent/listing',
     component: AllEventListing,
+  },
+  {
+    path: '/allevent/view/:UserId/:Id',
+    component: AllEventView,
   },
 
   // ================User======================

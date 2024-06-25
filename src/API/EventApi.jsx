@@ -80,3 +80,16 @@ export const GetAllEvent = async (data) => {
     throw error; // Rethrow the error for further handling
   }
 };
+
+// =========================getAllEventByCountryId=========================
+// https://www.bme.seawindsolution.ae/api/event/by/all
+export const getAllEventByCountryId = async (Id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/event/by/${Id}`, {
+      headers,
+    });
+    return response.data.responsedata;
+  } catch (error) {
+    throw error;
+  }
+};

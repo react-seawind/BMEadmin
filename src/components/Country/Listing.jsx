@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { deleteState, getAllState } from '../../API/StateAPI';
+import { deleteCountry, getAllCountry } from '../../API/StateAPI';
 import { format } from 'date-fns';
 import ClipLoader from 'react-spinners/BounceLoader';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
@@ -11,7 +11,7 @@ import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
 
-const StateListing = () => {
+const CountryListing = () => {
   const [State, setState] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
@@ -22,7 +22,7 @@ const StateListing = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await getAllState();
+        const result = await getAllCountry();
         setState(result);
         setfilterdata(result);
       } catch (error) {
@@ -38,7 +38,7 @@ const StateListing = () => {
   // -------------------delete State------------------
   const handleDelete = async (row) => {
     try {
-      await deleteState(row.Id);
+      await deleteCountry(row.Id);
       setState((prevCategory) =>
         prevCategory.filter((item) => item.Id !== row.Id),
       );
@@ -75,7 +75,7 @@ const StateListing = () => {
           icon={<FaPencilAlt />}
           className="border border-blue-600 text-blue-600 mr-2 rounded-full py-2.5"
           onClick={() => {
-            Navigate(`/state/edit/${rowData.Id}`);
+            Navigate(`/country/edit/${rowData.Id}`);
           }}
         />
         <Button
@@ -108,7 +108,7 @@ const StateListing = () => {
 
   return (
     <div>
-      <Breadcrumb pageName="State Listing" />
+      <Breadcrumb pageName="Country Listing" />
 
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
@@ -142,7 +142,7 @@ const StateListing = () => {
                         />
                       </span>
                       <Link
-                        to="/state/add"
+                        to="/country/add"
                         className="bg-blue-500 text-white p-3 px-10 text-sm"
                       >
                         Add
@@ -207,4 +207,4 @@ const StateListing = () => {
   );
 };
 
-export default StateListing;
+export default CountryListing;

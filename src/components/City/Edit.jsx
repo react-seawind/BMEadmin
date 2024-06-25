@@ -7,13 +7,13 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getCityById, updateCityById } from '../../API/CityAPI';
-import { getAllState } from '../../API/StateAPI';
+import { getAllCountry } from '../../API/StateAPI';
 import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('City Name is required.'),
   Slug: Yup.string().required('Slug is required.'),
-  StateId: Yup.string().required('State is required.'),
+  CountryId: Yup.string().required('Country is required.'),
   Image: Yup.string().required('Image is required.'),
 });
 
@@ -23,7 +23,7 @@ const CityEdit = () => {
   useEffect(() => {
     const fetchStates = async () => {
       try {
-        const statesData = await getAllState();
+        const statesData = await getAllCountry();
         setStates(statesData);
       } catch (error) {
         console.error('Error fetching states:', error);
@@ -56,7 +56,7 @@ const CityEdit = () => {
   const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
-      StateId: '',
+      CountryId: '',
       Title: '',
       Slug: '',
       Hid_Image: '',
@@ -168,10 +168,10 @@ const CityEdit = () => {
                   </label>
                   <div className="relative z-20 bg-white dark:bg-form-input">
                     <select
-                      value={formik.values.StateId}
+                      value={formik.values.CountryId}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      name="StateId"
+                      name="CountryId"
                       className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-2 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
                     >
                       {states.map((state) => (
@@ -180,9 +180,9 @@ const CityEdit = () => {
                         </option>
                       ))}
                     </select>
-                    {formik.touched.StateId && formik.errors.StateId ? (
+                    {formik.touched.CountryId && formik.errors.CountryId ? (
                       <div className="text-red-500">
-                        {formik.errors.StateId}
+                        {formik.errors.CountryId}
                       </div>
                     ) : null}
                     <span className="absolute top-1/2 right-4 z-10 -translate-y-1/2">
@@ -254,7 +254,6 @@ const CityEdit = () => {
                     In Active
                   </div>
                 </div>
-                <p>Please select an a one status by default is inactive.</p>
               </div>
 
               <div className="flex   gap-5.5 py-3.5 px-5.5">

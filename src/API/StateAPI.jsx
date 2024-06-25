@@ -12,12 +12,12 @@ const headers = {
 };
 
 // =============================================================================
-// ==================================STATE======================================
+// ==================================Country======================================
 // =============================================================================
-// =========================Get All State=========================
-export const getAllState = async () => {
+// =========================Get All Country=========================
+export const getAllCountry = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/state`, {
+    const response = await axios.get(`${API_BASE_URL}/country`, {
       headers,
     });
     return response.data.responsedata;
@@ -26,10 +26,10 @@ export const getAllState = async () => {
   }
 };
 
-// ----------------------getStatebyId----------------
-export const getStateById = async (Id) => {
+// ----------------------getCountryById----------------
+export const getCountryById = async (Id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/state/${Id}`, {
+    const response = await axios.get(`${API_BASE_URL}/country/${Id}`, {
       headers,
     });
 
@@ -43,10 +43,10 @@ export const getStateById = async (Id) => {
     throw error; // Rethrow the error for further handling
   }
 };
-// ===================Edit State================D
-export const updateStateById = async (formData) => {
+// ===================Edit Country================D
+export const updateCountryById = async (formData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/state`, formData, {
+    const response = await axios.put(`${API_BASE_URL}/country`, formData, {
       headers,
       'Content-Type': 'multipart/form-data',
     });
@@ -63,10 +63,10 @@ export const updateStateById = async (formData) => {
   }
 };
 
-// ------------------------Add State---------------------
-export const AddState = async (formData) => {
+// ------------------------Add Country---------------------
+export const AddCountry = async (formData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/state`, formData, {
+    const response = await axios.post(`${API_BASE_URL}/country`, formData, {
       headers,
     });
     if (response.data.status === true) {
@@ -80,10 +80,10 @@ export const AddState = async (formData) => {
     throw error; // Rethrow the error for further handling
   }
 };
-// ------------------------delete State---------------------
-export const deleteState = async (Id) => {
+// ------------------------delete Country---------------------
+export const deleteCountry = async (Id) => {
   try {
-    const response = await axios.delete(`${API_BASE_URL}/state/${Id}`, {
+    const response = await axios.delete(`${API_BASE_URL}/country/${Id}`, {
       headers,
     });
     if (response.data.status === true) {

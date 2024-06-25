@@ -4,15 +4,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { AddState } from '../../API/StateAPI';
+import { AddCountry } from '../../API/StateAPI';
 import FormLoader from '../../common/Loader/FormLoader';
 
 const validateSchema = Yup.object().shape({
-  Title: Yup.string().required('State Name is required.'),
+  Title: Yup.string().required('Country Name is required.'),
   Slug: Yup.string().required('Slug is required.'),
   Image: Yup.string().required('Image is required.'),
 });
-const StateAdd = () => {
+const CountryAdd = () => {
   const [isFormLoading, setIsFormLoading] = useState(false);
   const formik = useFormik({
     initialValues: {
@@ -30,11 +30,11 @@ const StateAdd = () => {
           formData.append(key, value);
         });
 
-        await AddState(formData);
+        await AddCountry(formData);
         actions.resetForm();
-        navigate('/state/listing');
+        navigate('/country/listing');
       } catch (error) {
-        console.error('Error Adding State:', error);
+        console.error('Error Adding country:', error);
       } finally {
         setIsFormLoading(false); // Set loading state to false when submission ends
       }
@@ -44,11 +44,11 @@ const StateAdd = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate('/state/listing');
+    navigate('/country/listing');
   };
   return (
     <div>
-      <Breadcrumb pageName="State Add  " />
+      <Breadcrumb pageName="Country Add  " />
       {isFormLoading && <FormLoader loading={isFormLoading} />}
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9">
@@ -56,10 +56,11 @@ const StateAdd = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                State Add
+                Country Add
               </h3>
               <p>
-                Please fill all detail and add new State in your State directory
+                Please fill all detail and add new Country in your Country
+                directory
               </p>
             </div>
 
@@ -168,7 +169,6 @@ const StateAdd = () => {
                     In Active
                   </div>
                 </div>
-                <p>Please select an a one status by default is inactive.</p>
               </div>
 
               <div className="flex   gap-5.5 py-3.5 px-5.5">
@@ -194,4 +194,4 @@ const StateAdd = () => {
   );
 };
 
-export default StateAdd;
+export default CountryAdd;

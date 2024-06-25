@@ -34,7 +34,7 @@ const VendorEdit = () => {
       Name: '',
       Email: '',
       Phone: '',
-      State: '',
+      Country: '',
       City: '',
       Area: '',
       Pincode: '',
@@ -151,21 +151,21 @@ const VendorEdit = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    State <span className="text-danger">*</span>
+                    Country <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
-                    name="State"
-                    value={formik.values.State}
+                    name="Country"
+                    value={formik.values.Country}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    placeholder="Enter Your State"
+                    placeholder="Enter Your Country"
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-1.5 px-3 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                   />
-                  {formik.touched.State && formik.errors.State && (
-                    <div className="text-red-500">{formik.errors.State}</div>
+                  {formik.touched.Country && formik.errors.Country && (
+                    <div className="text-red-500">{formik.errors.Country}</div>
                   )}
-                  <p>Please enter State</p>
+                  <p>Please enter Country</p>
                 </div>
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
@@ -311,7 +311,6 @@ const VendorEdit = () => {
                     In Active
                   </div>
                 </div>
-                <p>Please select an a one status by default is inactive.</p>
               </div>
 
               <div className="flex   gap-5.5 py-3.5 px-5.5">

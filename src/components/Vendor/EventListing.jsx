@@ -46,29 +46,19 @@ const EventListing = () => {
     setfilterdata(mySearch);
   }, [search]);
 
-  const imageBodyTemplate = (rowData) => {
-    return (
-      <img
-        src={rowData.Thumb}
-        alt={rowData.Thumb}
-        className="mx-auto overflow-hidden h-40 rounded-md w-30 border my-0.5 border-slate-200 bg-white"
-      />
-    );
-  };
-
   const actionTemplate = (rowData) => {
     return (
       <div>
         <Button
           icon={<FaPencilAlt />}
-          className="border border-blue-600 text-blue-600 mr-2 rounded-full py-2.5"
+          className="border border-blue-600 text-blue-600 mr-2 rounded-full py-2.5 my-1"
           onClick={() => {
             Navigate(`/vendor/event/edit/${rowData.UserId}/${rowData.Id}`);
           }}
         />
         <Button
           icon={<IoTicket />}
-          className="border border-green-600 text-green-600 mr-2 rounded-full py-2.5"
+          className="border border-green-600 text-green-600 mr-2 rounded-full py-2.5 my-1"
           onClick={() => {
             Navigate(`/vendor/event/bookings/${rowData.Id}`);
           }}
@@ -131,6 +121,7 @@ const EventListing = () => {
                     sortable
                     className="border border-stroke"
                   />
+
                   <Column
                     field="EventName"
                     header="EventName"
@@ -138,24 +129,77 @@ const EventListing = () => {
                     className="border border-stroke"
                   />
                   <Column
-                    field="image"
-                    header="Image"
+                    field="EventEmail"
+                    header="EventEmail"
+                    sortable
                     className="border border-stroke"
-                    body={imageBodyTemplate}
-                  ></Column>
+                  />
+                  <Column
+                    field="EventOrganizer"
+                    header="EventOrganizer"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="EventStartDateTime"
+                    header="EventStartDate"
+                    className="border border-stroke"
+                    body={(rowData) =>
+                      format(new Date(rowData.EventStartDateTime), 'MM/dd/yyyy')
+                    }
+                  />
+                  <Column
+                    field="EventEndDateTime"
+                    header="EventEndDate"
+                    className="border border-stroke"
+                    body={(rowData) =>
+                      format(new Date(rowData.EventEndDateTime), 'MM/dd/yyyy')
+                    }
+                  />
+                  <Column
+                    field="CategoryTitle"
+                    header="Category"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="ArtistTitle"
+                    header="Artist"
+                    sortable
+                    className="border border-stroke"
+                  />
+
                   <Column
                     field="Status"
                     header="Status"
                     className="border border-stroke"
                     body={(rowData) => (
                       <span
-                        className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
-                          rowData.Status === 1
-                            ? 'bg-green-600 text-white'
-                            : 'bg-red-600 text-white'
-                        }`}
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded-full  `}
                       >
-                        {rowData.Status === 1 ? 'Active' : 'Inactive'}
+                        {rowData.Status === 0 ? (
+                          <span className="badge bg-blue-500 text-white rounded text-xs px-3 py-1">
+                            Pending
+                          </span>
+                        ) : rowData.Status === 1 ? (
+                          <span className="badge bg-green-500 text-white rounded text-xs px-3 py-1">
+                            Active
+                          </span>
+                        ) : rowData.Status === 2 ? (
+                          <span className="badge bg-graydark text-white rounded text-xs px-3 py-1">
+                            Inactive
+                          </span>
+                        ) : rowData.Status === 3 ? (
+                          <span className="badge bg-yellow-500 text-white rounded text-xs px-3 py-1">
+                            Expired/Complete
+                          </span>
+                        ) : rowData.Status === 4 ? (
+                          <span className="badge bg-red-500 text-white rounded text-xs px-3 py-1">
+                            Reject
+                          </span>
+                        ) : (
+                          ''
+                        )}
                       </span>
                     )}
                   />

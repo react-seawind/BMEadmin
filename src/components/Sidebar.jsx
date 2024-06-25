@@ -147,7 +147,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
                       <div
@@ -349,7 +349,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 
@@ -406,7 +406,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 
@@ -500,7 +500,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                                     >
                                       {' '}
                                       <FaMapLocation />
-                                      State
+                                      Country
                                       <span
                                         className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                                           open && 'rotate-180'
@@ -518,7 +518,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                                       <ul className="mt-2 mb-1.5 flex flex-col gap-2.5 ">
                                         <li>
                                           <NavLink
-                                            to="/state/listing"
+                                            to="/country/listing"
                                             className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
                                           >
                                             <FaClipboardList />
@@ -527,7 +527,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                                         </li>
                                         <li>
                                           <NavLink
-                                            to="/state/add"
+                                            to="/country/add"
                                             className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
                                           >
                                             <IoMdAdd />
@@ -571,7 +571,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 
@@ -627,7 +627,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 
@@ -777,7 +777,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 
@@ -833,7 +833,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 
@@ -889,7 +889,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 
@@ -945,7 +945,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown />
+                          <FaChevronDown className="bg-red-500" />
                         </div>
                       </NavLink>
 

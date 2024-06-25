@@ -110,12 +110,7 @@ const UserIdBooking = () => {
                       sortable
                       className="border border-stroke"
                     />
-                    <Column
-                      field="TypeOfEvent"
-                      header="Type Of Event"
-                      sortable
-                      className="border border-stroke"
-                    />
+
                     <Column
                       field="PaymentMethod"
                       header="Payment Method"

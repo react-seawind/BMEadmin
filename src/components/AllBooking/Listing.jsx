@@ -102,17 +102,30 @@ const AllBookingListing = () => {
                     className="border border-stroke"
                   />
                   <Column
+                    field="UserName"
+                    header="User Name"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="UserEmail"
+                    header="User Email"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="UserPhone"
+                    header="User Phone"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
                     field="EventName"
                     header="Event Name"
                     sortable
                     className="border border-stroke"
                   />
-                  <Column
-                    field="TypeOfEvent"
-                    header="Type Of Event"
-                    sortable
-                    className="border border-stroke"
-                  />
+
                   <Column
                     field="PaymentMethod"
                     header="Payment Method"

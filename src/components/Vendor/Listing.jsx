@@ -9,39 +9,55 @@ import { InputText } from 'primereact/inputtext';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
 import { Button } from 'primereact/button';
-import { deleteUser, getAllUser } from '../../API/UserApi';
+import {
+  deleteUser,
+  getAllUser,
+  getAllUserByCountrySlug,
+  getAllVendorByCountrySlug,
+} from '../../API/UserApi';
 import { MdEmojiEvents, MdVerified } from 'react-icons/md';
 import { IoTicket } from 'react-icons/io5';
+import { getAllCountry } from '../../API/StateAPI';
 
 const VendorListing = () => {
   const [user, setuser] = useState([]);
+  const [country, setcountry] = useState([]);
   const [search, setsearch] = useState('');
   const [filterdata, setfilterdata] = useState([]);
   const [visibleDropdown, setVisibleDropdown] = useState(null);
-
+  const [statusFilter, setStatusFilter] = useState('all'); // Default value 'Active'
   const Navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
+  // =============action button===============
+  const fetchData = async () => {
+    try {
+      setLoading(true); // Set loading state for initial loading
+      const result = await getAllVendorByCountrySlug(statusFilter);
+      setuser(result);
+      setfilterdata(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false); // Set loading to false after data is fetched
+    }
+  };
+
+  const fetchCountryData = async () => {
+    try {
+      const result = await getAllCountry();
+      setcountry(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getAllUser();
-        const filteredData = result.filter((item) => item.Type === 'V');
-        setuser(filteredData);
-
-        if (filteredData.length > 0) {
-          setfilterdata(filteredData);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    fetchCountryData();
     fetchData();
   }, []);
-
+  const handleStatusChange = (e) => {
+    setStatusFilter(e.target.value);
+  };
   const handleDelete = async (row) => {
     try {
       await deleteUser(row.Id);
@@ -62,24 +78,6 @@ const VendorListing = () => {
     setfilterdata(mySearch);
   }, [search]);
 
-  const imageBodyTemplate = (rowData) => {
-    return (
-      <>
-        {rowData.Image !== '' ? (
-          <img
-            className="p-0.5 overflow-hidden mx-auto h-30 rounded-md w-30 border my-1 border-slate-200 bg-white"
-            src={rowData.Image}
-            alt="Uploaded"
-          />
-        ) : (
-          <p className="p-0.5 overflow-hidden mx-auto h-30 rounded-md w-30 border my-1 border-slate-200 bg-white text-xl text-center">
-            Image <br /> Not <br /> Uploaded
-          </p>
-        )}
-      </>
-    );
-  };
-
   const actionTemplate = (rowData) => {
     const isVisible = visibleDropdown === rowData.Id;
 
@@ -93,7 +91,7 @@ const VendorListing = () => {
           }}
         />
         {isVisible && (
-          <div className="absolute z-10 mt-2  bg-white dark:bg-boxdark border border-gray-300 rounded shadow-lg">
+          <div className="absolute right-0 z-10 mt-2  bg-white dark:bg-boxdark border border-gray-300 rounded shadow-lg">
             <Button
               label="Edit"
               icon={<FaPencilAlt className="mr-2" />}
@@ -136,7 +134,7 @@ const VendorListing = () => {
               onClick={() => {
                 Swal.fire({
                   title: 'Are you sure?',
-                  text: `You won't be able to revert this! Are you sure you want to delete ${rowData.Title}?`,
+                  text: `You won't be able to revert this! Are you sure you want to delete ${rowData.Name}?`,
                   icon: 'warning',
                   showCancelButton: true,
                   confirmButtonColor: '#3085d6',
@@ -147,7 +145,7 @@ const VendorListing = () => {
                     handleDelete(rowData);
                     Swal.fire(
                       'Deleted!',
-                      `${rowData.Title} has been deleted.`,
+                      `${rowData.Name} has been deleted.`,
                       'success',
                     );
                   }
@@ -168,6 +166,29 @@ const VendorListing = () => {
         <div className="flex flex-col gap-9 ">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+              <div className="bg-[#7fc6e55c] p-3">
+                <form className="flex items-center justify-between">
+                  <select
+                    className="md:w-80 w-40 h-10 border form-control form-select"
+                    value={statusFilter}
+                    onChange={handleStatusChange}
+                  >
+                    <option value="all">All</option>
+                    {country.map((country) => (
+                      <option key={country.Id} value={country.Slug}>
+                        {country.Title}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    className="bg-blue-600 text-white h-10 px-5 border"
+                    onClick={fetchData}
+                  >
+                    View Report
+                  </button>
+                </form>
+              </div>
               {loading ? (
                 <div className="flex justify-center items-center py-60">
                   <ClipLoader color={'#c82f32'} loading={loading} size={40} />
@@ -211,11 +232,30 @@ const VendorListing = () => {
                     className="border border-stroke"
                   />
                   <Column
-                    field="image"
-                    header="Image"
+                    field="Email"
+                    header="Email"
+                    sortable
                     className="border border-stroke"
-                    body={imageBodyTemplate}
-                  ></Column>
+                  />
+                  <Column
+                    field="CountryCode"
+                    header="Country"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="Phone"
+                    header="Phone"
+                    sortable
+                    className="border border-stroke"
+                  />
+                  <Column
+                    field="City"
+                    header="City"
+                    sortable
+                    className="border border-stroke"
+                  />
+
                   <Column
                     field="Status"
                     header="Status"
@@ -229,6 +269,22 @@ const VendorListing = () => {
                         }`}
                       >
                         {rowData.Status === 1 ? 'Active' : 'Inactive'}
+                      </span>
+                    )}
+                  />
+                  <Column
+                    field="KYCStatus"
+                    header="KYC Status"
+                    className="border border-stroke"
+                    body={(rowData) => (
+                      <span
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
+                          rowData.KYCStatus === 1
+                            ? 'bg-green-600 text-white'
+                            : 'bg-red-600 text-white'
+                        }`}
+                      >
+                        {rowData.KYCStatus === 1 ? 'Approved' : 'Reject'}
                       </span>
                     )}
                   />
