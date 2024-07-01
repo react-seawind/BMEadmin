@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import Loader from './common/Loader';
 import routes from './routes/index.jsx';
 import RequireAuth from './Private/Requiredau';
+import NoDataFound from './components/NoFound';
 
 const DefaultLayout = lazy(() => import('./layout/DefaultLayout'));
 const SignIn = lazy(() => import('./pages/Authentication/SignIn.jsx'));
@@ -62,7 +63,7 @@ function App() {
           </Route>
         </Routes>
       ) : (
-        <Route path="*" element={<SignIn />} />
+        <Route path="/*" element={<NoDataFound />} />
       )}
     </>
   );

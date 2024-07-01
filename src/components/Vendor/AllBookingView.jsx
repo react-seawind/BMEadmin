@@ -5,8 +5,9 @@ import { GetAllBookedOrderById } from '../../API/OrderApi';
 import ClipLoader from 'react-spinners/BounceLoader';
 import { format } from 'date-fns';
 
-const AllBookingView = () => {
+const AllBookingViewInVendor = () => {
   // ================ Get data by Id============
+  const { OrderId } = useParams();
   const { Id } = useParams();
   const navigate = useNavigate();
   const [EventData, setEventData] = useState();
@@ -14,7 +15,7 @@ const AllBookingView = () => {
   const fetchData = async () => {
     try {
       if (Id) {
-        const UserData = await GetAllBookedOrderById(Id);
+        const UserData = await GetAllBookedOrderById(OrderId);
         setEventData(UserData);
       } else {
         console.log('error');
@@ -29,7 +30,7 @@ const AllBookingView = () => {
     fetchData();
   }, [Id]);
   const handleGoBack = () => {
-    navigate(`/allbooking/listing`);
+    navigate(`/vendor/booking/${Id}`);
   };
   const statusText = EventData?.PaymentStatus == '1' ? 'Success' : 'Failed';
   const statusColor =
@@ -75,7 +76,7 @@ const AllBookingView = () => {
                       </label>
 
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventStartDateTime:</b>{' '}
+                        <b>EventStartDateTime:</b>
                         {format(
                           new Date(EventData?.EventStartDateTime),
                           'MM/dd/yyyy',
@@ -100,6 +101,9 @@ const AllBookingView = () => {
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Location:</b> {EventData?.Location}
+                      </label>
+                      <label className="mb-3 block text-black dark:text-white">
+                        <b>Event Start Time:</b> {EventData?.EventStartTime}
                       </label>
                     </div>
                     <div className="relative">
@@ -152,6 +156,9 @@ const AllBookingView = () => {
                           'MM/dd/yyyy',
                         )}
                       </label>
+                      <label className="mb-3 block text-black dark:text-white">
+                        <b>Event End Time:</b> {EventData?.EventEndTime}
+                      </label>
                     </div>
                   </div>
                   <div class="relative overflow-x-auto shadow-md   bg-white dark:bg-boxdark-2 py-2 pt-1 border-t">
@@ -177,4 +184,4 @@ const AllBookingView = () => {
   );
 };
 
-export default AllBookingView;
+export default AllBookingViewInVendor;

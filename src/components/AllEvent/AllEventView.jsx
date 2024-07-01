@@ -135,17 +135,7 @@ const AllEventView = () => {
               ) : (
                 ''
               )}
-              {/*===================EventEndDateTime=================*/}
-              {EventData.EventEndDateTime !== '' ? (
-                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventEndDateTime:</th>
-                  <td class="px-6 py-4 w-1/2 text-base">
-                    {EventData.EventEndDateTime}
-                  </td>
-                </tr>
-              ) : (
-                ''
-              )}
+
               {/*===================CategoryTitle=================*/}
               {EventData.CategoryTitle !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
@@ -297,11 +287,11 @@ const AllEventView = () => {
                     ) : (
                       ''
                     )}
-                    {/*===================Address=================*/}
-                    {address.Address !== '' ? (
+                    {/*===================Location=================*/}
+                    {address.Location !== '' ? (
                       <p class="">
-                        <b>Address: </b>
-                        {address.Address}
+                        <b>Location: </b>
+                        {address.Location}
                       </p>
                     ) : (
                       ''

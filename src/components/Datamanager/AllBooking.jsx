@@ -40,7 +40,7 @@ const AllBooking = () => {
             EventEmail: item.EventEmail,
             EventOrganizer: item.EventOrganizer,
             EventStartDateTime: item.EventStartDateTime,
-            EventEndDateTime: item.EventEndDateTime,
+
             EventArtistId: item.EventArtistId,
             AgeRestriction: item.AgeRestriction,
             PointOfContactName: item.PointOfContactName,
@@ -155,10 +155,7 @@ const AllBooking = () => {
                             label: 'EventStartDateTime',
                             key: 'EventStartDateTime',
                           },
-                          {
-                            label: 'EventEndDateTime',
-                            key: 'EventEndDateTime',
-                          },
+
                           { label: 'EventArtistId', key: 'EventArtistId' },
                           { label: 'AgeRestriction', key: 'AgeRestriction' },
                           {

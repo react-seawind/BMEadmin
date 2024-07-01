@@ -16,7 +16,7 @@ const headers = {
 // https://bme.seawindsolution.ae/api/dashboard/user
 export const getAllDashbaord = async (Id) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/dashboard/user`, {
+    const response = await axios.get(`${API_BASE_URL}/dashboard/admin`, {
       headers,
     });
 

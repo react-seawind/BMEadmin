@@ -142,7 +142,7 @@ const VendorEvents = () => {
               {EventData.EventDescription !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
                   <th class="px-6 py-4 w-1/2 ">EventDescription:</th>
-                  <td class="px-6 py-4 w-1/2 text-base">
+                  <td class="px-6 py-4 w-1/2 text-base text-justify">
                     {EventData.EventDescription}
                   </td>
                 </tr>
@@ -160,17 +160,7 @@ const VendorEvents = () => {
               ) : (
                 ''
               )}
-              {/*===================EventEndDateTime=================*/}
-              {EventData.EventEndDateTime !== '' ? (
-                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventEndDateTime:</th>
-                  <td class="px-6 py-4 w-1/2 text-base">
-                    {EventData.EventEndDateTime}
-                  </td>
-                </tr>
-              ) : (
-                ''
-              )}
+
               {/*===================CategoryTitle=================*/}
               {EventData.CategoryTitle !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
@@ -258,160 +248,167 @@ const VendorEvents = () => {
           <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
             Address Information
           </h1>
-          {EventData?.Addresses?.map((address, index) => (
-            <div
-              key={index}
-              className={`container mx-auto p-4 bg-white border ${
-                index === 0 ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-2'
-              } grid `}
-            >
-              <div className="border p-3 ">
-                <div className="flex items-center foldsmall:flex-col foldsmall:justify-center">
-                  <p className="m-0 border border-themecolor1 py-1.5 rounded-3xl">
-                    <span className="bg-themecolor1  text-white px-3.5 py-2 rounded-full mr-2">
-                      {index + 1}
-                    </span>
-                    <span className="pr-3">Address</span>
-                  </p>
-                </div>
+          <div className="container mx-auto p-4 bg-white border grid grid-cols-1 lg:grid-cols-2">
+            {EventData?.Addresses?.map((address, index) => (
+              <div key={index} className="">
+                <div className="border p-3 ">
+                  <div className="flex items-center foldsmall:flex-col foldsmall:justify-center">
+                    <p className="m-0 border border-themecolor1 py-1.5 rounded-3xl">
+                      <span className="bg-themecolor1  text-white px-3.5 py-2 rounded-full mr-2">
+                        {index + 1}
+                      </span>
+                      <span className="pr-3">Address</span>
+                    </p>
+                  </div>
 
-                <table class="w-full text-sm mt-3 text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                  <tbody className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-                    {/*===================CityTitle=================*/}
-                    {address.CityTitle !== '' ? (
-                      <p class="">
-                        <b>City: </b>
-                        {address.CityTitle}
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {/*===================StateTitle=================*/}
-                    {address.CountryTitle !== '' ? (
-                      <p class="">
-                        <b>Country: </b>
-                        {address.CountryTitle}
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {/*===================LanguageTitle=================*/}
-                    {address.LanguageTitle !== '' ? (
-                      <p class="">
-                        <b>Language: </b>
-                        {address.LanguageTitle}
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {/*===================Duration=================*/}
-                    {address.Duration !== '' ? (
-                      <p class="">
-                        <b>Duration: </b>
-                        {address.Duration}
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {/*===================Type=================*/}
-                    {address.Type !== '' ? (
-                      <p class="">
-                        <b>Type: </b>
-                        {address.Type}
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {/*===================Address=================*/}
-                    {address.Address !== '' ? (
-                      <p class="">
-                        <b>Address: </b>
-                        {address.Address}
-                      </p>
-                    ) : (
-                      ''
-                    )}
-                    {/*===================Location=================*/}
-                    {address.Location !== '' ? (
-                      <>
-                        <p class="my-auto">
-                          <b>Location: </b>
+                  <table class="w-full text-sm mt-3 text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
+                    <tbody className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+                      {/*===================CityTitle=================*/}
+                      {address.CityTitle !== '' ? (
+                        <p class="">
+                          <b>City: </b>
+                          {address.CityTitle}
                         </p>
-                        <p
-                          dangerouslySetInnerHTML={{
-                            __html: address.Location ? address.Location : '',
-                          }}
-                          class="text-base map-container"
-                        />
-                      </>
-                    ) : (
-                      ''
-                    )}
-                  </tbody>
-                </table>
-
-                <table class="w-full text-sm mt-3 text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
-                  <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
-                    Ticket Information
-                  </h1>
-                  <tbody className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                    {address?.Dates?.map((ticket, subIndex) => (
-                      <div className="gap-3">
-                        <div className="flex items-center foldsmall:flex-col foldsmall:justify-center mt-4">
-                          <p className="m-0 border border-themecolor1 py-1.5 rounded-3xl">
-                            <span className="bg-themecolor1  text-white px-3.5 py-2 rounded-full mr-2">
-                              {subIndex + 1}
-                            </span>
-                            <span className="pr-3"> {ticket.EventDate}</span>
+                      ) : (
+                        ''
+                      )}
+                      {/*===================StateTitle=================*/}
+                      {address.CountryTitle !== '' ? (
+                        <p class="">
+                          <b>Country: </b>
+                          {address.CountryTitle}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                      {/*===================LanguageTitle=================*/}
+                      {address.LanguageTitle !== '' ? (
+                        <p class="">
+                          <b>Language: </b>
+                          {address.LanguageTitle}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                      {/*===================Duration=================*/}
+                      {address.Duration !== '' ? (
+                        <p class="">
+                          <b>Duration: </b>
+                          {address.Duration}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                      {/*===================Type=================*/}
+                      {address.Type !== '' ? (
+                        <p class="">
+                          <b>Type: </b>
+                          {address.Type}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                      {/*===================Location=================*/}
+                      {address.Location !== '' ? (
+                        <p class="">
+                          <b>Location: </b>
+                          {address.Location}
+                        </p>
+                      ) : (
+                        ''
+                      )}
+                      {/*===================Location=================*/}
+                      {address.Address !== '' ? (
+                        <>
+                          <p class="my-auto">
+                            <b>Address: </b>
                           </p>
-                        </div>
-                        {ticket?.Tickets?.map((ticket, subIndex) => (
-                          <div className="w-full border dark:border-zinc-600 p-2 my-6 mb-0 relative">
-                            {ticket.TicketName !== '' ? (
-                              <tr class="bg-white border-b w-full dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600">
-                                <th class="py-3 w-full ">Ticket Name:</th>
-                                <td class="py-3 w-full text-base  ">
-                                  {ticket.TicketName}
-                                </td>
-                              </tr>
-                            ) : (
-                              ''
-                            )}
+                          <p
+                            dangerouslySetInnerHTML={{
+                              __html: address.Address ? address.Address : '',
+                            }}
+                            class="text-base map-container"
+                          />
+                        </>
+                      ) : (
+                        ''
+                      )}
+                    </tbody>
+                  </table>
 
-                            {ticket.TicketAmount !== '' ? (
-                              <tr class="bg-white border-b w-full dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600">
-                                <th class="py-3 w-full ">Ticket Amount:</th>
-                                <td class="py-3 w-full text-base  ">
-                                  {ticket.TicketAmount}
-                                </td>
-                              </tr>
-                            ) : (
-                              ''
-                            )}
-
-                            {ticket.TicketQuantity !== '' ? (
-                              <tr class="bg-white   w-full dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600">
-                                <th class="py-3 w-full ">Ticket Quantity:</th>
-                                <td class="py-3 w-full text-base  ">
-                                  {ticket.TicketQuantity}
-                                </td>
-                              </tr>
-                            ) : (
-                              ''
-                            )}
-
-                            <h1 className="absolute bg-themecolor2 text-white px-2 -top-3">
-                              {subIndex + 1}
-                            </h1>
+                  <table class="w-full text-sm mt-3 text-left rtl:text-right text-gray-500 dark:text-gray-400 ">
+                    <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
+                      Ticket Information
+                    </h1>
+                    <tbody className="grid grid-cols-1 lg:grid-cols-1 gap-5">
+                      {address?.Dates?.map((ticket, subIndex) => (
+                        <div className="gap-3">
+                          <div className="flex items-center foldsmall:flex-col foldsmall:justify-center mt-4">
+                            <p className="m-0 border border-themecolor1 py-1.5 rounded-3xl">
+                              <span className="bg-themecolor1  text-white px-3.5 py-2 rounded-full mr-2">
+                                {subIndex + 1}
+                              </span>
+                              <span className="pr-3"> {ticket.EventDate}</span>
+                            </p>
+                            <p className="m-0 border border-themecolor1 py-1.5 ml-1.5 rounded-3xl">
+                              <span className="px-3">
+                                {ticket.EventStartTime}
+                              </span>
+                            </p>
+                            <p className="m-0 border border-themecolor1 py-1.5 ml-1.5 rounded-3xl">
+                              <span className="px-3">
+                                {ticket.EventEndTime}
+                              </span>
+                            </p>
                           </div>
-                        ))}
-                      </div>
-                    ))}
-                  </tbody>
-                </table>
+                          {ticket?.Tickets?.map((ticket, subIndex) => (
+                            <div className="w-full border dark:border-zinc-600 p-2 my-6 mb-0 relative">
+                              {ticket.TicketName !== '' ? (
+                                <tr class="bg-white border-b w-full dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600">
+                                  <th class="py-3 w-full ">Ticket Name:</th>
+                                  <td class="py-3 w-full text-base  ">
+                                    {ticket.TicketName}
+                                  </td>
+                                </tr>
+                              ) : (
+                                ''
+                              )}
+
+                              {ticket.TicketAmount !== '' ? (
+                                <tr class="bg-white border-b w-full dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600">
+                                  <th class="py-3 w-full ">Ticket Amount:</th>
+                                  <td class="py-3 w-full text-base  ">
+                                    {ticket.TicketAmount}
+                                  </td>
+                                </tr>
+                              ) : (
+                                ''
+                              )}
+
+                              {ticket.TicketQuantity !== '' ? (
+                                <tr class="bg-white   w-full dark:bg-boxdark-2 px-2 dark:text-white dark:border-zinc-600">
+                                  <th class="py-3 w-full ">Ticket Quantity:</th>
+                                  <td class="py-3 w-full text-base  ">
+                                    {ticket.TicketQuantity}
+                                  </td>
+                                </tr>
+                              ) : (
+                                ''
+                              )}
+
+                              <h1 className="absolute bg-themecolor2 text-white px-2 -top-3">
+                                {subIndex + 1}
+                              </h1>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
       <div>

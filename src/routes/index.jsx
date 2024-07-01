@@ -50,8 +50,18 @@ import CountryEdit from '../components/Country/Edit';
 import CountryAdd from '../components/Country/Add';
 import CountryListing from '../components/Country/Listing';
 import AllEventView from '../components/AllEvent/AllEventView';
+import OrderBookingView from '../components/Vendor/OrderBookingView';
+import OrderBookingViewUser from '../components/User/OrderBookingViewUser';
+import AllBookingViewInVendor from '../components/Vendor/AllBookingView';
+import NoDataFound from '../common/Loader/NoDataFound';
+import Coupan from '../components/Vendor/Coupan';
 
 const coreRoutes = [
+  {
+    path: '/*',
+    title: 'No Page',
+    component: NoDataFound,
+  },
   {
     path: '/login',
     title: 'Login',
@@ -230,6 +240,10 @@ const coreRoutes = [
     path: '/user/booking/:Id',
     component: UserIdBooking,
   },
+  {
+    path: '/user/booking/:Id/:OrderId',
+    component: OrderBookingViewUser,
+  },
   // ================Vendor======================
   {
     path: '/vendor/listing',
@@ -244,6 +258,10 @@ const coreRoutes = [
     component: VendorIdBooking,
   },
   {
+    path: '/vendor/booking/:Id/:OrderId',
+    component: AllBookingViewInVendor,
+  },
+  {
     path: '/vendor/event/listing/:Id',
     component: EventListing,
   },
@@ -256,8 +274,16 @@ const coreRoutes = [
     component: VendorBooking,
   },
   {
+    path: '/vendor/event/bookings/:Id/:OrderId',
+    component: OrderBookingView,
+  },
+  {
     path: '/vendor/kyc/:Id',
     component: VendorKyc,
+  },
+  {
+    path: '/vendor/coupan/listing/:Id',
+    component: Coupan,
   },
 
   // ================All Bookung======================

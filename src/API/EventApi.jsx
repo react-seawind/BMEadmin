@@ -93,3 +93,31 @@ export const getAllEventByCountryId = async (Id) => {
     throw error;
   }
 };
+// =========================getAllBookingByCountryId=========================
+// https://bme.seawindsolution.ae/api/order/by/all
+export const getAllBookingByCountryId = async (Id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/order/by/${Id}`, {
+      headers,
+    });
+    return response.data.responsedata;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// =========================Get All Coupon=========================
+// https://bme.seawindsolution.ae/api/coupon/vendor/8
+export const getAllCoupon = async (VendorId) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/coupon/vendor/${VendorId}`,
+      {
+        headers,
+      },
+    );
+    return response.data.responsedata;
+  } catch (error) {
+    throw error;
+  }
+};

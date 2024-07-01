@@ -46,17 +46,21 @@ const UserIdBooking = () => {
   }, [search]);
 
   const actionTemplate = (rowData) => {
+    const OrderId = rowData.Id;
     return (
       <div>
         <Button
           icon={<FaEye />}
           className="border border-blue-600 text-blue-600 mr-2 rounded-full py-2.5"
           onClick={() => {
-            navigate(`/allbooking/view/${rowData.Id}`);
+            navigate(`/user/booking/${Id}/${OrderId}`);
           }}
         />
       </div>
     );
+  };
+  const handleGoBack = () => {
+    navigate(`/user/listing`);
   };
 
   return (
@@ -95,6 +99,12 @@ const UserIdBooking = () => {
                             placeholder="Search"
                           />
                         </span>
+                        <div
+                          onClick={handleGoBack}
+                          className="bg-blue-500 text-white p-3 px-10 text-sm cursor-pointer"
+                        >
+                          Back
+                        </div>
                       </div>
                     }
                   >
@@ -105,19 +115,66 @@ const UserIdBooking = () => {
                       className="border border-stroke"
                     />
                     <Column
-                      field="EventName"
-                      header="Event Name"
+                      field="UserName"
+                      header="User Name"
                       sortable
                       className="border border-stroke"
                     />
-
+                    <Column
+                      field="UserEmail"
+                      header="User Email"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="UserPhone"
+                      header="User Phone"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="EventName"
+                      header="Event Name"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Country"
+                      header="Country"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="City"
+                      header="City"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="TicketName"
+                      header="Ticket Name"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Price"
+                      header="Price"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Qty"
+                      header="Ticket Qty"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Charge"
+                      header="Ticket Charge"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Total"
+                      header="Total"
+                      className="border border-stroke"
+                    />
                     <Column
                       field="PaymentMethod"
                       header="Payment Method"
-                      sortable
                       className="border border-stroke"
                     />
-
                     <Column
                       field="PaymentStatus"
                       header="PaymentStatus"
@@ -139,7 +196,7 @@ const UserIdBooking = () => {
                       header="Entry Date"
                       className="border border-stroke"
                       body={(rowData) =>
-                        format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                        format(new Date(rowData.EntDt), 'MM/dd/yyyy')
                       }
                     />
                     <Column

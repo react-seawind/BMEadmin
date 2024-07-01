@@ -1,130 +1,3 @@
-// import React, { useEffect, useState } from 'react';
-// import DataTable from 'react-data-table-component';
-// import Breadcrumb from '../Breadcrumb';
-// import ClipLoader from 'react-spinners/BounceLoader';
-// import { useNavigate, useParams } from 'react-router-dom';
-// import { GetAllBookedOrderByVendorId } from '../../API/OrderApi';
-
-// const VendorIdBooking = () => {
-//   const [service, setservice] = useState([]);
-//   const [search, setsearch] = useState('');
-//   const [loading, setLoading] = useState(true); // Loading state
-//   const [filterdata, setfilterdata] = useState([]);
-
-//   const Navigate = useNavigate();
-
-//   const { Id } = useParams();
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const result = await GetAllBookedOrderByVendorId(Id);
-//         setservice(result);
-//         setfilterdata(result);
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       } finally {
-//         setLoading(false); // Set loading to false after data is fetched
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   const columns = [
-//     {
-//       name: '#',
-//       selector: 'Id',
-//       cell: (row, index) => <div>{index + 1}</div>,
-//     },
-//
-//     {
-//       name: 'Action',
-//       cell: (row) => (
-//         <div>
-//           <button
-//             onClick={() => {
-//               Navigate(`/allbooking/view/${row.Id}`);
-//             }}
-//             className="bg-red-600 text-white px-4 py-1"
-//           >
-//             View
-//           </button>
-//         </div>
-//       ),
-//     },
-//   ];
-
-//   useEffect(() => {
-//     const mySearch = service.filter(
-//       (item) =>
-//         item.EventName &&
-//         item.EventName.toLowerCase().match(search.toLowerCase()),
-//     );
-//     setfilterdata(mySearch);
-//   }, [search, service]);
-
-//   const handleGoBack = () => {
-//     Navigate('/vendor/listing');
-//   };
-//   return (
-//     <div>
-//       <Breadcrumb pageName="All Booking Listing" />
-//       <div className="grid grid-cols-1 gap-9 ">
-//         <div className="flex flex-col gap-9 ">
-//           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-//             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
-//               {loading ? (
-//                 <div className="flex justify-center items-center py-60">
-//                   <ClipLoader color={'#c82f32'} loading={loading} size={40} />
-//                 </div>
-//               ) : (
-//                 <>
-//                   {filterdata.length === 0 ? (
-//                     <div className="mx-3 my-3 py-16 bg-slate-300 font-bold text-2xl text-bodydark2 text-center">
-//                       No Booking Found
-//                     </div>
-//                   ) : (
-//                     <DataTable
-//                       className="text-2xl"
-//                       columns={columns}
-//                       data={filterdata}
-//                       pagination
-//                       highlightOnHover
-//                       subHeader
-//                       actions={
-//                         <div
-//                           onClick={handleGoBack}
-//                           type="button"
-//                           className="bg-blue-500 cursor-pointer text-white p-3 px-10 text-sm"
-//                         >
-//                           Back
-//                         </div>
-//                       }
-//                       subHeaderComponent={
-//                         <input
-//                           type="text"
-//                           placeholder="search"
-//                           className="text-start me-auto -mt-25 border-2 py-3 px-5"
-//                           value={search}
-//                           onChange={(e) => {
-//                             setsearch(e.target.value);
-//                           }}
-//                         />
-//                       }
-//                     />
-//                   )}
-//                 </>
-//               )}
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default VendorIdBooking;
-
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../Breadcrumb';
 import { Link, NavLink, useNavigate, useParams } from 'react-router-dom';
@@ -179,7 +52,7 @@ const VendorIdBooking = () => {
           icon={<FaEye />}
           className="border border-blue-600 text-blue-600 mr-2 rounded-full py-2.5"
           onClick={() => {
-            navigate(`/allbooking/view/${rowData.Id}`);
+            navigate(`/vendor/booking/${Id}/${rowData.Id}`);
           }}
         />
       </div>
@@ -248,29 +121,58 @@ const VendorIdBooking = () => {
                     <Column
                       field="UserEmail"
                       header="User Email"
-                      sortable
                       className="border border-stroke"
                     />
                     <Column
                       field="UserPhone"
                       header="User Phone"
-                      sortable
                       className="border border-stroke"
                     />
                     <Column
                       field="EventName"
                       header="Event Name"
-                      sortable
                       className="border border-stroke"
                     />
-
+                    <Column
+                      field="Country"
+                      header="Country"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="City"
+                      header="City"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="TicketName"
+                      header="Ticket Name"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Price"
+                      header="Price"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Qty"
+                      header="Ticket Qty"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Charge"
+                      header="Ticket Charge"
+                      className="border border-stroke"
+                    />
+                    <Column
+                      field="Total"
+                      header="Total"
+                      className="border border-stroke"
+                    />
                     <Column
                       field="PaymentMethod"
                       header="Payment Method"
-                      sortable
                       className="border border-stroke"
                     />
-
                     <Column
                       field="PaymentStatus"
                       header="PaymentStatus"
@@ -292,7 +194,7 @@ const VendorIdBooking = () => {
                       header="Entry Date"
                       className="border border-stroke"
                       body={(rowData) =>
-                        format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                        format(new Date(rowData.EntDt), 'MM/dd/yyyy')
                       }
                     />
                     <Column

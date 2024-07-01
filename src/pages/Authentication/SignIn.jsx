@@ -67,7 +67,7 @@ const SignIn = () => {
                   alt="Logo"
                 />
               </Link>
-              <p className="2xl:px-20 py-10 text-5xl">Book My Event</p>
+              <p className="2xl:px-20 py-10 text-5xl">Love My Show</p>
             </div>
           </div>
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">

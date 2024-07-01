@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { InputText } from 'primereact/inputtext';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
+import { RiCoupon2Fill } from 'react-icons/ri';
 import { Button } from 'primereact/button';
 import {
   deleteUser,
@@ -107,6 +108,15 @@ const VendorListing = () => {
               className="w-29 text-left p-2 border-b rounded-none"
               onClick={() => {
                 Navigate(`/vendor/event/listing/${rowData.Id}`);
+              }}
+            />
+            <Button
+              label="Coupan"
+              icon={<RiCoupon2Fill className="mr-2" />}
+              title="Coupan"
+              className="w-29 text-left p-2 border-b rounded-none"
+              onClick={() => {
+                Navigate(`/vendor/coupan/listing/${rowData.Id}`);
               }}
             />
             <Button

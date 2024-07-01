@@ -167,14 +167,7 @@ const AllEventListing = () => {
                       format(new Date(rowData.EventStartDateTime), 'MM/dd/yyyy')
                     }
                   />
-                  <Column
-                    field="EventEndDateTime"
-                    header="EventEndDate"
-                    className="border border-stroke"
-                    body={(rowData) =>
-                      format(new Date(rowData.EventEndDateTime), 'MM/dd/yyyy')
-                    }
-                  />
+
                   <Column
                     field="CategoryTitle"
                     header="Category"
