@@ -1,7 +1,4 @@
 import { lazy } from 'react';
-import Contactsetting from '../components/Setting/Contactsetting';
-import Socialsetting from '../components/Setting/Socialsetting';
-import Sitesetting from '../components/Setting/Sitesetting';
 import SliderListing from '../components/Slider/Listing';
 import SliderAdd from '../components/Slider/Add';
 import SliderEdit from '../components/Slider/Edit';
@@ -81,18 +78,6 @@ const coreRoutes = [
     path: '/settings', //Setting
     title: 'Settings',
     component: Settings,
-  },
-  {
-    path: '/contact/edit',
-    component: Contactsetting,
-  },
-  {
-    path: '/social/edit',
-    component: Socialsetting,
-  },
-  {
-    path: '/site/edit',
-    component: Sitesetting,
   },
 
   // =================slider=============

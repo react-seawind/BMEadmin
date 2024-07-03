@@ -141,12 +141,12 @@ const CountryListing = () => {
                           placeholder="Search"
                         />
                       </span>
-                      <Link
+                      {/* <Link
                         to="/country/add"
                         className="bg-blue-500 text-white p-3 px-10 text-sm"
                       >
                         Add
-                      </Link>
+                      </Link>*/}
                     </div>
                   }
                 >
@@ -189,13 +189,8 @@ const CountryListing = () => {
                     header="Entry Date"
                     className="border border-stroke"
                     body={(rowData) =>
-                      format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                      format(new Date(rowData.EntDt), 'dd/MM/yyyy hh:mm a')
                     }
-                  />
-                  <Column
-                    header="Action"
-                    className="border border-stroke"
-                    body={actionTemplate}
                   />
                 </DataTable>
               )}

@@ -80,7 +80,7 @@ const OrderBookingViewUser = () => {
                         <b>EventStartDateTime:</b>
                         {format(
                           new Date(EventData?.EventStartDateTime),
-                          'MM/dd/yyyy',
+                          'dd/MM/yyyy',
                         )}
                       </label>
 
@@ -105,6 +105,9 @@ const OrderBookingViewUser = () => {
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Event Start Time:</b> {EventData?.EventStartTime}
+                      </label>
+                      <label className="mb-3 block text-black dark:text-white">
+                        <b>Event End Time:</b> {EventData?.EventEndTime}
                       </label>
                     </div>
                     <div className="relative">
@@ -141,6 +144,12 @@ const OrderBookingViewUser = () => {
                         <b>Charge:</b> {EventData?.Charge}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
+                        <b>Coupon Code:</b> {EventData?.CouponCode}
+                      </label>
+                      <label className="mb-3 block text-black dark:text-white">
+                        <b>Coupon Amount:</b> {EventData?.CouponAmount}
+                      </label>
+                      <label className="mb-3 block text-black dark:text-white">
                         <b>Total:</b> {EventData?.Total}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
@@ -154,11 +163,8 @@ const OrderBookingViewUser = () => {
                         <b>Expiry Date Time:</b>{' '}
                         {format(
                           new Date(EventData?.ExpiryDateTime),
-                          'MM/dd/yyyy',
+                          'dd/MM/yyyy',
                         )}
-                      </label>
-                      <label className="mb-3 block text-black dark:text-white">
-                        <b>Event End Time:</b> {EventData?.EventEndTime}
                       </label>
                     </div>
                   </div>

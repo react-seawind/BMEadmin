@@ -88,7 +88,7 @@
 //       name: 'Entry Date',
 //       selector: (row) => (
 //         <h1 className="text-base min-h-29 mt-2">
-//           {format(new Date(row.EntDt), 'MM/dd/yyyy hh:mm a')}
+//           {format(new Date(row.EntDt), 'dd/MM/yyyy hh:mm a')}
 //         </h1>
 //       ),
 //     },
@@ -365,7 +365,7 @@ const LanguageListing = () => {
                     header="Entry Date"
                     className="border border-stroke"
                     body={(rowData) =>
-                      format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                      format(new Date(rowData.EntDt), 'dd/MM/yyyy hh:mm a')
                     }
                   />
                   <Column

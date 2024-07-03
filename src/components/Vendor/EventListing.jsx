@@ -145,7 +145,7 @@ const EventListing = () => {
                     header="EventStartDate"
                     className="border border-stroke"
                     body={(rowData) =>
-                      format(new Date(rowData.EventStartDateTime), 'MM/dd/yyyy')
+                      format(new Date(rowData.EventStartDateTime), 'dd/MM/yyyy')
                     }
                   />
 
@@ -201,7 +201,7 @@ const EventListing = () => {
                     header="Entry Date"
                     className="border border-stroke"
                     body={(rowData) =>
-                      format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                      format(new Date(rowData.EntDt), 'dd/MM/yyyy hh:mm a')
                     }
                   />
                   <Column

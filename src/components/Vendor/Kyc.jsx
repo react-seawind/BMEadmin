@@ -108,19 +108,115 @@ const VendorKyc = () => {
                 ''
               )}
               {/*===================Pincode=================*/}
-              {kycData.Pincode !== '' ? (
+
+              <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                <th class="px-6 py-4 w-1/2 ">Pincode: </th>
+                <td class="px-6 py-4 w-1/2 text-base">{kycData.Pincode}</td>
+              </tr>
+
+              {/*===================Address=================*/}
+
+              <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                <th class="px-6 py-4 w-1/2 ">Address: </th>
+                <td class="px-6 py-4 w-1/2 text-base">{kycData.Address}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/*------------------GENERAL INFORMATION------------------*/}
+
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
+            General Information
+          </h1>
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <tbody>
+              {/*===================GST=================*/}
+              {kycData.GSTRegistration !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">Pincode: </th>
-                  <td class="px-6 py-4 w-1/2 text-base">{kycData.Pincode}</td>
+                  <th class="px-6 py-4 w-1/2 ">GST Registration </th>
+                  <td class="px-6 py-4 w-1/2 text-base">
+                    {kycData.GSTRegistration}
+                  </td>
                 </tr>
               ) : (
                 ''
               )}
-              {/*===================Address=================*/}
-              {kycData.Address !== '' ? (
+              {/*===================GST document=============*/}
+              {kycData.GSTRegistration === 'yes' ? (
+                <>
+                  {/*===================GSTIN=================*/}
+                  {kycData.GSTIN !== '' ? (
+                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                      <th class="px-6 py-4 w-1/2 ">GSTIN</th>
+                      <td class="px-6 py-4 w-1/2 text-base">{kycData.GSTIN}</td>
+                    </tr>
+                  ) : (
+                    ''
+                  )}
+                  {/*===================PAN=================*/}
+                  {kycData.PAN !== '' ? (
+                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                      <th class="px-6 py-4 w-1/2 ">PAN</th>
+                      <td class="px-6 py-4 w-1/2 text-base">{kycData.PAN}</td>
+                    </tr>
+                  ) : (
+                    ''
+                  )}
+                </>
+              ) : (
+                ''
+              )}
+
+              {/*===================RegisteredCompanyName=================*/}
+              {kycData.RegisteredCompanyName !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">Address: </th>
-                  <td class="px-6 py-4 w-1/2 text-base">{kycData.Address}</td>
+                  <th class="px-6 py-4 w-1/2 ">Registered Company Name </th>
+                  <td class="px-6 py-4 w-1/2 text-base">
+                    {kycData.RegisteredCompanyName}
+                  </td>
+                </tr>
+              ) : (
+                ''
+              )}
+
+              {/*===================RegisteredCompanyAddress=================*/}
+              {kycData.RegisteredCompanyAddress !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">Registered Company Address </th>
+                  <td class="px-6 py-4 w-1/2 text-base">
+                    {kycData.RegisteredCompanyAddress}
+                  </td>
+                </tr>
+              ) : (
+                ''
+              )}
+
+              {/*===================State=================*/}
+              {kycData.State !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">State </th>
+                  <td class="px-6 py-4 w-1/2 text-base">{kycData.State}</td>
+                </tr>
+              ) : (
+                ''
+              )}
+              {/*===================Phone=================*/}
+              {kycData.Phone !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">Contact No </th>
+                  <td class="px-6 py-4 w-1/2 text-base">{kycData.Phone}</td>
+                </tr>
+              ) : (
+                ''
+              )}
+              {/*===================Email=================*/}
+              {kycData.Email !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">Email </th>
+                  <td class="px-6 py-4 w-1/2 text-base">{kycData.Email}</td>
                 </tr>
               ) : (
                 ''
@@ -128,262 +224,121 @@ const VendorKyc = () => {
             </tbody>
           </table>
         </div>
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
         {/*------------------GENERAL INFORMATION------------------*/}
-        {kycData.GSTRegistration !== '' ||
-        kycData.RegisteredCompanyName !== '' ||
-        kycData.RegisteredCompanyAddress !== '' ||
-        kycData.State !== '' ||
-        kycData.Phone !== '' ||
-        kycData.Email !== '' ||
-        kycData.RegisteredCompanyAddress !== '' ? (
-          <>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
-                General Information
-              </h1>
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <tbody>
-                  {/*===================GST=================*/}
-                  {kycData.GSTRegistration !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">GST Registration </th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        {kycData.GSTRegistration}
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-                  {/*===================GST document=============*/}
-                  {kycData.GSTRegistration === 'yes' ? (
-                    <>
-                      {/*===================GSTIN=================*/}
-                      {kycData.GSTIN !== '' ? (
-                        <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                          <th class="px-6 py-4 w-1/2 ">GSTIN</th>
-                          <td class="px-6 py-4 w-1/2 text-base">
-                            {kycData.GSTIN}
-                          </td>
-                        </tr>
-                      ) : (
-                        ''
-                      )}
-                      {/*===================PAN=================*/}
-                      {kycData.PAN !== '' ? (
-                        <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                          <th class="px-6 py-4 w-1/2 ">PAN</th>
-                          <td class="px-6 py-4 w-1/2 text-base">
-                            {kycData.PAN}
-                          </td>
-                        </tr>
-                      ) : (
-                        ''
-                      )}
-                    </>
-                  ) : (
-                    ''
-                  )}
 
-                  {/*===================RegisteredCompanyName=================*/}
-                  {kycData.RegisteredCompanyName !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Registered Company Name </th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        {kycData.RegisteredCompanyName}
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
+            Bank Account Details
+          </h1>
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <tbody>
+              {/*===================AccountType=================*/}
+              {kycData.AccountType !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">Account Type </th>
+                  <td class="px-6 py-4 w-1/2 text-base">
+                    {kycData.AccountType}
+                  </td>
+                </tr>
+              ) : (
+                ''
+              )}
+              {/*===================BeneficiaryNames=================*/}
+              {kycData.BeneficiaryNames !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">Beneficiary Name</th>
+                  <td class="px-6 py-4 w-1/2 text-base">
+                    {kycData.BeneficiaryNames}
+                  </td>
+                </tr>
+              ) : (
+                ''
+              )}
 
-                  {/*===================RegisteredCompanyAddress=================*/}
-                  {kycData.RegisteredCompanyAddress !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">
-                        Registered Company Address{' '}
-                      </th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        {kycData.RegisteredCompanyAddress}
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
+              {/*===================Account Number=================*/}
+              {kycData.AccountNumber !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">Account Number</th>
+                  <td class="px-6 py-4 w-1/2 text-base">
+                    {kycData.AccountNumber}
+                  </td>
+                </tr>
+              ) : (
+                ''
+              )}
 
-                  {/*===================State=================*/}
-                  {kycData.State !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">State </th>
-                      <td class="px-6 py-4 w-1/2 text-base">{kycData.State}</td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-                  {/*===================Phone=================*/}
-                  {kycData.Phone !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Contact No </th>
-                      <td class="px-6 py-4 w-1/2 text-base">{kycData.Phone}</td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-                  {/*===================Email=================*/}
-                  {kycData.Email !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Email </th>
-                      <td class="px-6 py-4 w-1/2 text-base">{kycData.Email}</td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </>
-        ) : (
-          ' '
-        )}
-        {/*------------------GENERAL INFORMATION------------------*/}
-        {kycData.AccountType !== '' ||
-        kycData.BeneficiaryNames !== '' ||
-        kycData.IFSC !== '' ||
-        kycData.AccountNumber !== '' ? (
-          <>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
-                Bank Account Details
-              </h1>
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <tbody>
-                  {/*===================AccountType=================*/}
-                  {kycData.AccountType !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Account Type </th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        {kycData.AccountType}
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-                  {/*===================BeneficiaryNames=================*/}
-                  {kycData.BeneficiaryNames !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Beneficiary Name</th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        {kycData.BeneficiaryNames}
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-
-                  {/*===================Account Number=================*/}
-                  {kycData.AccountNumber !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Account Number</th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        {kycData.AccountNumber}
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-
-                  {/*===================IFSC=================*/}
-                  {kycData.IFSC !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">IFSC</th>
-                      <td class="px-6 py-4 w-1/2 text-base">{kycData.IFSC}</td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </>
-        ) : (
-          ''
-        )}
+              {/*===================IFSC=================*/}
+              {kycData.IFSC !== '' ? (
+                <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                  <th class="px-6 py-4 w-1/2 ">IFSC</th>
+                  <td class="px-6 py-4 w-1/2 text-base">{kycData.IFSC}</td>
+                </tr>
+              ) : (
+                ''
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {/*------------------Documnet------------------*/}
-        {kycData.PanCard !== '' ||
-        kycData.CancelledCheque !== '' ||
-        kycData.SignAgreement !== '' ? (
-          <>
-            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
-                Document Details
-              </h1>
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <tbody>
-                  {/*===================PanCard=================*/}
-                  {kycData.PanCard !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Pan Card </th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        <a
-                          href={kycData.PanCard}
-                          target="_blank"
-                          className="flex items-center"
-                        >
-                          <FaEye className="mr-2" />
-                          View
-                        </a>
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
 
-                  {/*===================RegisteredCompanyName=================*/}
-                  {kycData.CancelledCheque !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Cancelled Cheque </th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        <a
-                          href={kycData.CancelledCheque}
-                          target="_blank"
-                          className="flex items-center"
-                        >
-                          <FaEye className="mr-2" />
-                          View
-                        </a>
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">
+            Document Details
+          </h1>
+          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <tbody>
+              {/*===================PanCard=================*/}
 
-                  {/*===================RegisteredCompanyName=================*/}
-                  {kycData.SignAgreement !== '' ? (
-                    <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                      <th class="px-6 py-4 w-1/2 ">Agreement </th>
-                      <td class="px-6 py-4 w-1/2 text-base">
-                        <a
-                          href={kycData.SignAgreement}
-                          target="_blank"
-                          className="flex items-center"
-                        >
-                          <FaEye className="mr-2" />
-                          View
-                        </a>
-                      </td>
-                    </tr>
-                  ) : (
-                    ''
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </>
-        ) : (
-          ''
-        )}
+              <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                <th class="px-6 py-4 w-1/2 ">Pan Card </th>
+                <td class="px-6 py-4 w-1/2 text-base">
+                  <a
+                    href={kycData.PanCard}
+                    target="_blank"
+                    className="flex items-center"
+                  >
+                    <FaEye className="mr-2" />
+                    View
+                  </a>
+                </td>
+              </tr>
+
+              {/*===================RegisteredCompanyName=================*/}
+
+              <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                <th class="px-6 py-4 w-1/2 ">Cancelled Cheque </th>
+                <td class="px-6 py-4 w-1/2 text-base">
+                  <a
+                    href={kycData.CancelledCheque}
+                    target="_blank"
+                    className="flex items-center"
+                  >
+                    <FaEye className="mr-2" />
+                    View
+                  </a>
+                </td>
+              </tr>
+
+              {/*===================RegisteredCompanyName=================*/}
+
+              <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
+                <th class="px-6 py-4 w-1/2 ">Agreement </th>
+                <td class="px-6 py-4 w-1/2 text-base">
+                  <a
+                    href={kycData.SignAgreement}
+                    target="_blank"
+                    className="flex items-center"
+                  >
+                    <FaEye className="mr-2" />
+                    View
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div>
           {/*------------------Documnet------------------*/}
           <h1 className="text-lg  p-2 mt-4 text-white font-bold bg-themecolor1">

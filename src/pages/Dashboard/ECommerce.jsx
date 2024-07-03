@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import { Bar, Doughnut, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { BiCategory, BiRupee } from 'react-icons/bi';
 import { getAllDashbaord } from '../../API/DashboardAPI.jsx';
@@ -125,19 +125,13 @@ const ECommerce = () => {
         label: 'Income',
         data: userCountsIncome,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
+          '#fd6285',
+          '#fd9e49',
+          '#50c0bf',
+          '#9968fc',
+          '#3ca3e9',
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-        ],
+        borderColor: ['#fd6285', '#fd9e49', '#50c0bf', '#9968fc', '#3ca3e9'],
         borderWidth: 1,
       },
     ],
@@ -150,19 +144,13 @@ const ECommerce = () => {
         label: 'Users',
         data: userCounts,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
+          '#fd6285',
+          '#fd9e49',
+          '#50c0bf',
+          '#9968fc',
+          '#3ca3e9',
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-        ],
+        borderColor: ['#fd6285', '#fd9e49', '#50c0bf', '#9968fc', '#3ca3e9'],
         borderWidth: 1,
       },
     ],
@@ -176,19 +164,13 @@ const ECommerce = () => {
         label: 'Event Count',
         data: CountryWiseEventCounts,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
+          '#fd6285',
+          '#fd9e49',
+          '#50c0bf',
+          '#9968fc',
+          '#3ca3e9',
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-        ],
+        borderColor: ['#fd6285', '#fd9e49', '#50c0bf', '#9968fc', '#3ca3e9'],
         borderWidth: 1,
       },
     ],
@@ -202,32 +184,32 @@ const ECommerce = () => {
       {
         label: 'Pending Event',
         data: CountryWiseEventStatusPending,
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: '#fd6285',
       },
       {
         label: 'Active Event',
         data: CountryWiseEventStatusActive,
-        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+        backgroundColor: '#fd9e49',
       },
       {
         label: 'Inactive Event',
         data: CountryWiseEventStatusInactive,
-        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        backgroundColor: '#50c0bf',
       },
       {
         label: 'Expired Event',
         data: CountryWiseEventStatusExpired,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        backgroundColor: '#9968fc',
       },
       {
         label: 'Reject Event',
         data: CountryWiseEventStatusReject,
-        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        backgroundColor: '#3ca3e9',
       },
       {
         label: 'Canceled Event',
         data: CountryWiseEventStatusCanceled,
-        backgroundColor: 'rgba(51, 161, 231, 0.1)',
+        backgroundColor: '#c94239',
       },
     ],
   };
@@ -410,7 +392,7 @@ const ECommerce = () => {
               header="EventStartDate"
               className="border border-stroke"
               body={(rowData) =>
-                format(new Date(rowData.EventStartDateTime), 'MM/dd/yyyy')
+                format(new Date(rowData.EventStartDateTime), 'dd/MM/yyyy')
               }
             />
 
@@ -466,7 +448,7 @@ const ECommerce = () => {
               header="Entry Date"
               className="border border-stroke"
               body={(rowData) =>
-                format(new Date(rowData.EntDt), 'MM/dd/yyyy hh:mm a')
+                format(new Date(rowData.EntDt), 'dd/MM/yyyy hh:mm a')
               }
             />
             <Column
@@ -485,7 +467,7 @@ const ECommerce = () => {
         </div>
         <div className="rounded-sm border border-stroke bg-white py-6 px-7.5 shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="h-80">
-            <Pie data={PieChartdata} options={Pieoptions} />
+            <Doughnut data={PieChartdata} options={Pieoptions} />
           </div>
           <p className="text-center mt-3 font-bold">Total Events</p>
         </div>

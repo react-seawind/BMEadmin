@@ -221,7 +221,7 @@ const AllBookingListing = () => {
                     header="Entry Date"
                     className="border border-stroke"
                     body={(rowData) =>
-                      format(new Date(rowData.EntDt), 'MM/dd/yyyy')
+                      format(new Date(rowData.EntDt), 'dd/MM/yyyy')
                     }
                   />
                   <Column
