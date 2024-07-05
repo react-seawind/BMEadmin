@@ -124,7 +124,7 @@ const AllBookingView = () => {
                         <b>TicketName:</b> {EventData?.TicketName}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>gstPercentage:</b> {EventData?.gstPercentage}
+                        <b>GST Percentage:</b> {EventData?.gstPercentage}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Price:</b> {EventData?.Price}
@@ -133,10 +133,10 @@ const AllBookingView = () => {
                         <b>Qty:</b> {EventData?.Qty}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>SubTotal:</b> {EventData?.SubTotal}
+                        <b>Sub Total:</b> {EventData?.SubTotal}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>gstAmount:</b> {EventData?.gstAmount}
+                        <b>GST Amount:</b> {EventData?.gstAmount}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Charge:</b> {EventData?.Charge}
@@ -151,10 +151,10 @@ const AllBookingView = () => {
                         <b>Total:</b> {EventData?.Total}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>PaymentMethod:</b> {EventData?.PaymentMethod}
+                        <b>Payment Method:</b> {EventData?.PaymentMethod}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>PaymentStatus:</b>{' '}
+                        <b>Payment Status:</b>{' '}
                         <span className={statusColor}>{statusText}</span>
                       </label>
                       <label className="mb-3 block text-black dark:text-white">

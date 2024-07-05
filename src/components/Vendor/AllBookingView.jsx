@@ -66,17 +66,17 @@ const AllBookingViewInVendor = () => {
                         <b>User Phone:</b> {EventData?.UserPhone}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventName:</b> {EventData?.EventName}
+                        <b>Event Name:</b> {EventData?.EventName}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventEmail:</b> {EventData?.EventEmail}
+                        <b>Event Email:</b> {EventData?.EventEmail}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventOrganizer:</b> {EventData?.EventOrganizer}
+                        <b>Event Organizer:</b> {EventData?.EventOrganizer}
                       </label>
 
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventStartDateTime:</b>
+                        <b>Event Start Date Time:</b>
                         {format(
                           new Date(EventData?.EventStartDateTime),
                           'dd/MM/yyyy',
@@ -84,10 +84,10 @@ const AllBookingViewInVendor = () => {
                       </label>
 
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>AgeRestriction:</b> {EventData?.AgeRestriction}
+                        <b>Age Restriction:</b> {EventData?.AgeRestriction}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>HealthySafetyPrecautions:</b>{' '}
+                        <b>Healthy Safety Precautions:</b>{' '}
                         {EventData?.HealthySafetyPrecautions}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
@@ -122,10 +122,10 @@ const AllBookingViewInVendor = () => {
                       </label>
 
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>TicketName:</b> {EventData?.TicketName}
+                        <b>Ticket Name:</b> {EventData?.TicketName}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>gstPercentage:</b> {EventData?.gstPercentage}
+                        <b>GST Percentage:</b> {EventData?.gstPercentage}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Price:</b> {EventData?.Price}
@@ -134,10 +134,10 @@ const AllBookingViewInVendor = () => {
                         <b>Qty:</b> {EventData?.Qty}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>SubTotal:</b> {EventData?.SubTotal}
+                        <b>Sub Total:</b> {EventData?.SubTotal}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>gstAmount:</b> {EventData?.gstAmount}
+                        <b>GST Amount:</b> {EventData?.gstAmount}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Charge:</b> {EventData?.Charge}
@@ -152,10 +152,10 @@ const AllBookingViewInVendor = () => {
                         <b>Total:</b> {EventData?.Total}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>PaymentMethod:</b> {EventData?.PaymentMethod}
+                        <b>Payment Method:</b> {EventData?.PaymentMethod}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>PaymentStatus:</b>{' '}
+                        <b>Payment Status:</b>{' '}
                         <span className={statusColor}>{statusText}</span>
                       </label>
                       <label className="mb-3 block text-black dark:text-white">

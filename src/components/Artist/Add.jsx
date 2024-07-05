@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { AddArtist } from '../../API/ArtistApi';
 import FormLoader from '../../common/Loader/FormLoader';
-import SummerNote from '../EDITOR/SummerNote';
 
 const validateSchema = Yup.object().shape({
   Title: Yup.string().required('Name is required.'),
@@ -159,14 +158,7 @@ const ArtistAdd = () => {
                     }}
                     onBlur={formik.handleBlur}
                   />
-                  <SummerNote
-                    value={formik.values.Content}
-                    onChange={(Content) => {
-                      formik.setFieldValue('Content', Content);
-                      formik.setFieldTouched('Content', true);
-                    }}
-                    onBlur={formik.handleBlur}
-                  />
+
                   {formik.touched.Content && formik.errors.Content && (
                     <div className="text-red-500">{formik.errors.Content}</div>
                   )}

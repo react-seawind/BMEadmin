@@ -19,7 +19,7 @@ const SliderAdd = () => {
       Url: '',
       Content: '',
       Image: '',
-      Status: '',
+      Status: '1',
     },
     validationSchema: validationSchema,
     onSubmit: async (values, actions) => {
@@ -92,7 +92,7 @@ const SliderAdd = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Url <span className="text-danger">*</span>
+                    Url
                   </label>
                   <input
                     type="text"
@@ -112,7 +112,7 @@ const SliderAdd = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Content <span className="text-danger">*</span>
+                    Content
                   </label>
                   <input
                     type="text"
@@ -134,7 +134,10 @@ const SliderAdd = () => {
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Banner Img
-                    <span className="text-danger">*</span>
+                    <span className="text-danger text-sm">
+                      * (The Banner size should be 1915 X 499 px) || (Below 1
+                      MB)
+                    </span>
                   </label>
                   <input
                     type="file"

@@ -38,7 +38,7 @@ const SliderEdit = () => {
       Content: '',
       Image: '',
       Hid_Image: '',
-      Status: '1',
+      Status: '',
     },
 
     validationSchema: validationSchema,
@@ -154,7 +154,10 @@ const SliderEdit = () => {
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Banner Img
-                    <span className="text-danger">(Below 1 MB)*</span>
+                    <span className="text-danger text-sm">
+                      * (The Banner size should be 1915 X 499 px) || (Below 1
+                      MB)
+                    </span>
                   </label>
                   <input
                     type="file"

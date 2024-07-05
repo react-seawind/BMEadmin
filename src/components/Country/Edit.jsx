@@ -146,7 +146,10 @@ const CountryEdit = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Image<span className="text-danger">*</span>
+                    Image{' '}
+                    <span className="text-danger text-sm">
+                      * (The Banner size should be 200 X 150 px) || (Below 1 MB)
+                    </span>
                   </label>
                   <input
                     type="file"

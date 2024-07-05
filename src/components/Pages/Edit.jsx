@@ -182,7 +182,9 @@ const PageEdit = () => {
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Banner Img
-                    <span className="text-danger">*</span>
+                    <span className="text-danger text-sm">
+                    * (Below 1 MB)
+                  </span>
                   </label>
                   <input
                     type="file"
@@ -217,7 +219,7 @@ const PageEdit = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    SeoTitle <span className="text-danger">*</span>
+                    Seo Title <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
@@ -238,7 +240,7 @@ const PageEdit = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    SeoKeyword <span className="text-danger">*</span>
+                    Seo Keyword <span className="text-danger">*</span>
                   </label>
                   <input
                     type="text"
@@ -261,7 +263,7 @@ const PageEdit = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    SeoDescription <span className="text-danger">*</span>
+                    Seo Description <span className="text-danger">*</span>
                   </label>
                   <textarea
                     rows={2}

@@ -217,10 +217,9 @@ const AllBooking = () => {
                   }
                 >
                   <Column
-                    field="Id"
                     header="#"
-                    sortable
                     className="border border-stroke"
+                    body={(rowData, { rowIndex }) => rowIndex + 1}
                   />
                   <Column
                     field="EventName"
@@ -238,7 +237,7 @@ const AllBooking = () => {
 
                   <Column
                     field="PaymentStatus"
-                    header="PaymentStatus"
+                    header="Payment Status"
                     className="border border-stroke"
                     body={(rowData) => (
                       <span

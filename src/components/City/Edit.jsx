@@ -192,7 +192,10 @@ const CityEdit = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Image<span className="text-danger">*</span>
+                    Image{' '}
+                    <span className="text-danger text-sm">
+                      * (The Banner size should be 94px X 94px) || (Below 1 MB)
+                    </span>
                   </label>
                   <input
                     type="file"

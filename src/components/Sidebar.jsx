@@ -2,12 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Logo from '../images/mainlogo.png';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import { MdDashboard } from 'react-icons/md';
+import { MdDashboard, MdEmojiEvents } from 'react-icons/md';
 import { IoSettingsOutline, IoShareSocial } from 'react-icons/io5';
 import { GrServices } from 'react-icons/gr';
 import { IoIosContact, IoMdAdd } from 'react-icons/io';
 import { TfiLayoutSliderAlt } from 'react-icons/tfi';
 import { FcAbout } from 'react-icons/fc';
+import { BiCategory } from 'react-icons/bi';
 import {
   FaBookOpenReader,
   FaChevronDown,
@@ -148,7 +149,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -205,7 +206,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -324,15 +325,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                                             Listing
                                           </NavLink>
                                         </li>
-                                        <li>
-                                          <NavLink
-                                            to="/country/add"
-                                            className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 `}
-                                          >
-                                            <IoMdAdd />
-                                            Add
-                                          </NavLink>
-                                        </li>
                                       </ul>
                                     </div>
                                     {/* <!-- Dropdown Menu End --> */}
@@ -370,7 +362,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -426,7 +418,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -576,7 +568,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -632,7 +624,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -688,7 +680,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -737,14 +729,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <FaUser />
+                        <BiCategory />
                         Category
                         <div
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
                             open && 'rotate-180'
                           }`}
                         >
-                          <FaChevronDown className="bg-red-500" />
+                          <FaChevronDown />
                         </div>
                       </NavLink>
 
@@ -793,7 +785,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <FaUser />
+                        <MdEmojiEvents />
                         All Event
                         <div
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
@@ -840,7 +832,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }, SidebarProps) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <FaUser />
+                        <FaTicketAlt />
                         All Booking
                         <div
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${

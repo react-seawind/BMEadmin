@@ -181,7 +181,11 @@ const CategoryEdit = () => {
               <div className="grid grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Icon <span className="text-danger">*</span>
+                    Icon{' '}
+                    <span className="text-danger text-sm">
+                      * (The Banner size should be 300px X 300px) || (Below 1
+                      MB)
+                    </span>
                   </label>
                   <input
                     type="file"

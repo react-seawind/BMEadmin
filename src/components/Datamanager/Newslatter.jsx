@@ -152,10 +152,9 @@ const NewsletterListing = () => {
                   }
                 >
                   <Column
-                    field="Id"
                     header="#"
-                    sortable
                     className="border border-stroke"
+                    body={(rowData, { rowIndex }) => rowIndex + 1}
                   />
                   <Column
                     field="Email"

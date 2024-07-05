@@ -8,6 +8,7 @@ import { AdminLogin } from '../../API/AdminApi';
 import { useFormik } from 'formik';
 import { toast } from 'react-toastify';
 import FormLoader from '../../common/Loader/FormLoader';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const validationSchema = yup.object().shape({
   Email: yup.string().required('Email is required'),
@@ -47,6 +48,12 @@ const SignIn = () => {
       }
     },
   });
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div>
@@ -104,15 +111,20 @@ const SignIn = () => {
                   </label>
                   <div className="relative">
                     <input
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       name="Password"
                       onChange={formik.handleChange}
                       placeholder="Enter Password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                     />
-                    <span className="absolute right-4 top-4">
-                      <FaKey />
+                    <span
+                      className="absolute right-4 top-4"
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                    >
+                      {showPassword ? <FaEye /> : <FaEyeSlash />}
                     </span>
+
                     {formik.touched.Password && formik.errors.Password && (
                       <small className="text-red-500">
                         {formik.errors.Password}

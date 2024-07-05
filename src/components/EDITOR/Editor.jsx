@@ -9,7 +9,7 @@ const TinyMCEEditor = ({ values, onChange }) => {
 
   return (
     <Editor
-      apiKey="z3nojrr83i8cubxt0qaqwsfz1ayc8q333a2b5mwq06s8otj3" // Replace with your TinyMCE API key
+      apiKey="y54f4xfrpjsuntawyo7htxny941ymaxq05ecl967569dtxqd" // Replace with your TinyMCE API key
       initialValue={values}
       init={{
         height: 350,

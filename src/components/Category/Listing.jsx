@@ -108,7 +108,7 @@ const CategoryListing = () => {
 
   return (
     <div>
-      <Breadcrumb pageName="category Listing" />
+      <Breadcrumb pageName="Category Listing" />
 
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">
@@ -151,10 +151,9 @@ const CategoryListing = () => {
                   }
                 >
                   <Column
-                    field="Id"
                     header="#"
-                    sortable
                     className="border border-stroke"
+                    body={(rowData, { rowIndex }) => rowIndex + 1}
                   />
                   <Column
                     field="Title"

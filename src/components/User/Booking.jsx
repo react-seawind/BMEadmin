@@ -177,7 +177,7 @@ const UserIdBooking = () => {
                     />
                     <Column
                       field="PaymentStatus"
-                      header="PaymentStatus"
+                      header="Payment Status"
                       className="border border-stroke"
                       body={(rowData) => (
                         <span
