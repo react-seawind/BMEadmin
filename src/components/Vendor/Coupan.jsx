@@ -147,7 +147,7 @@ const Coupan = () => {
                     <span>
                       {rowData.Status === 0 ? (
                         <span className="badge bg-red-500 text-white rounded text-xs px-3 py-1">
-                          In Active
+                          Inactive
                         </span>
                       ) : (
                         <span className="badge bg-green-500 text-white rounded text-xs px-3 py-1">

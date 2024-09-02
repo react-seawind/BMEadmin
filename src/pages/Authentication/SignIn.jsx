@@ -41,7 +41,6 @@ const SignIn = () => {
           throw new Error('Invalid email or password');
         }
       } catch (error) {
-        toast.error('Invalid email or password');
         setloginbutton(false);
       } finally {
         setIsFormLoading(false); // Set loading state to false when submission ends

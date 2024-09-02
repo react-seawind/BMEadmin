@@ -23,7 +23,6 @@ export const getAllDashbaord = async (Id) => {
     if (response.data.status === true) {
       return response.data.responsedata;
     } else {
-      toast.error(response.data.message);
       throw new Error(response.data.message); // Throw error with API message
     }
   } catch (error) {

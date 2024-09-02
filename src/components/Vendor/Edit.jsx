@@ -264,7 +264,7 @@ const VendorEdit = () => {
                   <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
                 </div>
                 <div className="mt-5">
-                  <p>Your Exsisting Img File</p>
+                  <p>Your Exsisting Image File</p>
                   <div className="grid grid-cols-4 gap-2 relative">
                     <div className="relative">
                       {imagePreview ? (
@@ -308,7 +308,7 @@ const VendorEdit = () => {
                       value="0"
                       checked={formik.values.Status == '0'}
                     />
-                    In Active
+                    Inactive
                   </div>
                 </div>
               </div>

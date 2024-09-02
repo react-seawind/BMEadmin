@@ -290,7 +290,7 @@ const LanguageListing = () => {
 
   return (
     <div>
-      <Breadcrumb pageName="language Listing" />
+      <Breadcrumb pageName="Language Listing" />
 
       <div className="grid grid-cols-1 gap-9 ">
         <div className="flex flex-col gap-9 ">

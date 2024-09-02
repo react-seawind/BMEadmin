@@ -26,7 +26,7 @@ const OfferAdd = () => {
     Image: '',
     Icon: '',
     Status: '1',
-    faqData: [{ Title: '', Content: '' }],
+    faqData: [],
   });
 
   const formik = useFormik({
@@ -178,7 +178,11 @@ const OfferAdd = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Image<span className="text-danger">*</span>
+                    Image{' '}
+                    <span className="text-danger text-sm">
+                      * (The Image size should be 1920px X 250px) || (Below 1
+                      MB)
+                    </span>
                   </label>
                   <input
                     type="file"
@@ -198,7 +202,10 @@ const OfferAdd = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Icon<span className="text-danger">*</span>
+                    Icon{' '}
+                    <span className="text-danger text-sm">
+                      * (The Icon size should be 110px X 80px) || (Below 1 MB)
+                    </span>
                   </label>
                   <input
                     type="file"

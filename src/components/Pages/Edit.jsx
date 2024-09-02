@@ -181,10 +181,8 @@ const PageEdit = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Banner Img
-                    <span className="text-danger text-sm">
-                    * (Below 1 MB)
-                  </span>
+                    Banner Image
+                    <span className="text-danger text-sm">* (Below 1 MB)</span>
                   </label>
                   <input
                     type="file"
@@ -203,7 +201,7 @@ const PageEdit = () => {
                 </div>
 
                 <div className="mt-5">
-                  <p>Your Exsisting Img File*</p>
+                  <p>Your Exsisting Image File*</p>
                   <div className="grid grid-cols-4 gap-2 relative">
                     <div className="relative">
                       <img
@@ -309,7 +307,7 @@ const PageEdit = () => {
                       value="0"
                       checked={formik.values.Status == '0'}
                     />
-                    In Active
+                    Inactive
                   </div>
                 </div>
               </div>

@@ -65,13 +65,13 @@ const AllBookingView = () => {
                         <b>User Phone:</b> {EventData?.UserPhone}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventName:</b> {EventData?.EventName}
+                        <b>Event Name:</b> {EventData?.EventName}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventEmail:</b> {EventData?.EventEmail}
+                        <b>Event Email:</b> {EventData?.EventEmail}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>EventOrganizer:</b> {EventData?.EventOrganizer}
+                        <b>Event Organizer:</b> {EventData?.EventOrganizer}
                       </label>
 
                       <label className="mb-3 block text-black dark:text-white">
@@ -83,10 +83,10 @@ const AllBookingView = () => {
                       </label>
 
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>AgeRestriction:</b> {EventData?.AgeRestriction}
+                        <b>Age Restriction:</b> {EventData?.AgeRestriction}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>HealthySafetyPrecautions:</b>{' '}
+                        <b>Healthy Safety Precautions:</b>{' '}
                         {EventData?.HealthySafetyPrecautions}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
@@ -121,7 +121,7 @@ const AllBookingView = () => {
                       </label>
 
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>TicketName:</b> {EventData?.TicketName}
+                        <b>Ticket Name:</b> {EventData?.TicketName}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>GST Percentage:</b> {EventData?.gstPercentage}
@@ -130,7 +130,7 @@ const AllBookingView = () => {
                         <b>Price:</b> {EventData?.Price}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>Qty:</b> {EventData?.Qty}
+                        <b>Quantity:</b> {EventData?.Qty}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Sub Total:</b> {EventData?.SubTotal}

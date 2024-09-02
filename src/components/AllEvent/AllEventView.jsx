@@ -69,7 +69,7 @@ const AllEventView = () => {
               {/*===================EventName=================*/}
               {EventData.EventName !== '' ? (
                 <tr class="bg-white dark:bg-boxdark-2 border-b dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventName:</th>
+                  <th class="px-6 py-4 w-1/2 ">Event Name:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.EventName}
                   </td>
@@ -81,7 +81,7 @@ const AllEventView = () => {
               {/*===================EventSlug=================*/}
               {EventData.EventSlug !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventSlug:</th>
+                  <th class="px-6 py-4 w-1/2 ">Event Slug:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.EventSlug}
                   </td>
@@ -93,7 +93,7 @@ const AllEventView = () => {
               {/*===================EventEmail=================*/}
               {EventData.EventEmail !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventEmail:</th>
+                  <th class="px-6 py-4 w-1/2 ">Event Email:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.EventEmail}
                   </td>
@@ -104,7 +104,7 @@ const AllEventView = () => {
               {/*===================EventOrganizer=================*/}
               {EventData.EventOrganizer !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventOrganizer:</th>
+                  <th class="px-6 py-4 w-1/2 ">Event Organizer:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.EventOrganizer}
                   </td>
@@ -116,7 +116,7 @@ const AllEventView = () => {
               {/*===================EventDescription=================*/}
               {EventData.EventDescription !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventDescription:</th>
+                  <th class="px-6 py-4 w-1/2 ">Event Description:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.EventDescription}
                   </td>
@@ -127,7 +127,7 @@ const AllEventView = () => {
               {/*===================EventStartDateTime=================*/}
               {EventData.EventStartDateTime !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventStartDateTime:</th>
+                  <th class="px-6 py-4 w-1/2 ">Event Start Date Time:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.EventStartDateTime}
                   </td>
@@ -139,7 +139,7 @@ const AllEventView = () => {
               {/*===================CategoryTitle=================*/}
               {EventData.CategoryTitle !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">EventCategory:</th>
+                  <th class="px-6 py-4 w-1/2 ">Event Category:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.CategoryTitle}
                   </td>
@@ -150,7 +150,7 @@ const AllEventView = () => {
               {/*===================ArtistTitle=================*/}
               {EventData.ArtistTitle !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">ArtistTitle:</th>
+                  <th class="px-6 py-4 w-1/2 ">Artist Title:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.ArtistTitle}
                   </td>
@@ -161,7 +161,7 @@ const AllEventView = () => {
               {/*===================AgeRestriction=================*/}
               {EventData.AgeRestriction !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">AgeRestriction:</th>
+                  <th class="px-6 py-4 w-1/2 ">Age Restriction:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.AgeRestriction}
                   </td>
@@ -172,7 +172,7 @@ const AllEventView = () => {
               {/*===================HealthySafetyPrecautions=================*/}
               {EventData.HealthySafetyPrecautions !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">HealthySafetyPrecautions:</th>
+                  <th class="px-6 py-4 w-1/2 ">Healthy Safety Precautions:</th>
                   <td class="px-6 py-4 w-1/2 text-base">
                     {EventData.HealthySafetyPrecautions}
                   </td>

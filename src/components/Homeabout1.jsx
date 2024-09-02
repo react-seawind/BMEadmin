@@ -65,7 +65,7 @@ const Homeabout1 = () => {
                 <p>Please select an a jpg, png, gif, jpeg, webp file only.</p>
               </div>
               <div className="mt-5">
-                <p>Your Exsisting Img File*</p>
+                <p>Your Exsisting File*</p>
                 <div className="grid grid-cols-4 gap-2 relative">
                   <div className="relative">
                     <img

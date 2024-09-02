@@ -155,7 +155,9 @@ const ArtistEdit = () => {
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
                     Profile Image
-                    <span className="text-danger">*</span>
+                    <span className="text-danger text-sm">
+                      * (The Image size should be 250px X 250px) || (Below 1 MB)
+                    </span>
                   </label>
                   <input
                     type="file"
@@ -173,7 +175,7 @@ const ArtistEdit = () => {
                 </div>
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Your Exsisting Img File
+                    Your Exsisting Image File
                     <span className="text-danger">*</span>
                   </label>
                   <img
@@ -230,7 +232,7 @@ const ArtistEdit = () => {
                       value="0"
                       checked={formik.values.Status == '0'}
                     />
-                    In Active
+                    Inactive
                   </div>
                 </div>
               </div>

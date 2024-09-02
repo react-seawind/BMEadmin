@@ -10,7 +10,7 @@ module.exports = {
         satoshi: ['Satoshi', 'sans-serif'],
       },
       colors: {
-        themecolor1: '#DC3558',
+        themecolor1: '#e3336c',
         themecolor2: '#1a1963',
         themecolor3: '#30bbff',
         current: 'currentColor',

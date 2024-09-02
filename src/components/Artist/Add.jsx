@@ -125,8 +125,10 @@ const ArtistAdd = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Profile Image
-                    <span className="text-danger">*</span>
+                    Artist Image
+                    <span className="text-danger text-sm">
+                      * (The Image size should be 250px X 250px) || (Below 1 MB)
+                    </span>
                   </label>
                   <input
                     type="file"
@@ -191,7 +193,7 @@ const ArtistAdd = () => {
                       value="0"
                       checked={formik.values.Status == '0'}
                     />
-                    In Active
+                    Inactive
                   </div>
                 </div>
               </div>

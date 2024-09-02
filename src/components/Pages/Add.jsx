@@ -151,10 +151,8 @@ const PageAdd = () => {
               <div className="flex flex-col gap-5.5 py-3.5 px-5.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Banner Img
-                    <span className="text-danger text-sm">
-                    * (Below 1 MB)
-                  </span>
+                    Banner Image
+                    <span className="text-danger text-sm">* (Below 1 MB)</span>
                   </label>
                   <input
                     type="file"
@@ -266,7 +264,7 @@ const PageAdd = () => {
                       value="0"
                       checked={formik.values.Status == '0'}
                     />
-                    In Active
+                    Inactive
                   </div>
                 </div>
               </div>

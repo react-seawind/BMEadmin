@@ -61,7 +61,7 @@ const AllBooking = () => {
             TicketName: item.TicketName,
             gstPercentage: item.gstPercentage,
             Price: item.Price,
-            Qty: item.Qty,
+            Quantity: item.Qty,
             SubTotal: item.SubTotal,
             gstAmount: item.gstAmount,
             Charge: item.Charge,

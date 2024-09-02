@@ -181,7 +181,7 @@ const AllBookingListing = () => {
                   />
                   <Column
                     field="Qty"
-                    header="Ticket Qty"
+                    header="Ticket Quantity"
                     className="border border-stroke"
                   />
                   <Column

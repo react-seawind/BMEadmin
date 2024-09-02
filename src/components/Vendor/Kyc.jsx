@@ -194,11 +194,11 @@ const VendorKyc = () => {
                 ''
               )}
 
-              {/*===================State=================*/}
-              {kycData.State !== '' ? (
+              {/*===================Country=================*/}
+              {kycData.Country !== '' ? (
                 <tr class="bg-white border-b dark:bg-boxdark-2 dark:text-white dark:border-zinc-600">
-                  <th class="px-6 py-4 w-1/2 ">State </th>
-                  <td class="px-6 py-4 w-1/2 text-base">{kycData.State}</td>
+                  <th class="px-6 py-4 w-1/2 ">Country </th>
+                  <td class="px-6 py-4 w-1/2 text-base">{kycData.Country}</td>
                 </tr>
               ) : (
                 ''

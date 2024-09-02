@@ -133,9 +133,9 @@ const SliderAdd = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5.5 p-6.5">
                 <div>
                   <label className="mb-3 block text-black dark:text-white">
-                    Banner Img
+                    Banner Image
                     <span className="text-danger text-sm">
-                      * (The Banner size should be 1915 X 499 px) || (Below 1
+                      * (The Banner size should be 1920 X 500 px) || (Below 1
                       MB)
                     </span>
                   </label>
@@ -183,7 +183,7 @@ const SliderAdd = () => {
                       value="0"
                       checked={formik.values.Status == '0'}
                     />
-                    In Active
+                    Inactive
                   </div>
                 </div>
               </div>

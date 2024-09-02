@@ -371,25 +371,25 @@ const ECommerce = () => {
 
             <Column
               field="EventName"
-              header="EventName"
+              header="Event Name"
               sortable
               className="border border-stroke"
             />
             <Column
               field="EventEmail"
-              header="EventEmail"
+              header="Event Email"
               sortable
               className="border border-stroke"
             />
             <Column
               field="EventOrganizer"
-              header="EventOrganizer"
+              header="Event Organizer"
               sortable
               className="border border-stroke"
             />
             <Column
               field="EventStartDateTime"
-              header="EventStartDate"
+              header="Event Start Date"
               className="border border-stroke"
               body={(rowData) =>
                 format(new Date(rowData.EventStartDateTime), 'dd/MM/yyyy')
@@ -438,7 +438,9 @@ const ECommerce = () => {
                       Reject
                     </span>
                   ) : (
-                    ''
+                    <span className="badge bg-red-500 text-white rounded text-xs px-3 py-1">
+                      Cancel
+                    </span>
                   )}
                 </span>
               )}

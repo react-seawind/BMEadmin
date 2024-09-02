@@ -131,7 +131,7 @@ const OrderBookingView = () => {
                         <b>Price:</b> {EventData?.Price}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
-                        <b>Qty:</b> {EventData?.Qty}
+                        <b>Quantity:</b> {EventData?.Qty}
                       </label>
                       <label className="mb-3 block text-black dark:text-white">
                         <b>Sub Total:</b> {EventData?.SubTotal}
